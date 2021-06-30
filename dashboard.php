@@ -16,11 +16,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <!-- head -->
-<?php include "{$_SERVER['DOCUMENT_ROOT']}/epms/partials/_head.php";?>
+<?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_head.php";?>
 <body id="body">
     <div class="container">
         <!-- top navbar -->
-        <?php include "{$_SERVER['DOCUMENT_ROOT']}/epms/partials/_top_navbar.php";?>
+        <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_top_navbar.php";?>
         <main>
             <div class="main__container">
                 <!-- dashboard title and greetings -->
@@ -92,7 +92,6 @@
                                 <h1>Payroll Visualtion</h1>
                                 <p>Job titles and their respective salaries</p>
                             </div>
-                            <i class="fa fa-money" aria-hidden="true"></i>
                         </div>
                         <div id="piechart_3d" style="width: 450px; height: 250px;"></div>
                     </div>
@@ -103,18 +102,17 @@
                                 <h1>Stats</h1>
                                 <p>Statistics of different categories</p>
                             </div>
-                            <i class="fa fa-money" aria-hidden="true"></i>
                         </div>
 
                         <div class="charts__right__cards">
                             <div class="card1">
                             <h1>Total Wages</h1>
-                            <p><?php echo 'GHC '. $totalWages; ?></p>
+                            <p><?php echo 'KSH'. $totalWages; ?></p>
                         </div>
 
                         <div class="card2">
                             <h1>Sales</h1>
-                            <p><?php echo 'GHC '. $sales; ?></p>
+                            <p><?php echo 'KSH'. $sales; ?></p>
                         </div>
 
                         <div class="card3">

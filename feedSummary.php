@@ -6,11 +6,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <!-- head -->
-<?php include "{$_SERVER['DOCUMENT_ROOT']}/epms/partials/_head.php";?>
+<?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_head.php";?>
 <body id="body">
     <div class="container">
         <!-- top navbar -->
-        <?php include "{$_SERVER['DOCUMENT_ROOT']}/epms/partials/_top_navbar.php";?>
+        <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_top_navbar.php";?>
         <main>
             <div class="main__container">
                 <!-- dashboard title and greetings -->
@@ -32,7 +32,7 @@
         </main>
         
         <!-- sidebar nav -->
-        <?php include "{$_SERVER['DOCUMENT_ROOT']}/epms/partials/_side_bar.php";?>
+        <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_side_bar.php";?>
     </div>
     <script src="script.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>

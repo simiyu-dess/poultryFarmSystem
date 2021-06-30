@@ -35,7 +35,7 @@
 </head>
 <body>
     <div class="login__container">
-        <h1>EPMS: Admin Login</h1>
+        <h1> Admin Login</h1>
         <?php
             // display error message
             if(isset($message)){

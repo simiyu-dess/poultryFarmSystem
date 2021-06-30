@@ -15,43 +15,14 @@ include 'includes/action.php';
     <div class="container">
         <!-- top navbar -->
         <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_top_navbar.php";?>
+       
         <main>
-            <div class="main__container">
-                <table>
-                    <thead>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Phone</th>
-                        <th>Job</th>
-                        <th>Salary</th>
-                        <th colspan="2">Action</th>
-                    </thead>
-                    <tbody>
-                    <?php
-                        // calling viewMethod
-                        $myrow = $employeeObject->viewMethod("Employee");
-                        foreach($myrow as $row){
-                            // breaking point
-                            ?>
-                            <tr>
-                                <td><?php echo $row['FirstName'];?></td>
-                                <td><?php echo $row['LastName'];?></td>
-                                <td><?php echo $row['Phone'];?></td>
-                                <td><?php echo $row['Job'];?></td>
-                                <td><?php echo $row['Salary'];?></td>
-                                <td>
-                                    <a class="edit_btn" href="payroll.php?update=1&id=<?php echo $row["Employee_ID"]; ?>">Edit</a>
-                                </td>
-                                <td>
-                                    <a class="del_btn" href="includes/action.php?delete=1&id=<?php echo $row["Employee_ID"]; ?>">Delete</a>
-                                </td>
-                            </tr>
-                            <?php
-                        }
-                    ?>
-                    </tbody>
-                </table>
-                
+        <div class="empl_header">
+        <a href="newEmployee.php">New Employee</a>
+        <a href="currentEmployees">Current Employees</a>
+        <a href="payroll.php">Payroll</a>
+        </div>
+        <div class="main__container">
                 <?php
                     if(isset($_GET["update"])){
                         // Get the Employee_ID for the employee record to be edited
@@ -60,6 +31,7 @@ include 'includes/action.php';
                         // Call the selectMethod() method that displays the record to be edited
                         $row = $employeeObject->selectMethod("Employee", $where);
                         ?>
+                       
                             <form action="includes/action.php" method="post">
                                 <div class="input-group">
                                     <input type="hidden" name="id" value="<?php echo $id; ?>">
@@ -72,6 +44,13 @@ include 'includes/action.php';
                                 <div class="input-group">
                                     <label for="">Last Name</label>
                                     <input type="text" name="LastName" value="<?php echo $row["LastName"]; ?>" required>
+                                </div>
+                                <div class="select-group">
+                                    <label for="">Gender:</label>
+                                    <select name="gender" size = "1">
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    </select>
                                 </div>
                                 <div class="input-group">
                                     <label for="">Phone</label>
@@ -86,7 +65,7 @@ include 'includes/action.php';
                                     <input type="number" name="Salary" value="<?php echo $row["Salary"]; ?>" required>
                                 </div>
                                 <div class="input-group">
-                                    <button type="submit" name="edit" class="btn" value="">Update</button>
+                                    <button type="submit" name="edit" class="btn">Update</button>
                                 </div>
                             </form>
                         <?php

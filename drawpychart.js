@@ -1,7 +1,12 @@
 function drawPieChart( data, colors, title ){ 
     var canvas = document.getElementById( "piechart_3d" ); 
     var context = canvas.getContext( "2d" ); 
-    //context.imageSmoothingEnabled= True;
+    canvas.width=1000;
+    canvas.height=500;
+    canvas.style.width=900;
+    canvas.style.height=500;
+
+    context.translate(0.5, 0.5,0.5,0.5);
  
     // get length of data array 
     var dataLength = data.length; 
@@ -36,20 +41,22 @@ function drawPieChart( data, colors, title ){
         context.moveTo( x, y ); 
         context.arc( x, y, radius, startingPoint * Math.PI, endPoint * Math.PI );     
         context.fill(); 
+
  
         // starting point for next element 
         startingPoint = endPoint;  
   
         // draw labels for each element 
-        context.rect( 220, 25 * i, 15, 15 ); 
+        context.rect( x+radius+20, 25* i, 15, 15); 
         context.fill(); 
-        context.fillStyle = "black"; 
-        context.fillText( data[ i ][ 0 ] + " (" + data[ i ][ 1 ] + ")", 245, 25 * i + 15 ); 
+        context.fillStyle = "#2e4a66"; 
+        context.fillText( data[ i ][ 0 ] + " (" + data[ i ][ 1 ] + ")", x+radius+45, 25 * i + 15 ); 
     }  
   
     // draw title 
+    context.translate(0.5, 0.5)
     context.font = "20px Arial"; 
     context.textAlign = "center"; 
-    context.fillText( title, 100, 225 );  
+    context.fillText( title, x, y-radius-5 );  
 }  
   

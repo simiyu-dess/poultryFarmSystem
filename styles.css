@@ -1,4 +1,3 @@
-/*@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap");*/
 
 /*  styling scrollbars  */
 ::-webkit-scrollbar {
@@ -392,11 +391,11 @@
   .sidebar__logout {
     margin-top: 20px;
     padding: 10px;
-    color: #e65061;
+    color: #0860e4;
   }
   
   .sidebar__logout > a {
-    text-decoration: none;
+    text-decoration: none;  
     color: #e65061;
     font-weight: 700;
     text-transform: uppercase;
@@ -513,7 +512,7 @@
   }
 
   /** STYLING DIVISION CONTAINING PIE CHARTS*/
-  #piechart_3d {
+  #piechart_3ds {
     width: 900px;
     height: 500px;
   }
