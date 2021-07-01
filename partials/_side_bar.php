@@ -35,7 +35,7 @@
           <div class="sidebar__link">
             <a href="feedConsumption.php">Consumption</a>
           </div>
-          <h2>PAYROLL</h2>
+          <h2>EMPLOYEES</h2>
           <div class="sidebar__link">
             <a href="payroll.php">Payroll</a>
           </div>

@@ -1,10 +1,10 @@
-function drawPieChart( data, colors, title ){ 
+function drawPieChart( data, colors, title,width,height){ 
     var canvas = document.getElementById( "piechart_3d" ); 
     var context = canvas.getContext( "2d" ); 
-    canvas.width=1000;
-    canvas.height=500;
-    canvas.style.width=900;
-    canvas.style.height=500;
+    canvas.width=width;
+    canvas.height=height;
+    canvas.style.width=width;
+    canvas.style.height=height;
 
     context.translate(0.5, 0.5,0.5,0.5);
  

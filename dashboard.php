@@ -7,9 +7,8 @@
     }
     include 'includes/database.php';
     include 'includes/action.php';
-
-    $sql = "SELECT * FROM Employee";
-    $res = $databaseObject->connect()->query($sql);
+    $query = "SELECT * FROM `Employee`";
+    $result_emp = $databaseObject->connect()->query($query);
 
     
 ?>
@@ -93,7 +92,7 @@
                                 <p>Job titles and their respective salaries</p>
                             </div>
                         </div>
-                        <div id="piechart_3d" style="width: 450px; height: 250px;"></div>
+                        <canvas id="piechart_3d"></canvas>
                     </div>
 
                     <div class="charts__right">
@@ -146,29 +145,19 @@
             </div>
         </main>
         <!-- sidebar nav -->
-        <?php include "{$_SERVER['DOCUMENT_ROOT']}/epms/partials/_side_bar.php";?>
+        <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_side_bar.php"; ?>
     </div>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src = "drawpychart.js"></script>
     <script type="text/javascript">
-        google.charts.load("current", {packages:["corechart"]});
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-                ['Employee', 'Salary'],
-                <?php
-                    while($row=$res->fetch_assoc()){
-                        echo "['".$row['Job']."',".$row['Salary']."],";
-                    }
-                ?>   
-            ]);
-            var options = {
-                title: 'Titles and Salaries',
-                is3D: true,
-            };
-
-            var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
-            chart.draw(data, options);
-        }
+    var data = [];
+    <?php while($row = mysqli_fetch_assoc($result_emp))
+    {?>
+    data.push(['<?php echo $row['Job'];?>',<?php echo $row['Salary'];?>]);
+    <?php }?>
+    var colors = [ "#c23410"];  
+  
+// using the function  
+     drawPieChart( data, colors, "",450,250)
     </script>
     <script src="script.js"></script>
 </body>

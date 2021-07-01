@@ -24,7 +24,7 @@
 
                 <!-- Div for containing Feed Summary: Feed Consumed and Feed Remaining -->
                 
-                <div id="piechart_3d" style="width: 900px; height: 500px;"></div>
+                <canvas id="piechart_3d"></canvas>
                                 
                 <!-- End of Div for containing Feed Summary -->
 
@@ -35,29 +35,15 @@
         <?php include "{$_SERVER['DOCUMENT_ROOT']}/epms/partials/_side_bar.php";?>
     </div>
     <script src="script.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src = "drawpychart.js"></script>
     <script type="text/javascript">
-        google.charts.load("current", {packages:["corechart"]});
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-                ['Birds', 'Number'],
-                <?php
-                    echo "['Birds Alive', " . $remainingBirds . "],";
-          
-                    echo "['Birds Dead', " . $totalDeaths . "],";
-         
-                ?>
-            ]);
-
-            var options = {
-                title: 'Birds Alive vs. Feed Dead',
-                is3D: true,
-            };
-
-            var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
-            chart.draw(data, options);
-        }
+    var totalDeaths = '<?php echo $totalDeaths;?>';
+    var birdsAlive = '<?php echo  $remainingBirds;?>';
+    var data = [ [ "birds dead",parseInt(totalDeaths) ], [ "birds alive", parseInt(birdsAlive)]]; 
+    var colors = [ "#c23410", "#0860e4"];  
+  
+// using the function  
+     drawPieChart( data, colors, "Total Deaths vs Birds alive",900,500)
     </script>
 </body>
 </html>

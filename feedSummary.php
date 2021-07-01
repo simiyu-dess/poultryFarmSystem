@@ -24,7 +24,7 @@
 
                 <!-- Div for containing Feed Summary: Feed Consumed and Feed Remaining -->
                 
-                <div id="piechart_3d" style="width: 900px; height: 500px;"></div>
+                <canvas id="piechart_3d"></canvas>
                                 
                 <!-- End of Div for containing Feed Summary -->
 
@@ -35,27 +35,15 @@
         <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_side_bar.php";?>
     </div>
     <script src="script.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src = "drawpychart.js"></script>
     <script type="text/javascript">
-        google.charts.load("current", {packages:["corechart"]});
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-                ['Feed', 'Amount'],
-                <?php
-                    echo "['Feed Remaining', " . $remainingFeed . "],";
-                    echo "['Feed Consumed', " . $totalFeedConsumed . "],";
-                ?>
-            ]);
-
-            var options = {
-                title: 'Feed Consumed vs. Feed Remaining',
-                is3D: true,
-            };
-
-            var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
-            chart.draw(data, options);
-        }
+    var remainingFeed = '<?php echo $remainingFeed;?>';
+    var feedConsumed = '<?php echo $totalFeedConsumed;?>';
+    var data = [ [ "feed consumed",parseInt(feedConsumed) ], [ "feed remaing", parseInt(remainingFeed)]]; 
+    var colors = [ "#c23410", "#0860e4"];  
+  
+// using the function  
+     drawPieChart( data, colors, "Remaining feed vs Total consumed",900,500)
     </script>
 </body>
 </html>

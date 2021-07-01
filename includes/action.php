@@ -445,4 +445,12 @@
         $totalNumberOfEmployees = $row['sum'];
     }
 
+    //gettiing the employees and their respective salaries
+    
+    $data = [['name',2000]];
+    while($row = mysqli_fetch_assoc($result))
+    {
+        // $data[] = [$row['Job'],100];
+    }
+
 ?>

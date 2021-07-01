@@ -39,11 +39,11 @@
     <script type="text/javascript">
     var remaining_eggs = '<?php echo $remainingEggs;?>';
     var sold_eggs = '<?php echo $totalEggsSold;?>';
-    var data = [ [ "rem",parseInt(remaining_eggs) ], [ "Sold", parseInt(sold_eggs)]]; 
-    var colors = [ "#0860e4", "#c23410"];  
+    var data = [ [ "eggs sold",parseInt(sold_eggs) ], [ "eggs remaining", parseInt(remaining_eggs)]]; 
+    var colors = [ "#c23410", "#0860e4"];  
   
 // using the function  
-     drawPieChart( data, colors, "Eggs sold vs Eggs remaining");  
+     drawPieChart( data, colors, "Eggs sold vs Eggs remaining",900,500);  
    
     </script>
 </body>
