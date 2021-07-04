@@ -9,10 +9,12 @@ body{
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: url('images/cover.png');
+    background-image: url('images/back.jpeg');
+    background-repeat: no-repeat;
     background-size: cover;
+    background-repeat: no-repeat;
+    
 }
-
 .login__container{
     width: 100%;
     max-width: 400px;

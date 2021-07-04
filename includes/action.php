@@ -82,9 +82,24 @@
         }
     }
 
+    $adminObject = new CrudOperation();
+    //handle the saving of the admin user
+    if(isset($_POST["setup_admin"]))
+    {
+        $myArray = array(
+            "Username" => $_POST['Username'],
+            "Password" => $_POST['Password'],
+            "Ugroup" => "1",
+            "setupDate" => date('Y-m-d')
+        );
+        if($adminObject->insertionMethod("User",$myArray))
+        {
+            header('Location:index.php');
+        }
+    }
+
 
     $employeeObject = new CrudOperation();
-
     // Handle the save button for form submission
     if(isset($_POST["save"])){
         $myArray = array(

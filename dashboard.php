@@ -1,5 +1,4 @@
 <?php
-    
     session_start();
     if (!isset($_SESSION['Username'])) {
         header("Location: index.php");
@@ -24,20 +23,16 @@
             <div class="main__container">
                 <!-- dashboard title and greetings -->
                 <div class="main__title">
-                    <!-- <img src="images/hello.svg" alt=""> -->
-                    <div class="main__greeting">
-                        <h1>Hello<?php echo ', ' . $_SESSION["Username"] . '.';?></h1>
-                        <p>Welcome to your dashboard</p>
-                    </div>
                 </div>
                 <!-- dashboard title ends here -->
 
                 <!-- Cards for displaying CRUD insights -->
+                <!--
                 <div class="main__cards">
                     <div class="card">
                         <div class="card_inner">
                             <p class="text-primary-p">No. of Birds</p>
-                            <!-- <span class="font-bold text-title">578</span> -->
+                            <span class="font-bold text-title">578</span>
                             <span class="font-bold text-title">
                                 <?php
                                     echo $totalNumberOfBirds;
@@ -49,7 +44,7 @@
                     <div class="card">
                         <div class="card_inner">
                             <p class="text-primary-p">Mortality Rate</p>
-                            <!-- <span class="font-bold text-title">578</span> -->
+                            <span class="font-bold text-title">578</span> 
                             <span class="font-bold text-title">
                                 <?php
                                     echo $mortalityRate . '%';
@@ -61,7 +56,7 @@
                     <div class="card">
                         <div class="card_inner">
                             <p class="text-primary-p">No. of Eggs</p>
-                            <!-- <span class="font-bold text-title">578</span> -->
+                             <span class="font-bold text-title">578</span> 
                             <span class="font-bold text-title">
                                 <?php
                                     echo $totalNumberOfEggs;
@@ -73,7 +68,7 @@
                     <div class="card">
                         <div class="card_inner">
                             <p class="text-primary-p">No. of Employees</p>
-                            <!-- <span class="font-bold text-title">578</span> -->
+                            <span class="font-bold text-title">578</span> 
                             <span class="font-bold text-title">
                                 <?php
                                     echo $totalNumberOfEmployees;
@@ -82,38 +77,29 @@
                         </div>
                     </div>
                 </div>
-                <!-- End of cards for displaying CRUD insights -->
-                <!-- Start of charts for displaying CRUD insights -->
-                <div class="charts">
-                    <div class="charts__left">
-                        <div class="charts__left__title">
-                            <div>
-                                <h1>Payroll Visualtion</h1>
-                                <p>Job titles and their respective salaries</p>
-                            </div>
-                        </div>
-                        <canvas id="piechart_3d"></canvas>
-                    </div>
+                 End of cards -->
+                <!-- Start of charts-->
+                <div class="main_card">
 
                     <div class="charts__right">
                         <div class="charts__right__title">
-                            <div>
-                                <h1>Stats</h1>
-                                <p>Statistics of different categories</p>
-                            </div>
                         </div>
 
                         <div class="charts__right__cards">
+                            <div class="card">
                             <div class="card1">
                             <h1>Total Wages</h1>
                             <p><?php echo 'KSH'. $totalWages; ?></p>
                         </div>
-
+                        </div>
+                       <div class="card">
                         <div class="card2">
-                            <h1>Sales</h1>
+                            <h1>Revenue</h1>
                             <p><?php echo 'KSH'. $sales; ?></p>
                         </div>
-
+                        </div>
+                          
+                         <div class="card"> 
                         <div class="card3">
                             <h1>Remaining Feed</h1>
                             <?php
@@ -126,7 +112,9 @@
                                 }
                                 ?>
                         </div>
-
+                        </div>
+                       
+                       <div class="card">
                         <div class="card4">
                             <h1>Eggs Left</h1>
                             <?php
@@ -139,9 +127,35 @@
                                 }
                                 ?>
                         </div>
+                        </div>
+                    <div class="card">
+                        <div class="card5">
+                            <h1>No. birds</h1>
+                            <p><?php echo 'KSH'. $totalNumberOfBirds; ?></p>
+                        </div>
+                        </div>
+                            <div class="card">
+                            <div class="card6">
+                            <h1>Mortality rate:</h1>
+                            <p><?php echo  $mortalityRate.' %'; ?></p>
+                        </div>
+                        </div>
+                       
+                    <div class="card">
+                        <div class="card7">
+                            <h1>No. of employee</h1>
+                            <p><?php echo $totalNumberOfEmployees; ?></p>
+                        </div>
+                        </div>
+                   <div class="card">
+                        <div class="card8">
+                            <h1>Total Wages</h1>
+                            <p><?php echo 'KSH'. $totalWages; ?></p>
+                        </div>
+                        </div>
                     </div>
                 </div>
-                <!-- End of charts for displaying CRUD insights -->
+                <!-- End of charts-->
             </div>
         </main>
         <!-- sidebar nav -->

@@ -31,7 +31,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./loginStyles.css" />
-    <title>EPMS Login</title>
+    <title>KPMS Login</title>
 </head>
 <body>
     <div class="login__container">

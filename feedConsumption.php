@@ -119,8 +119,6 @@ include 'includes/action.php';
                                     <input type="number" step="any" name="Price" value="" required>
                                 </div>
                                 <div class="input-group">
-                                    <!-- <label for="">Employee Assigned</label>
-                                    <input type="text" name="Employee" value=""> -->
                                     <label for="">Employee Assigned</label>
                                     <select name="Employee" id="" required>
                                     <?php
