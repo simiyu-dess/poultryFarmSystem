@@ -17,11 +17,6 @@ include 'includes/action.php';
         <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_top_navbar.php";?>
        
         <main>
-        <div class="empl_header">
-        <a href="newEmployee.php">New Employee</a>
-        <a href="currentEmployees">Current Employees</a>
-        <a href="payroll.php">Payroll</a>
-        </div>
         <div class="main__container">
                 <?php
                     if(isset($_GET["update"])){
@@ -44,13 +39,6 @@ include 'includes/action.php';
                                 <div class="input-group">
                                     <label for="">Last Name</label>
                                     <input type="text" name="LastName" value="<?php echo $row["LastName"]; ?>" required>
-                                </div>
-                                <div class="select-group">
-                                    <label for="">Gender:</label>
-                                    <select name="gender" size = "1">
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    </select>
                                 </div>
                                 <div class="input-group">
                                     <label for="">Phone</label>
@@ -151,6 +139,19 @@ include 'includes/action.php';
                                     <label for="">Last Name</label>
                                     <input type="text" id="LastName" name="LastName" value="">
                                 </div>
+                                <div class="select-group">
+                                <label for="">Gender</label>
+                                <select name="Gender">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                                </select>
+                                </div>
+                                <div class="my-div-error" id="location"></div>
+                                <div class = "input-group">
+                                <label for="">Location</label>
+                                <input type="text" id="Location" name="Location" value=""/>
+                                </div>
                                 <div class="my-div-error" id="errorPhone"></div>
                                 <div class="input-group">
                                     <label for="">Phone</label>
@@ -167,7 +168,15 @@ include 'includes/action.php';
                                     <input type="text" id="Salary" name="Salary" value="">
                                 </div>
                                 <div class="input-group">
-                                    <button type="submit" name="save" class="btn">Save</button>
+                                    <label for="">Start Date</label>
+                                    <input type="Date" id="Date" name="StartDate" value="">
+                                </div>
+                                <div class="input-group">
+                                    <label for="">End Date</label>
+                                    <input type="Date" id="Date" name="EndDate" value="">
+                                </div>
+                                <div class="input-group">
+                                    <button type="submit" name="savePerson" class="btn">Save</button>
                                 </div>
                             </form>
                         <?php

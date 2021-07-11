@@ -20,6 +20,7 @@ include 'includes/action.php';
                 <table>
                     <thead>
                         <th>Date</th>
+                        <th>Name</th>
                         <th>Quantity Purchased</th>
                         <th>Amount Paid</th>
                         <th colspan="2">Action</th>
@@ -27,19 +28,20 @@ include 'includes/action.php';
                     <tbody>
                     <?php
                         // calling viewMethod() method
-                        $myrow = $feedConsumptionObject->viewMethod("FeedPurchase");
+                        $myrow = $feedConsumptionObject->viewMethod("MedicinePurchase");
                         foreach($myrow as $row){
                             // breaking point
                             ?>
                             <tr>
-                                <td><?php echo $row['Date'];?></td>
+                                <td><?php echo $row['DatePurchased'];?></td>
+                                <td><?php echo $row['MedicineName'];?></td>
                                 <td><?php echo $row['Quantity'];?></td>
                                 <td><?php echo $row['Price'];?></td>
                                 <td>
-                                    <a class="edit_btn" href="feedPurchase.php?feedpurchupdate=1&id=<?php echo $row["FeedPurchase_ID"]; ?>">Edit</a>
+                                    <a class="edit_btn" href="MedicinePurchase.php?medpurchupdate=1&id=<?php echo $row["MedicinePurchase_ID"]; ?>">Edit</a>
                                 </td>
                                 <td>
-                                    <a class="del_btn" href="includes/action.php?feedpurchdelete=1&id=<?php echo $row["FeedPurchase_ID"]; ?>">Delete</a>
+                                    <a class="del_btn" href="includes/action.php?medpurchdelete=1&id=<?php echo $row["MedicinePurchase_ID"]; ?>">Delete</a>
                                 </td>
                             </tr>
                             <?php
@@ -49,12 +51,12 @@ include 'includes/action.php';
                 </table>
                 
                 <?php
-                    if(isset($_GET["feedpurchupdate"])){
+                    if(isset($_GET["medpurchupdate"])){
                         // Get the id of the record to be edited
                         $id = $_GET["id"] ?? null;
-                        $where = array("FeedPurchase_ID" => $id);
+                        $where = array("MedicinePurchase_ID" => $id);
                         // Call the select method that displays the record to be edited
-                        $row = $feedConsumptionObject->selectMethod("FeedPurchase", $where);
+                        $row = $feedConsumptionObject->selectMethod("MedicinePurchase", $where);
                         ?>
                             <form action="includes/action.php" method="post">
                                 <div class="input-group">
@@ -65,6 +67,10 @@ include 'includes/action.php';
                                     <input type="date" name="Date" value="<?php echo $row["Date"]; ?>" required>
                                 </div>
                                 <div class="input-group">
+                                    <label for="">Medicine Name</label>
+                                    <input type="text" name="medName" value="<?php echo $row["MedicineName"]; ?>" required>
+                                </div>
+                                <div class="input-group">
                                     <label for="">Quantity</label>
                                     <input type="number" step="any" name="Quantity" value="<?php echo $row["Quantity"]; ?>" required>
                                 </div>
@@ -73,7 +79,7 @@ include 'includes/action.php';
                                     <input type="number" step="any" name="Price" value="<?php echo $row["Price"]; ?>" required>
                                 </div>
                                 <div class="input-group">
-                                    <button type="submit" name="feedpurchedit" class="btn" value="">Update</button>
+                                    <button type="submit" name="medicinepurchedit" class="btn" value="">Update</button>
                                 </div>
                             </form>
                         <?php
@@ -85,6 +91,10 @@ include 'includes/action.php';
                                     <input type="date" name="Date" value="" required>
                                 </div>
                                 <div class="input-group">
+                                    <label for="">Medicine Name</label>
+                                    <input type="text" name="medName" value="" required>
+                                </div>
+                                <div class="input-group">
                                     <label for="">Quantity</label>
                                     <input type="number" step="any" name="Quantity" value="" required>
                                 </div>
@@ -93,7 +103,7 @@ include 'includes/action.php';
                                     <input type="number" step="any" name="Price" value="" required>
                                 </div>
                                 <div class="input-group">
-                                    <button type="submit" name="feedpurchsave" class="btn">Save</button>
+                                    <button type="submit" name="medicinepurchsave" class="btn">Save</button>
                                 </div>
                             </form>
                         <?php

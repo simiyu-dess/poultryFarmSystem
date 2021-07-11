@@ -35,9 +35,19 @@
           <div class="sidebar__link">
             <a href="feedConsumption.php">Consumption</a>
           </div>
+          <h2>MEDICINE</h2>
+          <div class="sidebar__link">
+            <a href="MedicinePurchase.php">Purchase</a>
+          </div>
+          <div class="sidebar__link">
+            <a href="MedicineConsumption.php">Consumption</a>
+          </div>
           <h2>EMPLOYEES</h2>
           <div class="sidebar__link">
             <a href="payroll.php">Payroll</a>
+          </div>
+          <div class="sidebar__link">
+          <a href="newEmployee.php">Employee</a>
           </div>
           <div class="sidebar__logout">
             <a href="logout.php">Log out</a>

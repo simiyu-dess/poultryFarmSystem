@@ -105,9 +105,13 @@
         $myArray = array(
             "FirstName" => $_POST["FirstName"],
             "LastName" => $_POST["LastName"],
+            "Gender" => $_POST["Gender"],
+            "Location" => $_POST["Location"],
             "Phone" => $_POST["Phone"],
             "Job" => $_POST["Job"],
-            "Salary" => $_POST["Salary"]
+            "Salary" => $_POST["Salary"],
+            "startDate" => $_POST["StartDate"],
+            "endDate" => $_POST["EndDate"]
         );
         // Call the insertion method to add record to the database
         if($employeeObject->insertionMethod("Employee", $myArray)){
@@ -297,6 +301,21 @@
         $where = array("BirdsMortality_ID" => $id);
         if($birdsPurchaseObject->deleteMethod("BirdsMortality", $where)){
             header("location: ../birdsMortality.php?msg=Record deleted successfully!");
+        }
+    }
+    //Create object for medicine purchase
+    $medicineObject = new CrudOperation();
+    if(isset($_POST["medicinepurchsave"]))
+    {
+        $myArray = array(
+            "MedicineName" => $_POST['medName'],
+            "Quantity" => $_POST['quantity'],
+            "Date" => $_POST['Date'],
+            "Price" => $_POST['Price']
+        );
+        if($medicineObject->insertionMethod("MedicinePurchase",$myArray))
+        {
+            header("location: ../MedicinePurchase.php?msg=Record inserted successfully");
         }
     }
 
