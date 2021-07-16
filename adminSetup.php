@@ -20,7 +20,7 @@ session_start();
             echo '<label class="text-danger">' . $message . '</label>';
         }
     ?>
-    <form action="" method="post">
+    <form action="includes/action.php" method="post">
         <input type="text" name="Username" placeholder="Username">
         <input type="password" name="Password" placeholder="Password">
         <input type="password" name="confirm__password" placeholder="repeat password">

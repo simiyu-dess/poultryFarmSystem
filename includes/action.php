@@ -1,4 +1,5 @@
 <?php
+session_start();
     include_once "database.php";
     class CrudOperation extends Database{
         // Insertion method 
@@ -101,7 +102,7 @@
 
     $employeeObject = new CrudOperation();
     // Handle the save button for form submission
-    if(isset($_POST["save"])){
+    if(isset($_POST["emplSave"])){
         $myArray = array(
             "FirstName" => $_POST["FirstName"],
             "LastName" => $_POST["LastName"],
@@ -115,31 +116,38 @@
         );
         // Call the insertion method to add record to the database
         if($employeeObject->insertionMethod("Employee", $myArray)){
-            header("location: ../payroll.php?msg=Insertion was successfull!");
+            $_SESSION['msg'] = "employee added successfully!";
+            header("location: ../newEmployee.php");
         };
     }
     // Handle the edit button for record editing
-    if(isset($_POST["edit"])){
+    if(isset($_POST["emplEdit"])){
         $id = $_POST["id"];
         $where = array("Employee_ID" => $id);
         $myArray = array(
             "FirstName" => $_POST["FirstName"],
             "LastName" => $_POST["LastName"],
+            "Gender" => $_POST["Gender"],
+            "Location"=> $_POST["Location"],
             "Phone" => $_POST["Phone"],
             "Job" => $_POST["Job"],
-            "Salary" => $_POST["Salary"]
+            "Salary" => $_POST["Salary"],
+            "startDate" => $_POST["StartDate"],
+            "endDate" => $_POST["EndDate"]
         );
         if($employeeObject->updateMethod("Employee", $where, $myArray)){
-            header("location: ../payroll.php?msg=Updated Successfully!");
+            $_SESSION['msg'] = "Employee record edited successfully!";
+            header("location: ../currentEmployees.php");
         }
     }
 
     // Check if delete button was triggered
-    if(isset($_GET["delete"])){
+    if(isset($_GET["emplDelete"])){
         $id = $_GET["id"] ?? null;
         $where = array("Employee_ID" => $id);
         if($employeeObject->deleteMethod("Employee", $where)){
-            header("location: ../payroll.php?msg=Record deleted successfully!");
+            $_SESSION['msg'] = "employee record deleted successfully!";
+            header("location: ../currentEmployees.php");
         }
     }
 

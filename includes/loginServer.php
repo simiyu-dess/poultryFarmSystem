@@ -31,12 +31,7 @@
                 $condition .= $key . " = '" . $value ."' AND ";
             }
             $condition = substr($condition, 0, -5);
-            /* This code will convert array to string like this:
-            input - array(
-                'id' => '5'
-            )
-            output = id = '5'
-            */
+
 
             // query
             $sql = "SELECT * FROM " . $table . " WHERE " . $condition;

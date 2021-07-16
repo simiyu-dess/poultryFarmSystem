@@ -44,10 +44,10 @@
           </div>
           <h2>EMPLOYEES</h2>
           <div class="sidebar__link">
-            <a href="payroll.php">Payroll</a>
+            <a href="currentEmployees.php">Employees</a>
           </div>
           <div class="sidebar__link">
-          <a href="newEmployee.php">Employee</a>
+          <a href="newEmployee.php"> New Employee</a>
           </div>
           <div class="sidebar__logout">
             <a href="logout.php">Log out</a>

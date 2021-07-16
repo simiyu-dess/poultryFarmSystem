@@ -19,10 +19,12 @@ include 'includes/action.php';
             <div class="main__container">
                 <?php if(isset($_SESSION['msg'])): ?>
                     <div class="msg">
+                    <p>
                         <?php 
                             echo $_SESSION['msg'];
                             unset($_SESSION['msg']);
                         ?>
+                    </p>
                     </div>
                 <?php endif ?>
                 <table>

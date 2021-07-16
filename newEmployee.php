@@ -12,53 +12,22 @@ include 'includes/action.php';
 <!-- head -->
 <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_head.php";?>
 <body id="body">
+
     <div class="container">
         <!-- top navbar -->
         <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_top_navbar.php";?>
-       
         <main>
         <div class="main__container">
-                <?php
-                    if(isset($_GET["update"])){
-                        // Get the Employee_ID for the employee record to be edited
-                        $id = $_GET["id"] ?? null;
-                        $where = array("Employee_ID" => $id);
-                        // Call the selectMethod() method that displays the record to be edited
-                        $row = $employeeObject->selectMethod("Employee", $where);
+                <?php if(isset($_SESSION['msg'])): ?>
+                    <div class="msg">
+                    <p>
+                        <?php 
+                            echo $_SESSION['msg'];
+                            unset($_SESSION['msg']);
                         ?>
-                       
-                            <form action="includes/action.php" method="post">
-                                <div class="input-group">
-                                    <input type="hidden" name="id" value="<?php echo $id; ?>">
-                                </div>
-                                
-                                <div class="input-group">
-                                    <label for="">First Name</label>
-                                    <input type="text" name="FirstName" value="<?php echo $row["FirstName"]; ?>" required>
-                                </div>
-                                <div class="input-group">
-                                    <label for="">Last Name</label>
-                                    <input type="text" name="LastName" value="<?php echo $row["LastName"]; ?>" required>
-                                </div>
-                                <div class="input-group">
-                                    <label for="">Phone</label>
-                                    <input type="text" name="Phone" value="<?php echo $row["Phone"]; ?>" required>
-                                </div>
-                                <div class="input-group">
-                                    <label for="">Job</label>
-                                    <input type="text" name="Job" value="<?php echo $row["Job"]; ?>" required>
-                                </div>
-                                <div class="input-group">
-                                    <label for="">Salary</label>
-                                    <input type="number" name="Salary" value="<?php echo $row["Salary"]; ?>" required>
-                                </div>
-                                <div class="input-group">
-                                    <button type="submit" name="edit" class="btn">Update</button>
-                                </div>
-                            </form>
-                        <?php
-                    }else{
-                        ?>
+                    </p>
+                    </div>
+                <?php endif ?>
                     <script>
                     function validate(){
                         var fname = document.getElementById("FirstName").value;
@@ -179,9 +148,6 @@ include 'includes/action.php';
                                     <button type="submit" name="savePerson" class="btn">Save</button>
                                 </div>
                             </form>
-                        <?php
-                    }
-                        ?>
             </div>
         </main>
         <!-- sidebar nav -->
