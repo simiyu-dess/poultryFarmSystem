@@ -66,11 +66,9 @@
     grid-template-areas:
       "sidebar nav nav nav"
       "sidebar main main main";
-    /* grid-gap: 0.2rem; */
   }
   
   .navbar {
-    /* background: #fff; */
     background: #e4e6eb;
     grid-area: nav;
     height: 60px;

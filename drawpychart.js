@@ -6,7 +6,6 @@ function drawPieChart( data, colors, title,width,height){
     canvas.style.width=width;
     canvas.style.height=height;
 
-    context.translate(0.5, 0.5,0.5,0.5);
  
     // get length of data array 
     var dataLength = data.length; 

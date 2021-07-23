@@ -313,20 +313,103 @@ session_start();
     }
     //Create object for medicine purchase
     $medicineObject = new CrudOperation();
-    if(isset($_POST["medicinepurchsave"]))
+    
+
+    //handle the medicine purchase
+    if(isset($_POST["medpurchSave"]))
     {
         $myArray = array(
-            "MedicineName" => $_POST['medName'],
-            "Quantity" => $_POST['quantity'],
+            "MedicineName" => $_POST['MedName'],
+            "Quantity" => $_POST['Quantity'],
             "Date" => $_POST['Date'],
-            "Price" => $_POST['Price']
+            "Price" => $_POST['Price'],
         );
         if($medicineObject->insertionMethod("MedicinePurchase",$myArray))
         {
-            header("location: ../MedicinePurchase.php?msg=Record inserted successfully");
+            $_SESSION['msg'] = "record inserted successfully!";
+            header("location: ../MedicinePurchase.php");
         }
     }
+ //handle the medicine edit
+     if(isset($_POST["medpurchUpdate"]))
+     {
+         $id = $_POST['id'];
+         $where = array(
+             "MedicinePurchase_ID" => $id
+         );
+         $myArray =array(
+             "MedicineName" => $_POST['MedName'],
+             "Quantity" => $_POST['Quantity'],
+             "Date" => $_POST['Date'],
+             "Price" => $_POST['Price']
+         );
 
+         if($medicineObject->updateMethod("MedicinePurchase",$where,$myArray))
+         {
+             $_SESSION['msg'] = "medicine record updated successfully!";
+             header("location: ../MedicinePurchase.php");
+         }
+     }
+
+     //handle the medicine
+     if(isset($_GET['medpurchDelete']))
+     {
+         $id = $_GET['id'] ?? null;
+         $where = array("MedicinePurchase_ID" => $id);
+         if($medicineObject->deleteMethod("MedicinePurchase", $where))
+         {
+             $_SESSION['msg'] = "medicine record deleted successfully!";
+             header(("location: ../MedicinePurchase.php"));
+         }
+     }
+     //medicine Usage
+
+     if(isset($_POST['medusageSave']))
+     {
+         $myArray = array(
+             "MedicineName" => $_POST['MedName'],
+             "Quantity" => $_POST['Quantity'],
+             "Date" => $_POST['ConsumpDate'],
+             "Employee" => $_POST['Employee_incharge']
+
+         );
+         if($medicineObject->insertionMethod("MedicineUsage",$myArray))
+         {
+             $_SESSION['msg'] = "record inserted successfully!";
+             header("location: ../MedicineConsumption.php");
+         }
+     }
+
+     if(isset($_POST['medusageUpdate']))
+     {
+         $id = $_POST['id'];
+         $where = array(
+             "MedicineUsage_ID" => $id
+
+         );
+         $myArray = array(
+             "MedicineName" => $_POST['MedName'],
+             "Quantity" => $_POST['Quantity'],
+             "Date" => $_POST['ConsumpDate'],
+             "Employee" => $_POST['Employee_incharge']
+         );
+         if($medicineObject->updateMethod("MedicineUsage", $where, $myArray))
+         {
+             $_SESSION['msg'] = "record updated successfully";
+             header("location: ../MedicineConsumption.php");
+         }
+     }
+
+     if(isset($_GET['medusageDelete']))
+     {
+         $id = $_GET['id'] ?? null;
+         $where =array("MedicineUsage_ID" => $id);
+         if($medicineObject->deleteMethod("MedicineUsage", $where))
+         {
+             $_SESSION['msg'] = "Record deleted successfully";
+             header("location: ../MedicineConsumption.php");
+         }
+     }
     // EGG SALES
 
     // Create object for egg sales
@@ -341,7 +424,8 @@ session_start();
         );
         // Call the insertion method to add record to the database
         if($salesObject->insertionMethod("Sales", $myArray)){
-            header("location: ../sales.php?msg=Insertion was successfull!");
+            $_SESSION['msg'] = "record inserted succesfully!";
+            header("location: ../sales.php");
         };
     }
     // Handle the edit button for record editing
@@ -354,7 +438,8 @@ session_start();
             "Revenue" => $_POST["Revenue"]
         );
         if($salesObject->updateMethod("Sales", $where, $myArray)){
-            header("location: ../sales.php?msg=Updated Successfully!");
+            $_SESSION['msg'] = "Record updated successfully!";
+            header("location: ../sales.php");
         }
     }
 
@@ -363,7 +448,8 @@ session_start();
         $id = $_GET["id"] ?? null;
         $where = array("Sales_ID" => $id);
         if($birdsPurchaseObject->deleteMethod("Sales", $where)){
-            header("location: ../sales.php?msg=Record deleted successfully!");
+            $_SESSION['msg'] = "record deleted successfully!";
+            header("location: ../sales.php");
         }
     }
 
@@ -380,7 +466,8 @@ session_start();
         );
         // Call the insertion method to add record to the database
         if($productionObject->insertionMethod("Production", $myArray)){
-            header("location: ../production.php?msg=Insertion was successfull!");
+            $_SESSION['msg'] = "Egg insertion was successfull!";
+            header("location: ../production.php");
         };
     }
     // Handle the edit button for record editing
@@ -392,7 +479,8 @@ session_start();
             "NumberOfEggs" => $_POST["NumberOfEggs"]
         );
         if($productionObject->updateMethod("Production", $where, $myArray)){
-            header("location: ../production.php?msg=Updated Successfully!");
+            $_SESSION['msg'] = "Updated Successfully";
+            header("location: ../production.php");
         }
     }
 
@@ -401,7 +489,8 @@ session_start();
         $id = $_GET["id"] ?? null;
         $where = array("Production_ID" => $id);
         if($productionObject->deleteMethod("Production", $where)){
-            header("location: ../production.php?msg=Record deleted successfully!");
+            $_SESSION['msg'] = "Record was deleted successfully!";
+            header("location: ../production.php");
         }
     }
 
@@ -486,13 +575,4 @@ session_start();
     while($row = mysqli_fetch_assoc($result)){
         $totalNumberOfEmployees = $row['sum'];
     }
-
-    //gettiing the employees and their respective salaries
-    
-    $data = [['name',2000]];
-    while($row = mysqli_fetch_assoc($result))
-    {
-        // $data[] = [$row['Job'],100];
-    }
-
 ?>

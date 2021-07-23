@@ -32,7 +32,7 @@
         </main>
         
         <!-- sidebar nav -->
-        <?php include "{$_SERVER['DOCUMENT_ROOT']}/epms/partials/_side_bar.php";?>
+        <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_side_bar.php";?>
     </div>
     <script src="script.js"></script>
     <script src = "drawpychart.js"></script>
