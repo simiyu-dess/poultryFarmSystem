@@ -45,6 +45,22 @@ session_start();
             $row = mysqli_fetch_array($query);
             return $row;           
         }
+        public function selectMethodGreater($table, $where)
+        {
+            $sql = "";
+            $condition = "";
+
+            foreach($where as $key => $value)
+            {
+                $condition .= $key .">" .$value. " AND ";
+            }
+            $condition = substr(0,-5);
+            $sql .= "SELECT * FROM ". $table. " WHERE ". $condition;
+
+            $query = $this->connect()->query($sql);
+            $row = mysqli_fetch_assoc($query);
+            return $row;
+        }
         // Method to update data
         public function updateMethod($table, $where, $fields){
             $sql = "";
@@ -96,6 +112,41 @@ session_start();
         if($adminObject->insertionMethod("User",$myArray))
         {
             header('Location:index.php');
+        }
+    }
+    $userObject = new CrudOperation();
+    //handle the saving of the user
+    if(isset($_POST["save_user"]))
+    {
+        $myArray = array(
+            "Username" => $_POST['Username'],
+            "Password" => $_POST['Password'],
+            "Ugroup" => $_POST['Ugroup'],
+            "setupDate" => date('Y-m-d')
+
+        );
+        if($userObject->insertionMethod("User", $myArray))
+        {
+            $_SESSION['msg'] = "User inserted successfully";
+            header("location: ../setUser.php");
+        }
+    }
+
+    if(isset($_POST["edit_user"]))
+    {
+        $id = $_GET['id'] ?? null;
+        $where = array("user_Id" => $id);
+        $myArray= array(
+            "Username" => $_POST['Username'],
+            "Password" => $_POST['Password'],
+            "Ugroup" => $_POST["Ugroup"],
+            "setupDate" => date('Y-m-d')
+        );
+
+        if($userObject->updateMethod("User",$where,$myArray))
+        {
+            $_SESSION['msg'] = "User Edited Successfully";
+            header("location: ../setUser.php");
         }
     }
 
