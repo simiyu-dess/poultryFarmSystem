@@ -11,7 +11,7 @@ include "includes/action.php";
 	$users = array();
 	$user_names = array();
 	$sql_users = "SELECT User.User_ID, User.Username, User.setupDate, Ugroup.Ugroup_ID,
-	               Ugroup.Ugroup_name, Employee.Employee_ID, Employee.FirstName, Employee.LastName 
+	               Ugroup.Ugroup_Name, Employee.Employee_ID, Employee.FirstName, Employee.LastName 
 	               FROM User LEFT JOIN Ugroup ON Ugroup.Ugroup_ID = User.Ugroup_ID
 				   LEFT JOIN Employee ON User.Employee_ID = Employee.Employee_ID
 				   WHERE User.User_ID != 0 
@@ -27,8 +27,8 @@ include "includes/action.php";
 	}
 
 	//Select all usergroups from UGROUP
-	$where = array("Ugroup_ID" => 0);
-	$result_Usergroups  = $userObject->selectMethod("User", $where);
+	
+	$result_Usergroups  = $userObject->viewMethod("Ugroup");
 	
 
 	// Select all employees from EMPLOYEE
@@ -105,7 +105,7 @@ include "includes/action.php";
 									<?PHP
 									foreach($result_Usergroups as $row_ugroup){?>
 									<option value="<?php echo $row_ugroup['Ugroup_ID']?>">
-									<?php echo $row_ugroup['Ugroup_name'] ?>
+									<?php echo $row_ugroup['Ugroup_Name'] ?>
 									</option>
 											
 											
@@ -160,11 +160,11 @@ include "includes/action.php";
 					foreach ($users as $row_user){?>
 						<tr>
 										<td><?php echo $row_user['Username']?></td>
-										<td><?php echo $row_user['Ugroup_name']?></td>
+										<td><?php echo $row_user['Ugroup_Name']?></td>
 										<td><?php $row_user['FirstName'].' '.$row_user['LastName']?></td>
 										<td><?php $row_user['setupDate']?></td>
 										<td>
-											<a href="set_user.php?user=<?php echo $row_user['User_ID'] ?>">
+											<a href="setUser.php?user=<?php echo $row_user['User_ID'] ?>">
 												<p>Edit</p>
 											</a>
 										</td>
