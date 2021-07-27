@@ -149,7 +149,79 @@ session_start();
             header("location: ../setUser.php");
         }
     }
+  
 
+    $ugroupObject = new CrudOperation();
+    if(isset($_POST['save_Ugroup'])){
+        
+		$ugroup_admin =0;
+        $ugroup_medicine = 0;
+        $ugroup_disease = 0;
+        $ugroup_feeds = 0;
+        $ugroup_sales = 0;
+        $ugroup_purchases = 0;
+		$ugroup_id = $_POST['ugroup_id'];
+		$ugroup_name = $_POST['ugroup_name'];
+		if(isset($_POST['ugroup_admin'])) $ugroup_admin = '1';
+		if(isset($_POST['ugroup_medicine'])) $ugroup_medicine = '1';
+		if(isset ($_POST['ugroup_disease'])) $ugroup_disease = '1';
+		if(isset ($_POST['ugroup_feeds'])) $ugroup_feeds ='1';
+        if(isset ($_POST['ugroup_purchases'])) $ugroup_purchases ='1';
+        if(isset ($_POST['ugroup_sales'])) $ugroup_sales = '1';
+		$date = date('Y-m-d');
+
+        $myArray = array(
+            "Ugroup_name" => $ugroup_name,
+            "Ugroup_admin" => $ugroup_admin,
+            "Ugroup_sales" => $ugroup_sales,
+            "Ugroup_purchase" => $ugroup_purchases,
+            "Ugroup_medicine" => $ugroup_medicine,
+            "Ugroup_feeds" => $ugroup_feeds,
+            "Ugroup_disease" => $ugroup_disease
+        );
+        if($ugroupObject->insertionMethod("Ugroup", $myArray))
+        {
+            $_SESSION['msg'] = "User record inserted successfully";
+            header('Location: ../setUgroup.php');
+        }
+
+    }
+    if(isset($_POST['edit_Ugroup'])){
+        
+		$ugroup_admin =0;
+        $ugroup_medicine = 0;
+        $ugroup_disease = 0;
+        $ugroup_feeds = 0;
+        $ugroup_sales = 0;
+        $ugroup_purchases = 0;
+		$ugroup_id = $_POST['ugroup_id'];
+		$ugroup_name = $_POST['ugroup_name'];
+		if(isset($_POST['ugroup_admin'])) $ugroup_admin = '1';
+		if(isset($_POST['ugroup_medicine'])) $ugroup_medicine = '1';
+		if(isset ($_POST['ugroup_disease'])) $ugroup_disease = '1';
+		if(isset ($_POST['ugroup_feeds'])) $ugroup_feeds ='1';
+        if(isset ($_POST['ugroup_purchases'])) $ugroup_purchases ='1';
+        if(isset ($_POST['ugroup_sales'])) $ugroup_sales = '1';
+		$date = date('Y-m-d');
+
+        $where = array("User_ID" => $ugroupObject);
+
+        $myArray = array(
+            "Ugroup_name" => $ugroup_name,
+            "Ugroup_admin" => $ugroup_admin,
+            "Ugroup_sales" => $ugroup_sales,
+            "Ugroup_purchase" => $ugroup_purchases,
+            "Ugroup_medicine" => $ugroup_medicine,
+            "Ugroup_feeds" => $ugroup_feeds,
+            "Ugroup_disease" => $ugroup_disease
+        );
+        if($ugroupObject->updateMethod("Ugroup", $where, $myArray))
+        {
+            $_SESSION['msg'] = "User record Edited successfully";
+            header('Location: ../setUgroup.php');
+        }
+
+    }
 
     $employeeObject = new CrudOperation();
     // Handle the save button for form submission
