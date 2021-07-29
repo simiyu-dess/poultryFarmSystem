@@ -106,7 +106,8 @@ session_start();
         $myArray = array(
             "Username" => $_POST['Username'],
             "Password" => $_POST['Password'],
-            "Ugroup" => "1",
+            "Ugroup_ID" => "1",
+            "Employee_ID" => "0",
             "setupDate" => date('Y-m-d')
         );
         if($adminObject->insertionMethod("User",$myArray))
@@ -116,12 +117,13 @@ session_start();
     }
     $userObject = new CrudOperation();
     //handle the saving of the user
-    if(isset($_POST["save_user"]))
+    if(isset($_POST["save_User"]))
     {
         $myArray = array(
-            "Username" => $_POST['Username'],
-            "Password" => $_POST['Password'],
-            "Ugroup" => $_POST['Ugroup'],
+            "Username" => $_POST['username'],
+            "Password" => $_POST['password'],
+            "Ugroup_ID" => $_POST['ugroup'],
+            "Employee_ID" => $_POST['employee_id'],
             "setupDate" => date('Y-m-d')
 
         );
@@ -132,20 +134,32 @@ session_start();
         }
     }
 
-    if(isset($_POST["edit_user"]))
+    if(isset($_POST["edit_User"]))
     {
-        $id = $_GET['id'] ?? null;
-        $where = array("user_Id" => $id);
+        $id = $_POST['user_id'];
+        $where = array("User_ID" => $id);
         $myArray= array(
-            "Username" => $_POST['Username'],
-            "Password" => $_POST['Password'],
-            "Ugroup" => $_POST["Ugroup"],
+            "Username" => $_POST['username'],
+            "Password" => $_POST['password'],
+            "Ugroup_ID" => $_POST['ugroup'],
+            "Employee_ID" => $_POST['employee_id'],
             "setupDate" => date('Y-m-d')
         );
 
         if($userObject->updateMethod("User",$where,$myArray))
         {
             $_SESSION['msg'] = "User Edited Successfully";
+            header("location: ../setUser.php");
+        }
+    }
+    if(isset($_GET['delete_User']))
+    {
+        $id = $_GET['delete_User'] ?? null;
+        $where = array("User_ID" => $id);
+
+        if($userObject->deleteMethod("User", $where))
+        {
+            $_SESSION['msg'] = "User record deleted succeessfully";
             header("location: ../setUser.php");
         }
     }
@@ -181,7 +195,7 @@ session_start();
         );
         if($ugroupObject->insertionMethod("Ugroup", $myArray))
         {
-            $_SESSION['msg'] = "User record inserted successfully";
+            $_SESSION['msg'] = "Ugroup record inserted successfully";
             header('Location: ../setUgroup.php');
         }
 
@@ -204,7 +218,7 @@ session_start();
         if(isset ($_POST['ugroup_sales'])) $ugroup_sales = '1';
 		$date = date('Y-m-d');
 
-        $where = array("User_ID" => $ugroupObject);
+        $where = array("Ugroup_ID" => $ugroup_id);
 
         $myArray = array(
             "Ugroup_name" => $ugroup_name,
@@ -222,6 +236,18 @@ session_start();
         }
 
     }
+    if(isset($_GET['delete_Ugroup']))
+    {
+        $id = $_GET['delete_Ugroup'];
+        $where = array("Ugroup_Id" => $id);
+        
+        if($ugroupObject->deleteMethod("Ugroup", $where))
+        {
+            $_SESSION['msg'] = "Ugroup record deleted successfully";
+            header('Location:../setUgroup.php');
+        }
+    
+    }
 
     $employeeObject = new CrudOperation();
     // Handle the save button for form submission
@@ -235,7 +261,8 @@ session_start();
             "Job" => $_POST["Job"],
             "Salary" => $_POST["Salary"],
             "startDate" => $_POST["StartDate"],
-            "endDate" => $_POST["EndDate"]
+            "endDate" => $_POST["EndDate"],
+            "User_ID" =>  $_SESSION['loguser']
         );
         // Call the insertion method to add record to the database
         if($employeeObject->insertionMethod("Employee", $myArray)){
@@ -256,7 +283,8 @@ session_start();
             "Job" => $_POST["Job"],
             "Salary" => $_POST["Salary"],
             "startDate" => $_POST["StartDate"],
-            "endDate" => $_POST["EndDate"]
+            "endDate" => $_POST["EndDate"],
+            "User_ID" =>  $_SESSION['loguser']
         );
         if($employeeObject->updateMethod("Employee", $where, $myArray)){
             $_SESSION['msg'] = "Employee record edited successfully!";
@@ -285,7 +313,8 @@ session_start();
             "ConsDate" => $_POST["ConsDate"],
             "Quantity" => $_POST["Quantity"],
             "Price" => $_POST["Price"],
-            "Employee" => $foreignID
+            "Employee" => $foreignID,
+            "User_ID" =>  $_SESSION['loguser']
         );
         // Call the insertion method to add record to the database
         if($feedConsumptionObject->insertionMethod("FeedConsumption", $myArray)){
@@ -301,7 +330,8 @@ session_start();
             "ConsDate" => $_POST["ConsDate"],
             "Quantity" => $_POST["Quantity"],
             "Price" => $_POST["Price"],
-            "Employee" => $_POST["Employee"]
+            "Employee" => $_POST["Employee"],
+            "User_ID" =>  $_SESSION['loguser']
         );
         if($feedConsumptionObject->updateMethod("FeedConsumption", $where, $myArray)){
             header("location: ../feedConsumption.php?msg=Updated Successfully!");
@@ -326,7 +356,8 @@ session_start();
         $myArray = array(
             "Date" => $_POST["Date"],
             "Quantity" => $_POST["Quantity"],
-            "Price" => $_POST["Price"]
+            "Price" => $_POST["Price"],
+            "User_ID" =>  $_SESSION['loguser']
         );
         // Call the insertion method to add record to the database
         if($feedPurchaseObject->insertionMethod("FeedPurchase", $myArray)){
@@ -340,7 +371,8 @@ session_start();
         $myArray = array(
             "Date" => $_POST["Date"],
             "Quantity" => $_POST["Quantity"],
-            "Price" => $_POST["Price"]
+            "Price" => $_POST["Price"],
+            "User_ID" =>  $_SESSION['loguser']
         );
         if($feedPurchaseObject->updateMethod("FeedPurchase", $where, $myArray)){
             header("location: ../feedPurchase.php?msg=Updated Successfully!");
@@ -366,11 +398,13 @@ session_start();
         $myArray = array(
             "Date" => $_POST["Date"],
             "NumberOfBirds" => $_POST["NumberOfBirds"],
-            "Price" => $_POST["Price"]
+            "Price" => $_POST["Price"],
+            "User_ID" =>  $_SESSION['loguser']
         );
         // Call the insertion method to add record to the database
         if($birdsPurchaseObject->insertionMethod("BirdsPurchase", $myArray)){
-            header("location: ../birdsPurchase.php?msg=Insertion was successfull!");
+            $_SESSION['msg'] = "Birds record inserte successfully!";
+            header("location: ../birdsPurchase.php");
         };
     }
     // Handle the edit button for record editing
@@ -380,10 +414,12 @@ session_start();
         $myArray = array(
             "Date" => $_POST["Date"],
             "NumberOfBirds" => $_POST["NumberOfBirds"],
-            "Price" => $_POST["Price"]
+            "Price" => $_POST["Price"],
+            "User_ID" =>  $_SESSION['loguser']
         );
         if($birdsPurchaseObject->updateMethod("BirdsPurchase", $where, $myArray)){
-            header("location: ../birdsPurchase.php?msg=Updated Successfully!");
+            $_SESSION['msg'] = "Birds record updated successfully!";
+            header("location: ../birdsPurchase.php");
         }
     }
 
@@ -392,7 +428,8 @@ session_start();
         $id = $_GET["id"] ?? null;
         $where = array("BirdsPurchase_ID" => $id);
         if($birdsPurchaseObject->deleteMethod("BirdsPurchase", $where)){
-            header("location: ../birdsPurchase.php?msg=Record deleted successfully!");
+            $_SESSION['msg'] = "Bird record deleted successfully!";
+            header("location: ../birdsPurchase.php");
         }
     }
 
@@ -405,7 +442,8 @@ session_start();
     if(isset($_POST["birdsmortsave"])){
         $myArray = array(
             "Date" => $_POST["Date"],
-            "Deaths" => $_POST["Deaths"]
+            "Deaths" => $_POST["Deaths"],
+            "User_ID" =>  $_SESSION['loguser']
         );
         // Call the insertion method to add record to the database
         if($birdsMortalityObject->insertionMethod("BirdsMortality", $myArray)){
@@ -419,7 +457,8 @@ session_start();
         $where = array("BirdsMortality_ID" => $id);
         $myArray = array(
             "Date" => $_POST["Date"],
-            "Deaths" => $_POST["Deaths"]
+            "Deaths" => $_POST["Deaths"],
+            "User_ID" =>  $_SESSION['loguser']
         );
         if($birdsMortalityObject->updateMethod("BirdsMortality", $where, $myArray)){
             header("location: ../birdsMortality.php?msg=Updated Successfully!");
@@ -446,6 +485,7 @@ session_start();
             "Quantity" => $_POST['Quantity'],
             "Date" => $_POST['Date'],
             "Price" => $_POST['Price'],
+            "User_ID" => $_SESSION['loguser']
         );
         if($medicineObject->insertionMethod("MedicinePurchase",$myArray))
         {
@@ -464,7 +504,9 @@ session_start();
              "MedicineName" => $_POST['MedName'],
              "Quantity" => $_POST['Quantity'],
              "Date" => $_POST['Date'],
-             "Price" => $_POST['Price']
+             "Price" => $_POST['Price'],
+             "User_ID" =>  $_SESSION['loguser']
+             
          );
 
          if($medicineObject->updateMethod("MedicinePurchase",$where,$myArray))
@@ -493,7 +535,8 @@ session_start();
              "MedicineName" => $_POST['MedName'],
              "Quantity" => $_POST['Quantity'],
              "Date" => $_POST['ConsumpDate'],
-             "Employee" => $_POST['Employee_incharge']
+             "Employee" => $_POST['Employee_incharge'],
+             "User_ID" =>  $_SESSION['loguser']
 
          );
          if($medicineObject->insertionMethod("MedicineUsage",$myArray))
@@ -514,7 +557,8 @@ session_start();
              "MedicineName" => $_POST['MedName'],
              "Quantity" => $_POST['Quantity'],
              "Date" => $_POST['ConsumpDate'],
-             "Employee" => $_POST['Employee_incharge']
+             "Employee" => $_POST['Employee_incharge'],
+             "User_ID" =>  $_SESSION['loguser']
          );
          if($medicineObject->updateMethod("MedicineUsage", $where, $myArray))
          {
@@ -543,7 +587,8 @@ session_start();
         $myArray = array(
             "Date" => $_POST["Date"],
             "NumberOfEggs" => $_POST["NumberOfEggs"],
-            "Revenue" => $_POST["Revenue"]
+            "Revenue" => $_POST["Revenue"],
+            "User_ID" =>  $_SESSION['loguser']
         );
         // Call the insertion method to add record to the database
         if($salesObject->insertionMethod("Sales", $myArray)){
@@ -558,7 +603,8 @@ session_start();
         $myArray = array(
             "Date" => $_POST["Date"],
             "NumberOfEggs" => $_POST["NumberOfEggs"],
-            "Revenue" => $_POST["Revenue"]
+            "Revenue" => $_POST["Revenue"],
+            "User_ID" =>  $_SESSION['loguser']
         );
         if($salesObject->updateMethod("Sales", $where, $myArray)){
             $_SESSION['msg'] = "Record updated successfully!";
@@ -585,7 +631,8 @@ session_start();
     if(isset($_POST["productionsave"])){
         $myArray = array(
             "Date" => $_POST["Date"],
-            "NumberOfEggs" => $_POST["NumberOfEggs"]
+            "NumberOfEggs" => $_POST["NumberOfEggs"],
+            "User_ID" =>  $_SESSION['loguser']
         );
         // Call the insertion method to add record to the database
         if($productionObject->insertionMethod("Production", $myArray)){
@@ -599,7 +646,8 @@ session_start();
         $where = array("Production_ID" => $id);
         $myArray = array(
             "Date" => $_POST["Date"],
-            "NumberOfEggs" => $_POST["NumberOfEggs"]
+            "NumberOfEggs" => $_POST["NumberOfEggs"],
+            "User_ID" =>  $_SESSION['loguser']
         );
         if($productionObject->updateMethod("Production", $where, $myArray)){
             $_SESSION['msg'] = "Updated Successfully";

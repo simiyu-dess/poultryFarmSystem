@@ -61,6 +61,16 @@ include "includes/action.php";
 	<div class="container">
 	<?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_top_navbar_settings.php";?>
 	<main>
+	<?php if(isset($_SESSION['msg'])): ?>
+                    <div class="msg">
+                    <p>
+                        <?php 
+                            echo $_SESSION['msg'];
+                            unset($_SESSION['msg']);
+                        ?>
+                    </p>
+                    </div>
+                <?php endif ?>
 
 		<!-- LEFT SIDE: Create New User Form -->
 		
@@ -77,16 +87,16 @@ include "includes/action.php";
 	<table id="tb_set" style="margin:auto;">
 		<tr>
 			<td>Username</td>
-			<td><input type="text" name="user_name" 
+			<td><input type="text" name="username" 
 			placeholder="Username" value="<?php echo $existing_Users['Username'];?> " /></td>
 		</tr>
 		<tr>
 			<td>Password</td>
-			<td><input type="password" name="user_pw" placeholder="Password" /></td>
+			<td><input type="password" name="password" placeholder="Password" /></td>
 		</tr>
 		<tr>
 			<td>Repeat Password</td>
-			<td><input type="password" name="Conf_Password" placeholder="Repeat Password" /></td>
+			<td><input type="password" name="conf_Password" placeholder="Repeat Password" /></td>
 		</tr>
 		<tr>
 			<td>Usergroup</td>
@@ -107,7 +117,7 @@ include "includes/action.php";
 		<tr>
 			<td>Employee:</td>
 			<td>
-				<select name="Employee_ID" size="1">
+				<select name="employee_id" size="1">
 					<option value="0">None</option>
 					<?PHP
 						foreach($result_Employess as $row_employees){?>
@@ -120,8 +130,8 @@ include "includes/action.php";
 			</td>
 		</tr>
 	</table>
-	<input type="submit" name="save_changes" value="Save Changes" />
-	<input type="hidden" name="user_id" value="<?PHP echo $user_id; ?>" />
+	<input type="submit" name="edit_User" class="edit_btn" value="Update" />
+	<input type="hidden" name="user_id" value="<?PHP echo $_GET['update_User']; ?>" />
 </form>
 <?php } 
           else
@@ -130,20 +140,20 @@ include "includes/action.php";
 
 				<p class="heading"> Create User</p>
 
-				<form action="setUser.php" method="post" onSubmit="">
+				<form action="includes/action.php" method="post">
 
 					<table id="tb_set" style="margin:auto;">
 						<tr>
 							<td>Username</td>
-							<td><input type="text" name="user_name" placeholder="Username" value="" /></td>
+							<td><input type="text" name="username" placeholder="Username" value="" /></td>
 						</tr>
 						<tr>
 							<td>Password</td>
-							<td><input type="password" name="user_pw" placeholder="Password" /></td>
+							<td><input type="password" name="password" placeholder="Password" /></td>
 						</tr>
 						<tr>
 							<td>Repeat Password</td>
-							<td><input type="password" name="Conf_Password" placeholder="Repeat Password" /></td>
+							<td><input type="password" name="conf_Password" placeholder="Repeat Password" /></td>
 						</tr>
 						<tr>
 							<td>Usergroup</td>
@@ -164,7 +174,7 @@ include "includes/action.php";
 						<tr>
 							<td>Employee:</td>
 							<td>
-								<select name="Employee_ID" size="1">
+								<select name="employee_id" size="1">
 									<option value="0">None</option>
 									<?PHP
 										foreach($result_Employess as $row_employees){?>
@@ -177,25 +187,18 @@ include "includes/action.php";
 							</td>
 						</tr>
 					</table>
-					<input type="submit" name="save_changes" value="Save Changes" />
-					<input type="hidden" name="user_id" value="<?PHP echo $user_id; ?>" />
+					<input type="submit" class="edit_btn" name="save_User" value="Save" />
 				</form>
 				<?php } ?>
 			
 		
 
 		
-			<form action="includes/action.php" method="post">
+			<form method="post">
 				<table id="tb_table">
-					<colgroup>
-						<col width="20%">
-						<col width="20%">
-						<col width="20%">
-						<col width="16%">
-						<col width="24%">
-					</colgroup>
+				
 					<tr>
-						<th class="title" colspan="5">Existing Users</th>
+						<th class="title" colspan="6">Existing Users</th>
 					</tr>
 					<tr>
 						<th>User Name</th>
@@ -209,18 +212,20 @@ include "includes/action.php";
 						<tr>
 										<td><?php echo $row_user['Username']?></td>
 										<td><?php echo $row_user['Ugroup_Name']?></td>
-										<td><?php $row_user['FirstName'].' '.$row_user['LastName']?></td>
-										<td><?php $row_user['setupDate']?></td>
+										<td><?php echo $row_user['FirstName'].' '.$row_user['LastName']?></td>
+										<td><?php echo $row_user['setupDate']?></td>
 										<td>
+											
 											<a href="setUser.php?update_User=<?php echo $row_user['User_ID'] ?>">
 												<p class="edit_btn">Edit</p>
 											</a>
-										</td>
-										<td>
-										<a href="inludes/action.php?delete_User=<?php echo $row_user['User_ID'] ?>">
+					                       </td>
+										   <td>
+										<a href="includes/action.php?delete_User=<?php echo $row_user['User_ID'] ?>">
 										<p class="del_btn"> Delete </p>
 										</a>
-										</td>
+					                    </td>
+										
 									</tr>
 					<?php }
 					?>

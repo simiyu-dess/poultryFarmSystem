@@ -13,10 +13,21 @@ include 'includes/action.php';
 <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_head.php";?>
 <body id="body">
     <div class="container">
+   
         <!-- top navbar -->
         <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_top_navbar.php";?>
         <main>
             <div class="main__container">
+            <?php if(isset($_SESSION['msg'])): ?>
+                    <div class="msg">
+                    <p>
+                        <?php 
+                            echo $_SESSION['msg'];
+                            unset($_SESSION['msg']);
+                        ?>
+                    </p>
+                    </div>
+                <?php endif ?>
                 <table>
                     <thead>
                         <th>Date</th>

@@ -38,6 +38,9 @@
             $query = $this->connect()->query($sql);
             // if number of rows is greater than 0, the user entered the right info. else, wrong data
             if(mysqli_num_rows($query)){
+                $array = mysqli_fetch_array($query);
+                $_SESSION['ugroupid'] = $array['Ugroup_ID'];
+                $_SESSION['loguser'] = $array['User_ID'];
                 return true;
             }else{
                 $this->error = "<p>Wrong Data</p>";

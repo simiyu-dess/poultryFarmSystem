@@ -1,6 +1,7 @@
 <?php
     include 'includes/database.php';
     include 'includes/loginServer.php';
+    include 'includes/action.php';
     session_start();
     // instantiating LoginServer class to access its functions/methods
     $data = new LoginServer();
@@ -15,6 +16,14 @@
         if($data->loginValidation($field)){
             if($data->canLogin("User", $field)){
                 $_SESSION["Username"] = $_POST["Username"];
+                $where = array("Ugroup_ID" => $_SESSION['ugroupid']);
+                $permisions_array = $ugroupObject->selectMethod("Ugroup", $where);
+                $_SESSION['perm_admin'] = $permisions_array['Ugroup_admin'];
+                $_SESSION['perm_medicine'] = $permisions_array['Ugroup_medicine'];
+                $_SESSION['perm_feeds'] = $permisions_array['Ugroup_feeds'];
+                $_SESSION['perm_purchase'] = $permisions_array['Ugroup_purchases'];
+                $_SESSION['perm_sales'] = $permisions_array['Ugroup_sales'];
+                $_SESSION['perm_disease'] = $permisions_array['Ugroup_disease'];
                 header("location: dashboard.php");
             }else{
                 $message = $data->error;

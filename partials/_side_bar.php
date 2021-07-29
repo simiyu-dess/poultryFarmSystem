@@ -28,20 +28,29 @@
           <div class="sidebar__link">
             <a href="birdsMortality.php">Mortality</a>
           </div>
+          <?php if($_SESSION['perm_feeds'] == 1 || $_SESSION['perm_admin'] == 1) :?>
           <h2>FEED</h2>
+          <?php if($_SESSION['perm_purchase'] == 1 || $_SESSION['perm_admin'] == 1): ?>
           <div class="sidebar__link">
             <a href="feedPurchase.php">Purchase</a>
           </div>
+          <?php endif ?>
           <div class="sidebar__link">
             <a href="feedConsumption.php">Consumption</a>
           </div>
+          <?php endif ?>
+          <?php if($_SESSION['perm_medicine'] == 1 || $_SESSION['perm_admin'] == 1 ):?>
           <h2>MEDICINE</h2>
+          <?php if($_SESSION['perm_purchase'] == 1 ||  $_SESSION['perm_admin'] == 1): ?>
           <div class="sidebar__link">
             <a href="MedicinePurchase.php">Purchase</a>
           </div>
+          <?php endif ?>
           <div class="sidebar__link">
             <a href="MedicineConsumption.php">Consumption</a>
           </div>
+          <?php endif ?>
+          <?php if ($_SESSION['perm_admin'] == '1'):?>
           <h2>EMPLOYEES</h2>
           <div class="sidebar__link">
             <a href="currentEmployees.php">Employees</a>
@@ -49,6 +58,7 @@
           <div class="sidebar__link">
           <a href="newEmployee.php"> New Employee</a>
           </div>
+          <?php endif ?>
           <div class="sidebar__logout">
             <a href="logout.php">Log out</a>
           </div>
