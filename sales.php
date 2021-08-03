@@ -67,21 +67,25 @@ include 'includes/action.php';
                         // Call the select method that displays the record to be edited
                         $row = $salesObject->selectMethod("Sales", $where);
                         ?>
-                            <form action="includes/action.php" method="post">
+                            <form action="includes/action.php" method="post" onsubmit="return validate()">
+                            
                                 <div class="input-group">
-                                    <input type="hidden" name="id" value="<?php echo $id; ?>">
+                                    <input type="hidden" name="id"  value="<?php echo $id; ?>">
                                 </div>
                                 <div class="input-group">
+                                <div class="my-div-error" id="errorDate"></div>
                                     <label for="">Date</label>
-                                    <input type="date" name="Date" value="<?php echo $row["Date"]; ?>" required>
+                                    <input type="date" name="Date" id="date" max="<?php echo date('Y-m-d'); ?>" value="<?php echo $row["Date"]; ?>">
                                 </div>
                                 <div class="input-group">
+                                <div class="my-div-error" id="errorNumber"></div>
                                     <label for="">Number of Eggs</label>
-                                    <input type="number" step="any" name="NumberOfEggs" value="<?php echo $row["NumberOfEggs"]; ?>" required>
+                                    <input type="number" step="any" id="number" name="NumberOfEggs" value="<?php echo $row["NumberOfEggs"]; ?>">
                                 </div>
                                 <div class="input-group">
+        
                                     <label for="">Revenue</label>
-                                    <input type="number" step="any" name="Revenue" value="<?php echo $row["Revenue"]; ?>" required>
+                                    <input type="disabled" disabled="disabled" value="<?php echo $row["Revenue"]; ?>" >
                                 </div>
                                 <div class="input-group">
                                     <button type="submit" name="salesedit" class="btn" value="">Update</button>
@@ -90,18 +94,20 @@ include 'includes/action.php';
                         <?php
                     }else{
                         ?>
-                            <form action="includes/action.php" method="post">
+                            <form action="includes/action.php" method="post" onsubmit="return validate()" >
                                 <div class="input-group">
+                                <div class="my-div-error" id="errorDate"></div>
                                     <label for="">Date</label>
-                                    <input type="date" name="Date" value="" required>
+                                    <input type="date" id="date" name="Date" value="">
                                 </div>
                                 <div class="input-group">
+                                <div class="my-div-error" id="errorNumber"></div>
                                     <label for="">Number of Eggs</label>
-                                    <input type="number" step="any" name="NumberOfEggs" value="" required>
+                                    <input type="number" step="any" id="number" name="NumberOfEggs" value="" >
                                 </div>
                                 <div class="input-group">
                                     <label for="">Revenue</label>
-                                    <input type="number" step="any" name="Revenue" value="" required>
+                                    <input type="number" disabled="disabled" name="Revenue" placeholder="<?php echo $_SESSION['egg_price'];?> per egg (KSH)">
                                 </div>
                                 <div class="input-group">
                                     <button type="submit" name="salessave" class="btn">Save</button>
@@ -115,6 +121,42 @@ include 'includes/action.php';
         <!-- sidebar nav -->
         <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_side_bar.php";?>
     </div>
+    <script>
+    function validate(){
+                        var dates = document.getElementById("date").value;
+                        var number = document.getElementById("number").value;
+                       
+                       
+                        
+                        // Getting error divs ID
+                        var errordate = document.getElementById('errorDate');
+                        var errornumber = document.getElementById("errorNumber");
+                       
+                        
+                        
+                        // Defining REGEX
+                       
+                        
+                        var truth = true;
+                        if(dates == ""){
+                            errordate.innerHTML = "This field is required";
+                            truth = false;
+                        }
+                       
+                        if(number < 1)
+                        {
+                            errornumber.innerHTML = "The number must be a positive integer";
+                            truth = false;
+                        }
+                        if(number == ""){
+                            errornumber.innerHTML = "This field is required";
+                            truth =  false;
+                        }
+                    
+                        return truth;
+
+                    }
+                    </script>
     <script src="script.js"></script>
 </body>
 </html>

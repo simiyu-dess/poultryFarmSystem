@@ -11,8 +11,9 @@ include 'includes/action.php';
 <html lang="en">
 <!-- head -->
 <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_head.php";?>
-<body id="body">
 
+                    </head>
+<body id="body">
     <div class="container">
         <!-- top navbar -->
         <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_top_navbar.php";?>
@@ -28,19 +29,27 @@ include 'includes/action.php';
                     </p>
                     </div>
                 <?php endif ?>
-                    <script>
+                <script>
                     function validate(){
                         var fname = document.getElementById("FirstName").value;
                         var lname = document.getElementById("LastName").value;
                         var phone = document.getElementById("Phone").value;
                         var job = document.getElementById("Job").value;
                         var salary = document.getElementById("Salary").value;
+                        var location = document.getElementById("location").value;
+                        var startDate = document.getElementById('Date').value;
+                       
+                        
                         // Getting error divs ID
                         var errorFname = document.getElementById('errorFname');
                         var errorLname = document.getElementById('errorLname');
                         var errorPhone = document.getElementById('errorPhone');
                         var errorJob = document.getElementById('errorJob');
                         var errorSalary = document.getElementById('errorSalary');
+                        var errorDate = document.getElementById('errorDate');
+                        var errorLocation = document.getElementById('errorLocation');
+                        
+                        
                         // Defining REGEX
                         var fnameP = /[A-Za-z]+/;
                         var lnameP = /[A-Za-z]+/;
@@ -51,53 +60,73 @@ include 'includes/action.php';
                         var truth = true;
                         if(!fnameP.test(fname)){
                             errorFname.innerHTML = "Please enter a valid first name";
-                            truth = truth && false;
+                            truth = false;
                         }
                         if(fname == ""){
                             errorFname.innerHTML = "This field is required";
-                            truth = truth && false;
+                            truth =  false;
                         }
                         if(!lnameP.test(lname)){
                             errorLname.innerHTML = "Please enter a valid last name";
-                            truth = truth && false;
+                            truth = false;
                         }
                         if(lname == ""){
                             errorLname.innerHTML = "Last name field is required";
-                            truth = truth && false;
+                            truth = false;
+                        }
+                        if(location == "")
+                        {
+                            errorLocation.innerHTML = "Location field is required";
+                            truth = false;
                         }
                         if(!phoneP.test(phone)){
                             errorPhone.innerHTML = "Pleaser enter a valid phone number";
-                            truth = truth && false;
+                            truth = false;
                         }
 
                         if(phone == ""){
                             errorPhone.innerHTML = "Phone field is required";
-                            truth = truth && false;
+                            truth = false;
                         }
                         if(!jobP.test(job)){
                             errorJob.innerHTML = "Pleaser enter a valid job title";
-                            truth = truth && false;
+                            truth =false;
                         }
 
                         if(job == ""){
                             errorJob.innerHTML = "Job field is required";
-                            truth = truth && false;
+                            truth = false;
                         }
                         if(!salaryP.test(salary)){
                             errorSalary.innerHTML = "Pleaser enter a valid salary";
-                            truth = truth && false;
+                            truth = false;
                         }
 
                         if(salary == ""){
                             errorSalary.innerHTML = "Salary field is required";
-                            truth = truth && false;
+                            truth = false;
                         }
+                        if(startDate == "")
+                        {
+                            errorDate.innerHTML = "Date field is required";
+                            truth = false;  
+                        }
+                        var today = new Date().getTime(),
+                       idate = startDate.split("/");
+
+                       idate = new Date(idate[2], idate[1] - 1, idate[0]).getTime();
+                       if ((today - idate) < 0)
+                       {
+                           errorDate.innerHTML = "Date cannot be in the future";
+                           truth = false;
+                       }
+
 
                         return truth;
 
                     }
                     </script>
-                            <form id="payrollForm" action="includes/action.php" method="post" onsubmit= "return validate()">
+                   <form id="payrollForm" action="includes/action.php" method="post" onsubmit= "return validate()">
                                 <div class="my-div-error" id="errorFname"></div>
                                 <div class="input-group">
                                     <label for="">First Name</label>
@@ -116,15 +145,15 @@ include 'includes/action.php';
                                 <option value="other">Other</option>
                                 </select>
                                 </div>
-                                <div class="my-div-error" id="location"></div>
+                                <div class="my-div-error" id="errorLocation"></div>
                                 <div class = "input-group">
                                 <label for="">Location</label>
-                                <input type="text" id="Location" name="Location" value=""/>
+                                <input type="text" id="location" name="Location" value=""/>
                                 </div>
                                 <div class="my-div-error" id="errorPhone"></div>
                                 <div class="input-group">
                                     <label for="">Phone</label>
-                                    <input type="text"  id="Phone" name="Phone" value="">
+                                    <input type="phone"  id="Phone" name="Phone" value="">
                                 </div>
                                 <div class="my-div-error" id="errorJob"></div>
                                 <div class="input-group">
@@ -137,15 +166,13 @@ include 'includes/action.php';
                                     <input type="text" id="Salary" name="Salary" value="">
                                 </div>
                                 <div class="input-group">
+                                <div class="my-div-error" id="errorDate"></div>
                                     <label for="">Start Date</label>
-                                    <input type="Date" id="Date" name="StartDate" value="">
+                                    <input type="Date" id="Date" name="StartDate" max="<?php echo date('Y-m-d');?>" value="">
                                 </div>
+                               
                                 <div class="input-group">
-                                    <label for="">End Date</label>
-                                    <input type="Date" id="Date" name="EndDate" value="">
-                                </div>
-                                <div class="input-group">
-                                    <button type="submit" name="savePerson" class="btn">Save</button>
+                                    <button type="submit" name="emplSave" class="btn" value=""> Save</button>
                                 </div>
                             </form>
             </div>
@@ -153,6 +180,8 @@ include 'includes/action.php';
         <!-- sidebar nav -->
         <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_side_bar.php";?>
     </div>
-    <script src="script.js"></script>
+   
+   
+                    
 </body>
 </html>

@@ -174,6 +174,8 @@ session_start();
         $ugroup_feeds = 0;
         $ugroup_sales = 0;
         $ugroup_purchases = 0;
+        $ugroup_eggs = 0;
+        $ugroup_birds = 0;
 		$ugroup_id = $_POST['ugroup_id'];
 		$ugroup_name = $_POST['ugroup_name'];
 		if(isset($_POST['ugroup_admin'])) $ugroup_admin = '1';
@@ -182,16 +184,20 @@ session_start();
 		if(isset ($_POST['ugroup_feeds'])) $ugroup_feeds ='1';
         if(isset ($_POST['ugroup_purchases'])) $ugroup_purchases ='1';
         if(isset ($_POST['ugroup_sales'])) $ugroup_sales = '1';
+        if(isset ($_POST['ugroup_birds'])) $ugroup_birds = '1';
+        if(isset ($_POST['ugroup_eggs'])) $ugroup_eggs = '1';
 		$date = date('Y-m-d');
 
         $myArray = array(
             "Ugroup_name" => $ugroup_name,
             "Ugroup_admin" => $ugroup_admin,
+            "Ugroup_birds" => $ugroup_birds,
             "Ugroup_sales" => $ugroup_sales,
             "Ugroup_purchase" => $ugroup_purchases,
+            "Ugroup_eggs" => $ugroup_eggs,
             "Ugroup_medicine" => $ugroup_medicine,
-            "Ugroup_feeds" => $ugroup_feeds,
-            "Ugroup_disease" => $ugroup_disease
+            "Ugroup_feeds" => $ugroup_feeds
+            
         );
         if($ugroupObject->insertionMethod("Ugroup", $myArray))
         {
@@ -208,14 +214,18 @@ session_start();
         $ugroup_feeds = 0;
         $ugroup_sales = 0;
         $ugroup_purchases = 0;
+        $ugroup_birds = 0;
+        $ugroup_eggs= 0;
 		$ugroup_id = $_POST['ugroup_id'];
 		$ugroup_name = $_POST['ugroup_name'];
-		if(isset($_POST['ugroup_admin'])) $ugroup_admin = '1';
-		if(isset($_POST['ugroup_medicine'])) $ugroup_medicine = '1';
+		if(isset ($_POST['ugroup_admin'])) $ugroup_admin = '1';
+		if(isset ($_POST['ugroup_medicine'])) $ugroup_medicine = '1';
 		if(isset ($_POST['ugroup_disease'])) $ugroup_disease = '1';
 		if(isset ($_POST['ugroup_feeds'])) $ugroup_feeds ='1';
         if(isset ($_POST['ugroup_purchases'])) $ugroup_purchases ='1';
         if(isset ($_POST['ugroup_sales'])) $ugroup_sales = '1';
+        if(isset ($_POST['ugroup_birds'])) $ugroup_birds = '1';
+        if(isset ($_POST['ugroup_eggs'])) $ugroup_eggs = '1';
 		$date = date('Y-m-d');
 
         $where = array("Ugroup_ID" => $ugroup_id);
@@ -223,11 +233,12 @@ session_start();
         $myArray = array(
             "Ugroup_name" => $ugroup_name,
             "Ugroup_admin" => $ugroup_admin,
+            "Ugroup_birds" => $ugroup_birds,
             "Ugroup_sales" => $ugroup_sales,
             "Ugroup_purchase" => $ugroup_purchases,
             "Ugroup_medicine" => $ugroup_medicine,
-            "Ugroup_feeds" => $ugroup_feeds,
-            "Ugroup_disease" => $ugroup_disease
+            "Ugroup_eggs" => $ugroup_eggs
+            
         );
         if($ugroupObject->updateMethod("Ugroup", $where, $myArray))
         {
@@ -261,7 +272,7 @@ session_start();
             "Job" => $_POST["Job"],
             "Salary" => $_POST["Salary"],
             "startDate" => $_POST["StartDate"],
-            "endDate" => $_POST["EndDate"],
+            "endDate" => '00-00-00',
             "User_ID" =>  $_SESSION['loguser']
         );
         // Call the insertion method to add record to the database
@@ -403,7 +414,7 @@ session_start();
         );
         // Call the insertion method to add record to the database
         if($birdsPurchaseObject->insertionMethod("BirdsPurchase", $myArray)){
-            $_SESSION['msg'] = "Birds record inserte successfully!";
+            $_SESSION['msg'] = "Birds record inserted successfully!";
             header("location: ../birdsPurchase.php");
         };
     }
@@ -584,10 +595,11 @@ session_start();
 
     // Handle the save button for form submission
     if(isset($_POST["salessave"])){
+        $Revenue = $_SESSION['egg_price'] * $_POST["NumberOfEggs"];
         $myArray = array(
             "Date" => $_POST["Date"],
             "NumberOfEggs" => $_POST["NumberOfEggs"],
-            "Revenue" => $_POST["Revenue"],
+            "Revenue" => $Revenue,
             "User_ID" =>  $_SESSION['loguser']
         );
         // Call the insertion method to add record to the database
@@ -599,11 +611,12 @@ session_start();
     // Handle the edit button for record editing
     if(isset($_POST["salesedit"])){
         $id = $_POST["id"];
+        $Revenue = $_SESSION['egg_price'] * $_POST["NumberOfEggs"];
         $where = array("Sales_ID" => $id);
         $myArray = array(
             "Date" => $_POST["Date"],
             "NumberOfEggs" => $_POST["NumberOfEggs"],
-            "Revenue" => $_POST["Revenue"],
+            "Revenue" => $Revenue,
             "User_ID" =>  $_SESSION['loguser']
         );
         if($salesObject->updateMethod("Sales", $where, $myArray)){
@@ -662,6 +675,25 @@ session_start();
         if($productionObject->deleteMethod("Production", $where)){
             $_SESSION['msg'] = "Record was deleted successfully!";
             header("location: ../production.php");
+        }
+    }
+    $feeObject = new CrudOperation();
+    if(isset($_POST['saveFee']))
+    {
+     $where = array("Fee_type" => "eggFee");
+        $myArray = array(
+            "Fee_type" => "eggFee",
+            "Fee_amount" => $_POST['eggprice']
+        );
+        if($feeObject->updateMethod("Fees",$where,$myArray))
+        {
+            $_SESSION['msg'] = "Fee record inserted successfully";
+            header('Location: ../setFees.php');
+        }
+        else
+        {
+            $_SESSION['error'] = "record insertion failed";
+            header('Location: ../setFees.php');
         }
     }
 

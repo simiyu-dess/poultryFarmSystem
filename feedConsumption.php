@@ -31,7 +31,7 @@ include 'includes/action.php';
                     <thead>
                         <th>Consumed On</th>
                         <th>Quantity Consumed</th>
-                        <th>Equivalent Price</th>
+                        <th>Feed name</th>
                         <th>Employee Responsible</th>
                         <th colspan="2">Action</th>
                     </thead>
@@ -78,25 +78,28 @@ include 'includes/action.php';
                         // Call the selectEmployee method that displays the record to be edited
                         $row = $feedConsumptionObject->selectMethod("FeedConsumption", $where);
                         ?>
-                            <form action="includes/action.php" method="post">
+                            <form action="includes/action.php" method="post" onsubmit=" return validate()">
                                 <div class="input-group">
                                     <input type="hidden" name="id" value="<?php echo $id; ?>">
                                 </div>
                                 <div class="input-group">
+                                <div class="my-div-error" id="errorDate"></div>
                                     <label for="">Date</label>
-                                    <input type="date" name="ConsDate" value="<?php echo $row["ConsDate"]; ?>" required>
+                                    <input type="date" name="ConsDate" id="date" value="<?php echo $row["ConsDate"]; ?>">
                                 </div>
                                 <div class="input-group">
+                                <div class="my-div-error" id="errorQuantity"></div>
                                     <label for="">Quantity</label>
-                                    <input type="number" step="any" name="Quantity" value="<?php echo $row["Quantity"]; ?>" required>
+                                    <input type="number" step="any" id="quantity" name="Quantity" value="<?php echo $row["Quantity"]; ?>">
                                 </div>
                                 <div class="input-group">
+                                <div class="my-div-error" id="errorPrice"></div>
                                     <label for="">Price</label>
-                                    <input type="number" step="any" name="Price" value="<?php echo $row["Price"]; ?>" required>
+                                    <input type="number" step="any" id="price" name="Price" value="<?php echo $row["Price"]; ?>">
                                 </div>
                                 <div class="input-group">
                                     <label for="">Employee Assigned</label>
-                                        <select name="Employee" id="" required>
+                                        <select name="Employee" id="">
                                         <?php
                                             $myrow = $employeeObject->viewMethod("Employee");
                                             foreach($myrow as $row){
@@ -115,22 +118,30 @@ include 'includes/action.php';
                         <?php
                     }else{
                         ?>
-                            <form action="includes/action.php" method="post">
+                            <form action="includes/action.php" method="post" onsubmit="return validate()">
                                 <div class="input-group">
+                                <div class="my-div-error" id="errorDate"></div>
                                     <label for="">Date</label>
-                                    <input type="date" name="ConsDate" value="" required>
+                                    <input type="date" name="ConsDate" id="date" max="<?php echo date('Y-m-d');?>" value="">
                                 </div>
                                 <div class="input-group">
+                                <div class="my-div-error" id="errorName"></div>
+                                    <label for="">Name</label>
+                                    <input type="text" name="Name" id="name" value="">
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorQuantity"></div>
                                     <label for="">Quantity</label>
-                                    <input type="number" step="any" name="Quantity" value="" required>
+                                    <input type="number" step="any" name="Quantity" id="quantity" value="">
                                 </div>
                                 <div class="input-group">
+                                <div class="my-div-error" id="errorPrice"></div>
                                     <label for="">Price</label>
-                                    <input type="number" step="any" name="Price" value="" required>
+                                    <input type="number" step="any" id="price" name="Price" value="">
                                 </div>
                                 <div class="input-group">
                                     <label for="">Employee Assigned</label>
-                                    <select name="Employee" id="" required>
+                                    <select name="Employee" id="">
                                     <?php
                                         $myrow = $feedConsumptionObject->viewMethod("Employee");
                                         foreach($myrow as $row){
@@ -155,6 +166,61 @@ include 'includes/action.php';
         <!-- sidebar nav -->
         <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_side_bar.php";?>
     </div>
+    <script>
+                    function validate(){
+                        var dates = document.getElementById("date").value;
+                        var name = document.getElementById("name").value;
+                        var quantity = document.getElementById("quantity").value;
+                        var price = document.getElementById("price").value;
+                       
+                        
+                        // Getting error divs ID
+                        var errordate = document.getElementById('errorDate');
+                        var errorname = document.getElementById("errorName");
+                        var errorquantity = document.getElementById("errorQuantity");
+                        var errorprice = document.getElementById("errorPrice");
+                        
+                        
+                        // Defining REGEX
+                        var nameT = /[A-Za-z]/;
+                        var jobT = /^(?![\s.]+$)[a-zA-Z\s.]*$/;
+                        var quantityT = /^(\d+)(?:\.(\d{1,2}))?$/;
+                        var priceT = /^(\d+)(?:\.(\d{1,2}))?$/;
+                        
+                        var truth = true;
+                        if(!nameT.test(name)){
+                            errorname.innerHTML = "Please enter a valid feed name";
+                            truth = false;
+                        }
+                        if(name == ""){
+                            errorname.innerHTML = "This field is required";
+                            truth =  false;
+                        }
+                        if(!quantityT.test(quantity)){
+                            errorquantity.innerHTML = "Please enter a valid quantity";
+                            truth = false;
+                        }
+                        if(quantity == ""){
+                            errorquantity.innerHTML = "feed quantity is  field is required";
+                            truth = false;
+                        }
+                        if(!priceT.test(price))
+                        {
+                            errorprice.innerHTML = "Enter a valid price";
+                            truth = false;
+                        }
+                        if(price == ""){
+                            errorprice.innerHTML = "price field is required";
+                            truth = false;
+                        }
+
+                    
+
+
+                        return truth;
+
+                    }
+                    </script>
     <script src="script.js"></script>
 </body>
 </html>

@@ -2,6 +2,7 @@
         <div class="navbar__left">
         <a href="setUser.php"> User Settings </a>
           <a href="setUgroup.php"> Ugroup Settings</a>
+        <a href="setFees.php"> Fee Settings </a>
         </div>
         <div class="navbar__right">
             <h1 style="font-size: 15px; color: green; color: #2e4a66; margin-right: 10px;">

@@ -67,7 +67,14 @@ include "includes/action.php";
 							<td>Permissions</td>
 							<td>
 								<input type="checkbox" name="ugroup_admin" <?PHP if($row_groups['Ugroup_admin'] == 1) echo 'checked="checked" '; ?> />
-								Administrator</td>
+								Admin</td>
+						</tr>
+						<tr>
+							<td>
+                            </td>
+							<td>
+								<input type="checkbox" name="ugroup_birds" <?PHP if($row_groups['Ugroup_birds'] == 1) echo 'checked="checked" '; ?> />
+								Birds</td>
 						</tr>
 						<tr>
 							<td>
@@ -97,8 +104,8 @@ include "includes/action.php";
                         <tr>
 							<td></td>
 							<td>
-								<input type="checkbox" name="ugroup_disease" <?PHP if($row_groups['Ugroup_disease'] == 1){ echo 'checked="checked" ';} ?> />
-								disease</td>
+								<input type="checkbox" name="ugroup_eggs" <?PHP if($row_groups['Ugroup_eggs'] == 1){ echo 'checked="checked" ';} ?> />
+								eggs</td>
 						</tr>
 					</table>
 					<input type="submit"  class = "edit_btn" name="edit_Ugroup" value="Update" />
@@ -120,6 +127,13 @@ include "includes/action.php";
 							<td>
 								<input type="checkbox" name="ugroup_admin" />
 								Administrator</td>
+						</tr>
+						<tr>
+							<td>
+                            </td>
+							<td>
+								<input type="checkbox" name="ugroup_birds" />
+								Birds</td>
 						</tr>
 						<tr>
 							<td></td>
@@ -151,6 +165,12 @@ include "includes/action.php";
 								<input type="checkbox" name="ugroup_disease" />
 								Disease</td>
 						</tr>
+						<tr>
+							<td></td>
+							<td>
+								<input type="checkbox" name="ugroup_eggs"/>
+								eggs</td>
+						</tr>
 					</table>
 					<input type="submit" class="edit_btn" name="save_Ugroup" value="Save" />
 				</form>
@@ -178,10 +198,10 @@ include "includes/action.php";
 					<th style="background-color:#a7dbd8">Sales</th>
                     <th style="background-color:#a7dbd8">Medicine</th>
                     <th style="background-color:#a7dbd8">Feeds</th>
-                    <th style="background-color:#a7dbd8">Disease</th>
+                    <th style="background-color:#a7dbd8">Birds</th>
 				</tr>
 				<?PHP
-					foreach ($ugroups as $row_ugroups){?>
+					foreach ($result_usergroups as $row_ugroups){?>
 						<tr>
 									<td><?php echo $row_ugroups['Ugroup_name']; ?></td>
 									<td>
@@ -190,23 +210,23 @@ include "includes/action.php";
 									</td>
 									<td>
 										<input type="checkbox" disabled="disabled" 
-										<?php if ($row_ugroups['Ugroup_sales'] ==1) echo 'checked="checked" ';?>/>
+										<?php if ($row_ugroups['Ugroup_purchase'] ==1) echo 'checked="checked" ';?>/>
 									</td>
 									<td>
 										<input type="checkbox" disabled="disabled" 
-										<?php if ($row_ugroups['Ugroup_purchase'] ==1) echo 'checked="checked" ';?> />
+										<?php if ($row_ugroups['Ugroup_sales'] ==1) echo 'checked="checked" ';?> />
 									</td>
                                     <td>
 										<input type="checkbox" disabled="disabled" 
-										<?php if ($row_ugroups['Ugroup_purchase'] ==1) echo 'checked="checked" ';?> />
+										<?php if ($row_ugroups['Ugroup_medicine'] ==1) echo 'checked="checked" ';?> />
 									</td>
                                     <td>
 										<input type="checkbox" disabled="disabled" 
-										<?php if ($row_ugroups['Ugroup_purchase'] ==1) echo 'checked="checked" ';?>/>
+										<?php if ($row_ugroups['Ugroup_feeds'] ==1) echo 'checked="checked" ';?>/>
 									</td>
                                     <td>
 										<input type="checkbox" disabled="disabled" 
-										<?php if ($row_ugroups['Ugroup_purchase'] ==1) echo 'checked="checked" ';?> />
+										<?php if ($row_ugroups['Ugroup_birds'] ==1) echo 'checked="checked" ';?> />
 									</td>
 						   <td>
 					

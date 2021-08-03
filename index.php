@@ -23,7 +23,12 @@
                 $_SESSION['perm_feeds'] = $permisions_array['Ugroup_feeds'];
                 $_SESSION['perm_purchase'] = $permisions_array['Ugroup_purchases'];
                 $_SESSION['perm_sales'] = $permisions_array['Ugroup_sales'];
-                $_SESSION['perm_disease'] = $permisions_array['Ugroup_disease'];
+                $_SESSION['perm_birds'] = $permisions_array['Ugroup_birds'];
+                $_SESSION['perm_eggs'] = $permisions_array['Ugroup_eggs'];
+
+                $where = array("Fee_type" => "eggFee");
+                $array_fee = $feeObject->selectMethod("Fees", $where);
+                $_SESSION['egg_price'] = $array_fee['Fee_Amount'];
                 header("location: dashboard.php");
             }else{
                 $message = $data->error;

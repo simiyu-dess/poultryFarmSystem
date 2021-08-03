@@ -66,21 +66,29 @@ include 'includes/action.php';
                         // Call the select method that displays the record to be edited
                         $row = $birdsPurchaseObject->selectMethod("BirdsPurchase", $where);
                         ?>
-                            <form action="includes/action.php" method="post">
+                            <form action="includes/action.php" method="post" onsubmit="return validate()">
                                 <div class="input-group">
                                     <input type="hidden" name="id" value="<?php echo $id; ?>">
                                 </div>
+                                <div class="my-div-error" id="errorDate"></div>
                                 <div class="input-group">
                                     <label for="">Date</label>
-                                    <input id="BPDate" type="date" name="Date" value="<?php echo $row["Date"]; ?>" required>
+                                    <input type="date" id="date" name="Date" max="<?php echo date('Y-m-d');?>" value="<?php echo $row["Date"]; ?>">
                                 </div>
                                 <div class="input-group">
+                                <div class="my-div-error" id="errorType"></div>
+                                    <label for="">Birds Type</label>
+                                    <input type="number" step="any" id="typeOfBirds" name="NumberOfBirds" value="<?php echo $row["NumberOfBirds"]; ?>">
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorNumber"></div>
                                     <label for="">Number of Birds</label>
-                                    <input type="number" step="any" name="NumberOfBirds" value="<?php echo $row["NumberOfBirds"]; ?>" required>
+                                    <input type="number" step="any" id="numberOfBirds" name="NumberOfBirds" value="<?php echo $row["NumberOfBirds"]; ?>">
                                 </div>
                                 <div class="input-group">
+                                <div class="my-div-error" id="errorPrice"></div>
                                     <label for="">Price</label>
-                                    <input type="number" step="any" name="Price" value="<?php echo $row["Price"]; ?>" required>
+                                    <input type="number" step="any" id="price" name="Price" value="<?php echo $row["Price"]; ?>">
                                 </div>
                                 <div class="input-group">
                                     <button type="submit" name="birdspurchedit" class="btn" value="">Update</button>
@@ -89,18 +97,26 @@ include 'includes/action.php';
                         <?php
                     }else{
                         ?>  
-                            <form action="includes/action.php" method="post">
+                            <form action="includes/action.php" method="post" onsubmit="return validate()">
                                 <div class="input-group">
+                                <div class="my-div-error" id="errorDate"></div>
                                     <label for="">Date</label>
-                                    <input id="BPDate" type="date" name="Date" value="" required>
+                                    <input type="date" id="date" max="<?php echo date('Y-m-d');?>" name="Date" value="">
                                 </div>
                                 <div class="input-group">
+                                <div class="my-div-error" id="errorType"></div>
+                                    <label for="">Birds Type</label>
+                                    <input type="text"  name="typeOfBirds" id="typeOfBirds" value="">
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorNumber"></div>
                                     <label for="">Number of Birds</label>
-                                    <input type="number" step="any" name="NumberOfBirds" value="" required>
+                                    <input type="number" id ="numberOfBirds" step="any" name="NumberOfBirds" value="">
                                 </div>
                                 <div class="input-group">
+                                <div class="my-div-error" id="errorPrice"></div>
                                     <label for="">Price</label>
-                                    <input type="number" step="any" name="Price" value="" required>
+                                    <input type="number" id="price" step="any" name="Price" value="" >
                                 </div>
                                 <div class="input-group">
                                     <button type="submit" name="birdspurchsave" class="btn">Save</button>
@@ -114,6 +130,66 @@ include 'includes/action.php';
         <!-- sidebar nav -->
         <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_side_bar.php";?>
     </div>
+    <script>
+                    function validate(){
+                        var dates = document.getElementById("date").value;
+                        var type = document.getElementById("typeOfBirds").value;
+                        var number = document.getElementById("numberOfBirds").value;
+                        var price = document.getElementById("price").value;
+                       
+                        
+                        // Getting error divs ID
+                        var errordate = document.getElementById('errorDate');
+                        var errortype = document.getElementById("errorType");
+                        var errornumber = document.getElementById("errorNumber");
+                        var errorprice = document.getElementById("errorPrice");
+                        
+                        
+                        // Defining REGEX
+                        var nameT = /[A-Za-z]/;
+                        var jobT = /^(?![\s.]+$)[a-zA-Z\s.]*$/;
+                        var quantityT = /^(\d+)(?:\.(\d{1,2}))?$/;
+                        var priceT = /^(\d+)(?:\.(\d{1,2}))?$/;
+                        
+                        var truth = true;
+                       
+                        if(type == ""){
+                            errortype.innerHTML = "This field is required";
+                            truth =  false;
+                        }
+                        if(number < 1)
+                        {
+                            errornumber.innerHTML = "This field is required";
+                            truth = false;
+                        }
+                        if(dates == "")
+                        {
+                            errordate.innerHTML = "This field is required";
+                            truth = false;
+                        }
+                        
+                        if(number == ""){
+                            errornumber.innerHTML = " number is  field is required";
+                            truth = false;
+                        }
+                        if(price < 1)
+                        {
+                            errorprice.innerHTML = "Price must be a positiveinteger";
+                            truth = false;
+                        }
+                       
+                        if(price == ""){
+                            errorprice.innerHTML = "price field is required";
+                            truth = false;
+                        }
+
+                    
+
+
+                        return truth;
+
+                    }
+                    </script>
     <script src="script.js"></script>
 </body>
 </html>

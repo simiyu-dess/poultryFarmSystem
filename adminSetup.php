@@ -10,6 +10,12 @@ session_start();
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="./loginStyles.css" />
 <title>KPMS Register</title>
+<script type="text/javascript">
+function validatePassword()
+{
+    
+}
+</script>
 </head>
 <body>
 <div class="login__container">

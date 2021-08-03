@@ -79,21 +79,24 @@ include 'includes/action.php';
                         // Call the selectEmployee method that displays the record to be edited
                         $row = $medicineObject->selectMethod("MedicineUsage", $where);
                         ?>
-                            <form action="includes/action.php" method="post">
+                            <form action="includes/action.php" method="post" onsubmit="return validate()" >
                                 <div class="input-group">
                                     <input type="hidden" name="id" value="<?php echo $id; ?>">
                                 </div>
                                 <div class="input-group">
+                                <div class="my-div-error" id="errorName"></div>
                                     <label for="">MedicineName</label>
-                                    <input type="text" name="MedName" value="<?php echo $row["MedicineName"]; ?>" required>
+                                    <input type="text" name="MedName" id="medicineName" value="<?php echo $row["MedicineName"]; ?>" required>
                                 </div>
                                 <div class="input-group">
-                                    <label for="">Quantity</label>
+                                <div class="my-div-error" id="errorQuantity"></div>
+                                    <label for="">Quantity(Litres)</label>
                                     <input type="number" step="any" name="Quantity" value="<?php echo $row["Quantity"]; ?>" required>
                                 </div>
                                 <div class="input-group">
+                                <div class="my-div-error" id="errorDate"></div>
                                     <label for="">Date</label>
-                                    <input type="Date"  name="ConsumpDate" value="<?php echo $row["Date"]; ?>" required>
+                                    <input type="Date" id="date" name="ConsumpDate" value="<?php echo $row["Date"]; ?>" required>
                                 </div>
                                 <div class="input-group">
                                     <label for="">Employee Assigned</label>
@@ -116,22 +119,25 @@ include 'includes/action.php';
                         <?php
                     }else{
                         ?>
-                            <form action="includes/action.php" method="post">
+                            <form action="includes/action.php" method="post" onsubmit="return validate()">
                                 <div class="input-group">
+                                <div class="my-div-error" id="errorName"></div>
                                     <label for="">MedicineName</label>
-                                    <input type="text" name="MedName" value="" required>
+                                    <input type="text" name="MedName" id="medicineName" value="">
                                 </div>
                                 <div class="input-group">
-                                    <label for="">Quantity</label>
-                                    <input type="number" step="any" name="Quantity" value="" required>
+                                <div class="my-div-error" id="errorQuantity"></div>
+                                    <label for="">Quantity(Litres)</label>
+                                    <input type="number" step="any" id="quantity" name="Quantity" value="">
                                 </div>
                                 <div class="input-group">
+                                <div class="my-div-error" id="errorDate"></div>
                                     <label for="">Date</label>
-                                    <input type="Date"  name="ConsumpDate" value="" required>
+                                    <input type="Date"  name="ConsumpDate" id="date" value="">
                                 </div>
                                 <div class="input-group">
                                     <label for="">Employee Assigned</label>
-                                    <select name="Employee_incharge" id="" required>
+                                    <select name="Employee_incharge">
                                     <?php
                                         $myrow = $feedConsumptionObject->viewMethod("Employee");
                                         foreach($myrow as $row){
@@ -156,6 +162,49 @@ include 'includes/action.php';
         <!-- sidebar nav -->
         <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_side_bar.php";?>
     </div>
+    <script>
+    function validate(){
+                        var dates = document.getElementById("date").value;
+                        var quantity = document.getElementById("quantity").value;
+                        var name = document.getElementById("medicineName").value;
+                       
+                       
+                        
+                        // Getting error divs ID
+                        var errordate = document.getElementById('errorDate');
+                        var errorQuantity = document.getElementById("errorQuantity");
+                        var errorName = document.getElementById("errorName");
+                       
+                        
+                        
+                        // Defining REGEX
+                       
+                        
+                        var truth = true;
+                        if(dates == ""){
+                            errordate.innerHTML = "This field is required";
+                            truth = false;
+                        }
+                       
+                        if(quantity < 0)
+                        {
+                            errorQuantity.innerHTML = "The  quantity must be a positive integer";
+                            truth = false;
+                        }
+                        if(quantity == ""){
+                            errorQuantity.innerHTML = "This field is required";
+                            truth =  false;
+                        }
+                        if(name == "")
+                        {
+                            errorName.innerHTML = "This field is required";
+                            truth = false;
+                        }
+                    
+                        return truth;
+
+                    }
+                    </script>
     <script src="script.js"></script>
 </body>
 </html>

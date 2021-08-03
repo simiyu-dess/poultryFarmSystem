@@ -69,17 +69,24 @@ include 'includes/action.php';
                         $row = $birdsPurchaseObject->selectMethod("BirdsMortality", $where);
                         ?>
                             <div id="error" style="text-align: center; color:  #e65061;"></div>
-                            <form id="form" action="includes/action.php" method="post">
+                            <form id="form" action="includes/action.php" method="post" onsubmit="return validate()">
                                 <div class="input-group">
                                     <input type="hidden" name="id" value="<?php echo $id; ?>">
                                 </div>
                                 <div class="input-group">
+                                <div class="my-div-error" id="errorDate"></div>
                                     <label for="">Date</label>
-                                    <input id="Date" type="date" name="Date" value="<?php echo $row["Date"]; ?>">
+                                    <input id="Date" type="date"  name="Date" value="<?php echo $row["Date"]; ?>">
                                 </div>
                                 <div class="input-group">
+                                <div class="my-div-error" id="errorType"></div>
+                                    <label for="">Birds Type</label>
+                                    <input type="number" id="typeOfBirds" step="any" name="Deaths" value="<?php echo $row["Deaths"]; ?>">
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorNumber"></div>
                                     <label for="">Number of Deaths</label>
-                                    <input id="Deaths" type="number" step="any" name="Deaths" value="<?php echo $row["Deaths"]; ?>">
+                                    <input  type="number" id="numberOfDeaths" step="any" name="Deaths" value="<?php echo $row["Deaths"]; ?>">
                                 </div>
                                 <div class="input-group">
                                     <button type="submit" name="birdsmortedit" class="btn" value="">Update</button>
@@ -89,14 +96,21 @@ include 'includes/action.php';
                     }else{
                         ?>
                             <div id="error" style="text-align: center; color:  #e65061;"></div>
-                            <form id="form" action="includes/action.php" method="post">
+                            <form id="form" action="includes/action.php" method="post" onsubmit="return validate()">
                                 <div class="input-group">
+                                <div class="my-div-error" id="errorDate"></div>
                                     <label for="">Date</label>
-                                    <input id="Date" type="date" name="Date" value="">
+                                    <input id="Date" type="date" max="<?php echo date('Y-m-d');?>" name="Date" value="">
                                 </div>
                                 <div class="input-group">
+                                <div class="my-div-error" id="errorType"></div>
+                                    <label for="">Type of Birds</label>
+                                    <input  type="text" id="typeOfBirds" name="Deaths" value="">
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorNumber"></div>
                                     <label for="">Number of Deaths</label>
-                                    <input id="Deaths" type="number" step="any" name="Deaths" value="">
+                                    <input  type="number" step="any" id="numberOfDeaths" name="Deaths" value="">
                                 </div>
                                 <div class="input-group">
                                     <button type="submit" name="birdsmortsave" class="btn">Save</button>
@@ -110,6 +124,50 @@ include 'includes/action.php';
         <!-- sidebar nav -->
         <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_side_bar.php";?>
     </div>
-    <script src="script.js"></script>
+    <script>
+                    function validate(){
+                        var dates = document.getElementById("Date").value;
+                        var types = document.getElementById("typeOfBirds").value;
+                        var number = document.getElementById("numberOfDeaths").value;
+                        
+                       
+                        
+                        // Getting error divs ID
+                        var errordate = document.getElementById('errorDate');
+                        var errortype = document.getElementById("errorType");
+                        var errornumber = document.getElementById("errorNumber");
+                        
+                        
+                        
+                        var truth = true;
+                        
+                       
+                    
+                        if(number == " "){
+                            errornumber.innerHTML = " This  field is required";
+                            truth = false;
+                        }
+                        if(number < 1)
+                        {
+                            errornumber.innerHTML = "Number of deaths must be greater than zero";
+                            truth = false;
+                        }
+                        if(dates == "")
+                        {
+                            errordate.innerHTML = "This field is required";
+                            truth = false;
+                        }
+                        if(types == ""){
+                            errortype.innerHTML = "This field is required";
+                            truth = false;
+                        }
+
+                    
+
+
+                        return truth;
+
+                    }
+                    </script>
 </body>
 </html>
