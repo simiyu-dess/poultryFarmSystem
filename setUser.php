@@ -77,31 +77,41 @@ include "includes/action.php";
 			<?php if(isset($_GET['update_User']))
 			{
 				$id = $_GET['update_User'] ?? null;
+				$user_id = $id;
 				$where = array("User_ID" => $id);
 				$existing_Users = $userObject->selectMethod("User", $where);
 				?>
 				<p class="heading">Update User</p>
 
-  <form action="includes/action.php" method="post" onSubmit="">
+  <form action="includes/action.php" method="post" onsubmit="return validate()">
 
 	<table id="tb_set" style="margin:auto;">
 		<tr>
+		<div class="my-div-error" id="errorUsername"></div>
 			<td>Username</td>
 			<td><input type="text" name="username" 
-			placeholder="Username" value="<?php echo $existing_Users['Username'];?> " /></td>
+			placeholder="Username"id="username" value="<?php echo $existing_Users['Username'];?> " /></td>
 		</tr>
 		<tr>
+		<div class="my-div-error" id="erroPassword"></div>
 			<td>Password</td>
-			<td><input type="password" name="password" placeholder="Password" /></td>
+			<td><input type="password" id="password" name="password" placeholder="Password" /></td>
 		</tr>
 		<tr>
 			<td>Repeat Password</td>
-			<td><input type="password" name="conf_Password" placeholder="Repeat Password" /></td>
+			<td><input type="password" id="conf_password" name="conf_Password" placeholder="Repeat Password" /></td>
 		</tr>
 		<tr>
 			<td>Usergroup</td>
 			<td class="center">
 				<select name="ugroup" size="1" >
+				<?php 
+				$where = array("Ugroup_ID" => $existing_Users['Ugroup_ID']);
+				$curGroup = $ugroupObject->selectMethod("Ugroup", $where);
+				?>
+				<option value="<?php echo $curGroup['Ugroup_ID'] ?>">
+				<?php echo $curGroup['Ugroup_name']; ?>
+				</option>
 					<?PHP
 					foreach($result_Usergroups as $row_ugroup){?>
 					<option value="<?php echo $row_ugroup['Ugroup_ID']?>">
@@ -115,10 +125,19 @@ include "includes/action.php";
 			</td>
 		</tr>
 		<tr>
+		<div class="my-div-error" id="errorEmployee"></div>
 			<td>Employee:</td>
 			<td>
-				<select name="employee_id" size="1">
-					<option value="0">None</option>
+				<select name="employee_id" id="employee" size="1">
+				<?php
+                  $where = array("Employee_ID" => $existing_Users['Employee_ID']);
+				 
+				$curEmpl = $employeeObject->selectMethod("Employee", $where);
+				$employeeC = $curEmpl['Employee_ID'];
+				?>
+				<option value="<?php echo $curEmpl['Employee_ID']?>">
+				<?php echo $curEmpl['FirstName'].' '.$curEmpl['LastName']; ?>
+				</option>
 					<?PHP
 						foreach($result_Employess as $row_employees){?>
 		
@@ -140,20 +159,23 @@ include "includes/action.php";
 
 				<p class="heading"> Create User</p>
 
-				<form action="includes/action.php" method="post">
+				<form action="includes/action.php" method="post" onsubmit="return validate()">
+				<div class="my-div-error" id="errorUsername"></div>
 
 					<table id="tb_set" style="margin:auto;">
 						<tr>
+						
 							<td>Username</td>
-							<td><input type="text" name="username" placeholder="Username" value="" /></td>
+							<td><input type="text" id="username" name="username" placeholder="Username" value="" /></td>
 						</tr>
 						<tr>
+						<div class="my-div-error" id="errorPassword"></div>
 							<td>Password</td>
-							<td><input type="password" name="password" placeholder="Password" /></td>
+							<td><input type="password" id="password" name="password" placeholder="Password" /></td>
 						</tr>
 						<tr>
 							<td>Repeat Password</td>
-							<td><input type="password" name="conf_Password" placeholder="Repeat Password" /></td>
+							<td><input type="password" id="conf_password" name="conf_Password" placeholder="Repeat Password" /></td>
 						</tr>
 						<tr>
 							<td>Usergroup</td>
@@ -174,7 +196,8 @@ include "includes/action.php";
 						<tr>
 							<td>Employee:</td>
 							<td>
-								<select name="employee_id" size="1">
+							<div class="my-div-error" id="errorEmployee"></div>
+								<select name="employee_id" id="employee" size="1">
 									<option value="0">None</option>
 									<?PHP
 										foreach($result_Employess as $row_employees){?>
@@ -236,5 +259,62 @@ include "includes/action.php";
 		</main>
 	<?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_side_bar.php"; ?>
 	</div>
+	<script>
+                    function validate(){
+                        var username = document.getElementById("username").value;
+                        var password = document.getElementById("password").value;
+                        var conf_password = document.getElementById("conf_password").value;
+						var employee_id = document.getElementById("employee").value;
+                        
+                       
+                        
+                        // Getting error divs ID
+                        var errorusername = document.getElementById('errorUsername');
+                        var errorpassword = document.getElementById("errorPassword");
+                        var erroremployee = document.getElementById("errorEmployee");
+						var employees = <?php echo json_encode($empl_assoc); ?>;
+						var user_id = <?php echo $user_id; ?>;
+                        
+                        
+                        
+                        var truth = true;
+                        
+                       
+                    
+                        if(username == ""){
+							errorusername.innerHTML="User name is required";
+                            
+                            truth = false;
+                        }
+                        if(password == "")
+                        {
+							errorpassword.innerHTML = "Password field is required";
+                            
+                            truth = false;
+                        }
+                        if(conf_password == "")
+                        {
+                           
+                            truth = false;
+                        }
+						if(conf_password != password)
+						{
+							errorpassword.innerHTML = "passwords do not match";
+							truth = false;
+						}
+						for(i=0; i<employees.length; i++)
+						{
+							if(employees[i] == employee_id && employees[i])
+							{
+								erroremployee.innerHTML = "Employee already has a user account";
+								truth = false;
+							}
+						}
+                        
+
+                        return truth;
+
+                    }
+                    </script>
 	</body>
 </html>

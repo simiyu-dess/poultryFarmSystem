@@ -145,12 +145,6 @@ include 'includes/action.php';
                         var errorprice = document.getElementById("errorPrice");
                         
                         
-                        // Defining REGEX
-                        var nameT = /[A-Za-z]/;
-                        var jobT = /^(?![\s.]+$)[a-zA-Z\s.]*$/;
-                        var quantityT = /^(\d+)(?:\.(\d{1,2}))?$/;
-                        var priceT = /^(\d+)(?:\.(\d{1,2}))?$/;
-                        
                         var truth = true;
                        
                         if(type == ""){

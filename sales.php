@@ -98,7 +98,7 @@ include 'includes/action.php';
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorDate"></div>
                                     <label for="">Date</label>
-                                    <input type="date" id="date" name="Date" value="">
+                                    <input type="date" id="date" max="<?php echo date('Y-m-d');?>" name="Date" value="">
                                 </div>
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorNumber"></div>
@@ -125,6 +125,7 @@ include 'includes/action.php';
     function validate(){
                         var dates = document.getElementById("date").value;
                         var number = document.getElementById("number").value;
+                        var remainingEggs = <?php echo $remainingEggs; ?>;
                        
                        
                         
@@ -146,6 +147,11 @@ include 'includes/action.php';
                         if(number < 1)
                         {
                             errornumber.innerHTML = "The number must be a positive integer";
+                            truth = false;
+                        }
+                        if(remainingEggs < number)
+                        {
+                            errornumber.innerHTML = "Available Eggs are less than the number requested";
                             truth = false;
                         }
                         if(number == ""){

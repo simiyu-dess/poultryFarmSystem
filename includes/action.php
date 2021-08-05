@@ -98,7 +98,7 @@ session_start();
             }
         }
     }
-
+    $databaseObject = new Database();
     $adminObject = new CrudOperation();
     //handle the saving of the admin user
     if(isset($_POST["setup_admin"]))
@@ -250,6 +250,16 @@ session_start();
     if(isset($_GET['delete_Ugroup']))
     {
         $id = $_GET['delete_Ugroup'];
+        $sql_group = "SELECT * FROM User WHERE Ugroup_ID = $id";
+        $query = $databaseObject->connect()->query($sql_group);
+
+        if(mysqli_num_rows($query))
+        {
+            $_SESSION['msg'] = "Failed to delete, Have active account!";
+            header('Location: ../setUgroup.php');
+        }
+        else
+        {
         $where = array("Ugroup_Id" => $id);
         
         if($ugroupObject->deleteMethod("Ugroup", $where))
@@ -257,6 +267,7 @@ session_start();
             $_SESSION['msg'] = "Ugroup record deleted successfully";
             header('Location:../setUgroup.php');
         }
+    }
     
     }
 
@@ -700,7 +711,7 @@ session_start();
     // INSIGHTS
 
     // Returning the total number of birds purchased
-    $databaseObject = new Database();
+   
     $query = "SELECT SUM(NumberOfBirds) AS sum FROM `BirdsPurchase`"; 
     $result = $databaseObject->connect()->query($query);
     while($row = mysqli_fetch_assoc($result)){
