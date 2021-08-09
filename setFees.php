@@ -1,10 +1,11 @@
 <?PHP
 session_start();
-include "includes/action.php";
+include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
 if (!isset($_SESSION['Username'])) {
     header("Location: index.php");
     exit();
 }
+$eggPrice = getEggPrice();
 
 ?>
 <DOCTYPE HTML>
@@ -19,7 +20,7 @@ if (!isset($_SESSION['Username'])) {
 <h1>Set Price For Eggs </h1>
 <form method="POST" action="includes/action.php">
 <label for="">Price per egg</label>
-<input type="number" placeholder="<?php echo $_SESSION['egg_price'] ;?>" name="eggprice"/>
+<input type="number" placeholder="<?php echo $eggPrice;?>" name="eggprice"/>
 <button name="saveFee" value="Save">Save</button>
 </form>
 </div>

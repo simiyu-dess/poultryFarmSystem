@@ -1,11 +1,15 @@
 <?PHP
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-include "includes/database.php";
-include "includes/action.php";
+session_start();
+include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
+
+if (!isset($_SESSION['Username'])) {
+    header("Location: index.php");
+    exit();
+}
 	$user_id = 0;
 	$employee = 0;
+	$employeeC = 0;
+	$username = "";
 
 	//Select all users from USER
 	$users = array();
@@ -80,6 +84,7 @@ include "includes/action.php";
 				$user_id = $id;
 				$where = array("User_ID" => $id);
 				$existing_Users = $userObject->selectMethod("User", $where);
+				$username =  $existing_Users['Username'];
 				?>
 				<p class="heading">Update User</p>
 
@@ -88,9 +93,10 @@ include "includes/action.php";
 	<table id="tb_set" style="margin:auto;">
 		<tr>
 		<div class="my-div-error" id="errorUsername"></div>
+		
 			<td>Username</td>
 			<td><input type="text" name="username" 
-			placeholder="Username"id="username" value="<?php echo $existing_Users['Username'];?> " /></td>
+			placeholder="Username" id="username" value="<?php echo $existing_Users['Username'];?> " /></td>
 		</tr>
 		<tr>
 		<div class="my-div-error" id="erroPassword"></div>
@@ -198,7 +204,7 @@ include "includes/action.php";
 							<td>
 							<div class="my-div-error" id="errorEmployee"></div>
 								<select name="employee_id" id="employee" size="1">
-									<option value="0">None</option>
+									
 									<?PHP
 										foreach($result_Employess as $row_employees){?>
 						
@@ -264,7 +270,9 @@ include "includes/action.php";
                         var username = document.getElementById("username").value;
                         var password = document.getElementById("password").value;
                         var conf_password = document.getElementById("conf_password").value;
-						var employee_id = document.getElementById("employee").value;
+						var employee_id = Number(document.getElementById("employee").value);
+						var employees = <?php echo json_encode($empl_assoc); ?>;
+						var usernames = <?php echo json_encode($user_names); ?>;
                         
                        
                         
@@ -272,19 +280,24 @@ include "includes/action.php";
                         var errorusername = document.getElementById('errorUsername');
                         var errorpassword = document.getElementById("errorPassword");
                         var erroremployee = document.getElementById("errorEmployee");
-						var employees = <?php echo json_encode($empl_assoc); ?>;
-						var user_id = <?php echo $user_id; ?>;
+						var employee = <?php echo $employeeC; ?>;
+						var id = Number(employee_id);
+						var name = username;
+
+
                         
                         
                         
                         var truth = true;
                         
                        
-                    
+						
                         if(username == ""){
+							
 							errorusername.innerHTML="User name is required";
                             
                             truth = false;
+						
                         }
                         if(password == "")
                         {
@@ -302,15 +315,26 @@ include "includes/action.php";
 							errorpassword.innerHTML = "passwords do not match";
 							truth = false;
 						}
-						for(i=0; i<employees.length; i++)
+						for(i = 0; i < employees.length; i++)
 						{
-							if(employees[i] == employee_id && employees[i])
+							if(employees[i] == id)
 							{
-								erroremployee.innerHTML = "Employee already has a user account";
+								erroremployee.innerHTML = "employee already associated with another account";
+								truth = false;
+							}
+							for(i = 0; i < usernames.length; i++)
+						{
+							if(usernames[i] == username)
+							{
+								errorusername.innerHTML = "User name already exists";
 								truth = false;
 							}
 						}
-                        
+						}
+
+						
+						
+                       
 
                         return truth;
 

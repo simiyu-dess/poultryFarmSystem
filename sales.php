@@ -4,8 +4,10 @@ if (!isset($_SESSION['Username'])) {
     header("Location: index.php");
     exit();
 }
-include 'includes/database.php';
-include 'includes/action.php';
+include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
+
+$eggsPrice = getEggPrice();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,6 +36,7 @@ include 'includes/action.php';
                         <th>Number of Eggs</th>
                         <th>Revenue</th>
                         <th colspan="2">Action</th>
+                        <th>User</th>
                     </thead>
                     <tbody>
                     <?php
@@ -43,7 +46,7 @@ include 'includes/action.php';
                             // breaking point
                             ?>
                             <tr>
-                                <td><?php echo $row['Date'];?></td>
+                                <td><?php echo $row['Sales_Date'];?></td>
                                 <td><?php echo $row['NumberOfEggs'];?></td>
                                 <td><?php echo $row['Revenue'];?></td>
                                 <td>
@@ -52,6 +55,7 @@ include 'includes/action.php';
                                 <td>
                                     <a class="del_btn" href="includes/action.php?salesdelete=1&id=<?php echo $row["Sales_ID"]; ?>">Delete</a>
                                 </td>
+                                <td><?php echo $row['Revenue'];?></td>
                             </tr>
                             <?php
                         }
@@ -107,7 +111,7 @@ include 'includes/action.php';
                                 </div>
                                 <div class="input-group">
                                     <label for="">Revenue</label>
-                                    <input type="number" disabled="disabled" name="Revenue" placeholder="<?php echo $_SESSION['egg_price'];?> per egg (KSH)">
+                                    <input type="number" disabled="disabled" name="Revenue" placeholder="<?php echo $eggsPrice;?> per egg (KSH)">
                                 </div>
                                 <div class="input-group">
                                     <button type="submit" name="salessave" class="btn">Save</button>

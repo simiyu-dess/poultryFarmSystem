@@ -1,8 +1,9 @@
 <?php
-    include 'includes/database.php';
-    include 'includes/loginServer.php';
-    include 'includes/action.php';
-    session_start();
+session_start();
+include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
+    
+    
+    
     // instantiating LoginServer class to access its functions/methods
     $data = new LoginServer();
     // variable to store message
@@ -13,8 +14,10 @@
             "Username" => $_POST["Username"],
             "Password" => $_POST["Password"]
         );
+        $username = sanitize($_POST["Username"]);
+        $password = sanitize($_POST['Password']);
         if($data->loginValidation($field)){
-            if($data->canLogin("User", $field)){
+            if($data->canLogin("User",$username,$password)){
                 $_SESSION["Username"] = $_POST["Username"];
                 $where = array("Ugroup_ID" => $_SESSION['ugroupid']);
                 $permisions_array = $ugroupObject->selectMethod("Ugroup", $where);
@@ -25,10 +28,6 @@
                 $_SESSION['perm_sales'] = $permisions_array['Ugroup_sales'];
                 $_SESSION['perm_birds'] = $permisions_array['Ugroup_birds'];
                 $_SESSION['perm_eggs'] = $permisions_array['Ugroup_eggs'];
-
-                $where = array("Fee_type" => "eggFee");
-                $array_fee = $feeObject->selectMethod("Fees", $where);
-                $_SESSION['egg_price'] = $array_fee['Fee_Amount'];
                 header("location: dashboard.php");
             }else{
                 $message = $data->error;
@@ -49,7 +48,7 @@
 </head>
 <body>
     <div class="login__container">
-        <h1> Admin Login</h1>
+        <h1> USER Login</h1>
         <?php
             // display error message
             if(isset($message)){

@@ -2,8 +2,12 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-include "includes/database.php";
-include "includes/action.php";
+session_start();
+include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
+if (!isset($_SESSION['Username'])) {
+    header("Location: index.php");
+    exit();
+}
 
 
 	$ugroup_id = 0;

@@ -1,7 +1,6 @@
 <?php
     session_start();
-    include 'includes/database.php';
-    include 'includes/action.php';
+    include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">

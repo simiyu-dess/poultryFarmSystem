@@ -4,8 +4,7 @@ if (!isset($_SESSION['Username'])) {
     header("Location: index.php");
     exit();
 }
-include 'includes/database.php';
-include 'includes/action.php';
+include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
 
 ?>
 <!DOCTYPE html>

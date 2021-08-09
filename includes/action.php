@@ -1,6 +1,10 @@
 <?php
+include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
+
 session_start();
-    include_once "database.php";
+    
+    
+   
     class CrudOperation extends Database{
         // Insertion method 
         public function insertionMethod($table, $fields){
@@ -104,8 +108,8 @@ session_start();
     if(isset($_POST["setup_admin"]))
     {
         $myArray = array(
-            "Username" => $_POST['Username'],
-            "Password" => $_POST['Password'],
+            "Username" => sanitize($_POST['Username']),
+            "Password" => password_hash($_POST['Password'], PASSWORD_DEFAULT),
             "Ugroup_ID" => "1",
             "Employee_ID" => "0",
             "setupDate" => date('Y-m-d')
@@ -120,10 +124,10 @@ session_start();
     if(isset($_POST["save_User"]))
     {
         $myArray = array(
-            "Username" => $_POST['username'],
-            "Password" => $_POST['password'],
-            "Ugroup_ID" => $_POST['ugroup'],
-            "Employee_ID" => $_POST['employee_id'],
+            "Username" => sanitize($_POST['username']),
+            "Password" => password_hash(sanitize($_POST['password']), PASSWORD_DEFAULT),
+            "Ugroup_ID" => sanitize($_POST['ugroup']),
+            "Employee_ID" => sanitize($_POST['employee_id']),
             "setupDate" => date('Y-m-d')
 
         );
@@ -139,10 +143,10 @@ session_start();
         $id = $_POST['user_id'];
         $where = array("User_ID" => $id);
         $myArray= array(
-            "Username" => $_POST['username'],
-            "Password" => $_POST['password'],
-            "Ugroup_ID" => $_POST['ugroup'],
-            "Employee_ID" => $_POST['employee_id'],
+            "Username" => sanitize($_POST['username']),
+            "Password" => password_hash(sanitize($_POST['password']), PASSWORD_DEFAULT),
+            "Ugroup_ID" => sanitize($_POST['ugroup']),
+            "Employee_ID" => sanitize($_POST['employee_id']),
             "setupDate" => date('Y-m-d')
         );
 
@@ -275,38 +279,37 @@ session_start();
     // Handle the save button for form submission
     if(isset($_POST["emplSave"])){
         $myArray = array(
-            "FirstName" => $_POST["FirstName"],
-            "LastName" => $_POST["LastName"],
-            "Gender" => $_POST["Gender"],
-            "Location" => $_POST["Location"],
-            "Phone" => $_POST["Phone"],
-            "Job" => $_POST["Job"],
-            "Salary" => $_POST["Salary"],
-            "startDate" => $_POST["StartDate"],
-            "endDate" => '00-00-00',
+            "FirstName" => sanitize($_POST["FirstName"]),
+            "LastName" => sanitize($_POST["LastName"]),
+            "Gender" => sanitize($_POST["Gender"]),
+            "Location" => sanitize($_POST["Location"]),
+            "Phone" => sanitize($_POST["Phone"]),
+            "Job" => sanitize($_POST["Job"]),
+            "Salary" => sanitize($_POST["Salary"]),
+            "startDate" => sanitize($_POST["StartDate"]),
             "User_ID" =>  $_SESSION['loguser']
         );
         // Call the insertion method to add record to the database
         if($employeeObject->insertionMethod("Employee", $myArray)){
             $_SESSION['msg'] = "employee added successfully!";
             header("location: ../newEmployee.php");
-        };
+        }
     }
     // Handle the edit button for record editing
     if(isset($_POST["emplEdit"])){
         $id = $_POST["id"];
         $where = array("Employee_ID" => $id);
         $myArray = array(
-            "FirstName" => $_POST["FirstName"],
-            "LastName" => $_POST["LastName"],
-            "Gender" => $_POST["Gender"],
-            "Location"=> $_POST["Location"],
-            "Phone" => $_POST["Phone"],
-            "Job" => $_POST["Job"],
-            "Salary" => $_POST["Salary"],
-            "startDate" => $_POST["StartDate"],
-            "endDate" => $_POST["EndDate"],
-            "User_ID" =>  $_SESSION['loguser']
+            "FirstName" => sanitize($_POST["FirstName"]),
+            "LastName" => sanitize($_POST["LastName"]),
+            "Gender" => sanitize($_POST["Gender"]),
+            "Location"=> sanitize($_POST["Location"]),
+            "Phone" => sanitize($_POST["Phone"]),
+            "Job" => sanitize($_POST["Job"]),
+            "Salary" => sanitize($_POST["Salary"]),
+            "startDate" => sanitize($_POST["StartDate"]),
+            "endDate" => sanitize($_POST["EndDate"]),
+            "User_ID" =>  sanitize($_SESSION['loguser'])
         );
         if($employeeObject->updateMethod("Employee", $where, $myArray)){
             $_SESSION['msg'] = "Employee record edited successfully!";
@@ -332,9 +335,9 @@ session_start();
     if(isset($_POST["feedconssave"])){
         $foreignID = $_POST["Employee"];
         $myArray = array(
-            "ConsDate" => $_POST["ConsDate"],
-            "Quantity" => $_POST["Quantity"],
-            "Price" => $_POST["Price"],
+            "ConsDate" => sanitize($_POST["ConsDate"]),
+            "Quantity" => sanitize($_POST["Quantity"]),
+            "Price" => sanitize($_POST["Price"]),
             "Employee" => $foreignID,
             "User_ID" =>  $_SESSION['loguser']
         );
@@ -349,10 +352,10 @@ session_start();
         $id = $_POST["id"];
         $where = array("FeedConsumption_ID" => $id);
         $myArray = array(
-            "ConsDate" => $_POST["ConsDate"],
-            "Quantity" => $_POST["Quantity"],
-            "Price" => $_POST["Price"],
-            "Employee" => $_POST["Employee"],
+            "ConsDate" => sanitize($_POST["ConsDate"]),
+            "Quantity" => sanitize($_POST["Quantity"]),
+            "Price" => sanitize($_POST["Price"]),
+            "Employee" => sanitize($_POST["Employee"]),
             "User_ID" =>  $_SESSION['loguser']
         );
         if($feedConsumptionObject->updateMethod("FeedConsumption", $where, $myArray)){
@@ -376,9 +379,9 @@ session_start();
     // Handle the save button for form submission
     if(isset($_POST["feedpurchsave"])){
         $myArray = array(
-            "Date" => $_POST["Date"],
-            "Quantity" => $_POST["Quantity"],
-            "Price" => $_POST["Price"],
+            "Date" => sanitize($_POST["Date"]),
+            "Quantity" => sanitize($_POST["Quantity"]),
+            "Price" => sanitize($_POST["Price"]),
             "User_ID" =>  $_SESSION['loguser']
         );
         // Call the insertion method to add record to the database
@@ -391,9 +394,9 @@ session_start();
         $id = $_POST["id"];
         $where = array("FeedPurchase_ID" => $id);
         $myArray = array(
-            "Date" => $_POST["Date"],
-            "Quantity" => $_POST["Quantity"],
-            "Price" => $_POST["Price"],
+            "Date" => sanitize($_POST["Date"]),
+            "Quantity" => sanitize($_POST["Quantity"]),
+            "Price" => sanitize($_POST["Price"]),
             "User_ID" =>  $_SESSION['loguser']
         );
         if($feedPurchaseObject->updateMethod("FeedPurchase", $where, $myArray)){
@@ -418,9 +421,9 @@ session_start();
     // Handle the save button for form submission
     if(isset($_POST["birdspurchsave"])){
         $myArray = array(
-            "Date" => $_POST["Date"],
-            "NumberOfBirds" => $_POST["NumberOfBirds"],
-            "Price" => $_POST["Price"],
+            "Date" => sanitize($_POST["Date"]),
+            "NumberOfBirds" => sanitize($_POST["NumberOfBirds"]),
+            "Price" => sanitize($_POST["Price"]),
             "User_ID" =>  $_SESSION['loguser']
         );
         // Call the insertion method to add record to the database
@@ -431,12 +434,12 @@ session_start();
     }
     // Handle the edit button for record editing
     if(isset($_POST["birdspurchedit"])){
-        $id = $_POST["id"];
+        $id = sanitize($_POST["id"]);
         $where = array("BirdsPurchase_ID" => $id);
         $myArray = array(
-            "Date" => $_POST["Date"],
-            "NumberOfBirds" => $_POST["NumberOfBirds"],
-            "Price" => $_POST["Price"],
+            "Date" => sanitize($_POST["Date"]),
+            "NumberOfBirds" => sanitize($_POST["NumberOfBirds"]),
+            "Price" => sanitize($_POST["Price"]),
             "User_ID" =>  $_SESSION['loguser']
         );
         if($birdsPurchaseObject->updateMethod("BirdsPurchase", $where, $myArray)){
@@ -463,8 +466,8 @@ session_start();
     // Handle the save button for form submission
     if(isset($_POST["birdsmortsave"])){
         $myArray = array(
-            "Date" => $_POST["Date"],
-            "Deaths" => $_POST["Deaths"],
+            "Date" => sanitize($_POST["Date"]),
+            "Deaths" => sanitize($_POST["Deaths"]),
             "User_ID" =>  $_SESSION['loguser']
         );
         // Call the insertion method to add record to the database
@@ -475,12 +478,12 @@ session_start();
     }
     // Handle the edit button for record editing
     if(isset($_POST["birdsmortedit"])){
-        $id = $_POST["id"];
+        $id = sanitize($_POST["id"]);
         $where = array("BirdsMortality_ID" => $id);
         $myArray = array(
-            "Date" => $_POST["Date"],
-            "Deaths" => $_POST["Deaths"],
-            "User_ID" =>  $_SESSION['loguser']
+            "Date" => sanitize($_POST["Date"]),
+            "Deaths" => sanitize($_POST["Deaths"]),
+            "User_ID" => $_SESSION['loguser']
         );
         if($birdsMortalityObject->updateMethod("BirdsMortality", $where, $myArray)){
             header("location: ../birdsMortality.php?msg=Updated Successfully!");
@@ -503,10 +506,10 @@ session_start();
     if(isset($_POST["medpurchSave"]))
     {
         $myArray = array(
-            "MedicineName" => $_POST['MedName'],
-            "Quantity" => $_POST['Quantity'],
-            "Date" => $_POST['Date'],
-            "Price" => $_POST['Price'],
+            "MedicineName" => sanitize($_POST['MedName']),
+            "Quantity" => sanitize($_POST['Quantity']),
+            "Date" => sanitize($_POST['Date']),
+            "Price" => sanitize($_POST['Price']),
             "User_ID" => $_SESSION['loguser']
         );
         if($medicineObject->insertionMethod("MedicinePurchase",$myArray))
@@ -518,15 +521,15 @@ session_start();
  //handle the medicine edit
      if(isset($_POST["medpurchUpdate"]))
      {
-         $id = $_POST['id'];
+         $id = sanitize($_POST['id']);
          $where = array(
              "MedicinePurchase_ID" => $id
          );
          $myArray =array(
-             "MedicineName" => $_POST['MedName'],
-             "Quantity" => $_POST['Quantity'],
-             "Date" => $_POST['Date'],
-             "Price" => $_POST['Price'],
+             "MedicineName" => sanitize($_POST['MedName']),
+             "Quantity" => sanitize($_POST['Quantity']),
+             "Date" => sanitize($_POST['Date']),
+             "Price" => sanitize($_POST['Price']),
              "User_ID" =>  $_SESSION['loguser']
              
          );
@@ -554,10 +557,10 @@ session_start();
      if(isset($_POST['medusageSave']))
      {
          $myArray = array(
-             "MedicineName" => $_POST['MedName'],
-             "Quantity" => $_POST['Quantity'],
-             "Date" => $_POST['ConsumpDate'],
-             "Employee" => $_POST['Employee_incharge'],
+             "MedicineName" => sanitize($_POST['MedName']),
+             "Quantity" => sanitize($_POST['Quantity']),
+             "Date" => sanitize($_POST['ConsumpDate']),
+             "Employee" => sanitize($_POST['Employee_incharge']),
              "User_ID" =>  $_SESSION['loguser']
 
          );
@@ -576,10 +579,10 @@ session_start();
 
          );
          $myArray = array(
-             "MedicineName" => $_POST['MedName'],
-             "Quantity" => $_POST['Quantity'],
-             "Date" => $_POST['ConsumpDate'],
-             "Employee" => $_POST['Employee_incharge'],
+             "MedicineName" => sanitize($_POST['MedName']),
+             "Quantity" => sanitize($_POST['Quantity']),
+             "Date" => sanitize($_POST['ConsumpDate']),
+             "Employee" => sanitize($_POST['Employee_incharge']),
              "User_ID" =>  $_SESSION['loguser']
          );
          if($medicineObject->updateMethod("MedicineUsage", $where, $myArray))
@@ -603,13 +606,15 @@ session_start();
 
     // Create object for egg sales
     $salesObject = new CrudOperation();
-
+    $eggPrice = getEggPrice();
     // Handle the save button for form submission
     if(isset($_POST["salessave"])){
-        $Revenue = $_SESSION['egg_price'] * $_POST["NumberOfEggs"];
+        $numbeOfEggs = sanitize($_POST["NumberOfEggs"]);
+        $sales_date = sanitize($_POST["Date"]);
+        $Revenue = $eggPrice * $_POST["NumberOfEggs"];
         $myArray = array(
-            "Date" => $_POST["Date"],
-            "NumberOfEggs" => $_POST["NumberOfEggs"],
+            "Sales_Date" => $_POST["Date"],
+            "NumberOfEggs" =>$_POST["NumberOfEggs"],
             "Revenue" => $Revenue,
             "User_ID" =>  $_SESSION['loguser']
         );
@@ -622,11 +627,11 @@ session_start();
     // Handle the edit button for record editing
     if(isset($_POST["salesedit"])){
         $id = $_POST["id"];
-        $Revenue = $_SESSION['egg_price'] * $_POST["NumberOfEggs"];
+        $Revenue = $eggPrice * $_POST["NumberOfEggs"];
         $where = array("Sales_ID" => $id);
         $myArray = array(
-            "Date" => $_POST["Date"],
-            "NumberOfEggs" => $_POST["NumberOfEggs"],
+            "Sales_Date" => sanitize($_POST["Date"]),
+            "NumberOfEggs" => sanitize($_POST["NumberOfEggs"]),
             "Revenue" => $Revenue,
             "User_ID" =>  $_SESSION['loguser']
         );
@@ -654,8 +659,8 @@ session_start();
     // Handle the save button for form submission
     if(isset($_POST["productionsave"])){
         $myArray = array(
-            "Date" => $_POST["Date"],
-            "NumberOfEggs" => $_POST["NumberOfEggs"],
+            "Date" => sanitize($_POST["Date"]),
+            "NumberOfEggs" => sanitize($_POST["NumberOfEggs"]),
             "User_ID" =>  $_SESSION['loguser']
         );
         // Call the insertion method to add record to the database
@@ -669,8 +674,8 @@ session_start();
         $id = $_POST["id"];
         $where = array("Production_ID" => $id);
         $myArray = array(
-            "Date" => $_POST["Date"],
-            "NumberOfEggs" => $_POST["NumberOfEggs"],
+            "Date" => sanitize($_POST["Date"]),
+            "NumberOfEggs" => sanitize($_POST["NumberOfEggs"]),
             "User_ID" =>  $_SESSION['loguser']
         );
         if($productionObject->updateMethod("Production", $where, $myArray)){
@@ -694,7 +699,7 @@ session_start();
      $where = array("Fee_type" => "eggFee");
         $myArray = array(
             "Fee_type" => "eggFee",
-            "Fee_amount" => $_POST['eggprice']
+            "Fee_Amount" => sanitize($_POST['eggprice'])
         );
         if($feeObject->updateMethod("Fees",$where,$myArray))
         {
@@ -711,7 +716,9 @@ session_start();
     // INSIGHTS
 
     // Returning the total number of birds purchased
+    $seconds = 31 * 24 *60*60;
    
+    $timestamp = strtotime(date('Y-m-d')) - $seconds;
     $query = "SELECT SUM(NumberOfBirds) AS sum FROM `BirdsPurchase`"; 
     $result = $databaseObject->connect()->query($query);
     while($row = mysqli_fetch_assoc($result)){
@@ -749,7 +756,7 @@ session_start();
     }
 
     // Returning total revenue
-    $query = "SELECT SUM(Revenue) AS sum FROM `Sales`";
+    $query = "SELECT SUM(Revenue) AS sum FROM `Sales` WHERE UNIX_TIMESTAMP(Sales_Date) > $timestamp";
     $result = $databaseObject->connect()->query($query);
     while($row = mysqli_fetch_assoc($result)){
         $sales = $row['sum'];

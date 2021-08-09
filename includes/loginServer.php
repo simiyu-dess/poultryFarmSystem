@@ -1,6 +1,5 @@
 <?php
-
-    include_once 'database.php';
+ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
     class LoginServer extends Database{
 
         public $error;
@@ -25,20 +24,16 @@
         }
 
         // method to check if right login information was entered
-        public function canLogin($table, $where){
-            $condition = '';
-            foreach($where as $key => $value){
-                $condition .= $key . " = '" . $value ."' AND ";
-            }
-            $condition = substr($condition, 0, -5);
+        public function canLogin($table, $username, $password){
+            
 
 
             // query
-            $sql = "SELECT * FROM " . $table . " WHERE " . $condition;
+            $sql = "SELECT * FROM " .$table. " WHERE  Username = '$username'";
             $query = $this->connect()->query($sql);
-            // if number of rows is greater than 0, the user entered the right info. else, wrong data
-            if(mysqli_num_rows($query)){
-                $array = mysqli_fetch_array($query);
+            $array = mysqli_fetch_array($query);
+            if(password_verify($password, $array['Password']))
+            {
                 $_SESSION['ugroupid'] = $array['Ugroup_ID'];
                 $_SESSION['loguser'] = $array['User_ID'];
                 return true;
