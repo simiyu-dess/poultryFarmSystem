@@ -26,12 +26,14 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
                     </p>
                     </div>
                 <?php endif ?>
-                <table>
+                <th>Feed Purchases</th>
+                <table id ="tb_table">
                     <thead>
                         <th>Date</th>
-                        <th>Quantity Purchased</th>
-                        <th>Amount Paid</th>
+                        <th>Quantity(KGS)</th>
+                        <th>Amount Paid(KSHS)</th>
                         <th colspan="2">Action</th>
+                        <th> User </th>
                     </thead>
                     <tbody>
                     <?php
@@ -50,6 +52,7 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
                                 <td>
                                     <a class="del_btn" href="includes/action.php?feedpurchdelete=1&id=<?php echo $row["FeedPurchase_ID"]; ?>">Delete</a>
                                 </td>
+                                <td></td>
                             </tr>
                             <?php
                         }
@@ -77,7 +80,7 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorName"></div>
                                     <label for="">Name</label>
-                                    <input type="text"  name="Name" id="name" value="<?php echo $row["Name"]; ?>">
+                                    <input type="text"  name="feedname" id="name" value="<?php echo $row["Name"]; ?>">
                                 </div>
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorQuantity"></div>
@@ -105,7 +108,7 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorName"></div>
                                     <label for="">Name</label>
-                                    <input type="text" step="any" id="name" name="Name" value="" >
+                                    <input type="text" step="any" id="name" name="feedname" value="" >
                                 </div>
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorQuantity"></div>

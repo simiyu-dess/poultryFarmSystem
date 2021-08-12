@@ -2,7 +2,6 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-session_start();
 include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
 if (!isset($_SESSION['Username'])) {
     header("Location: index.php");
@@ -16,17 +15,12 @@ if (!isset($_SESSION['Username'])) {
 	//Select all Usergroups from UGROUP
 	$ugroups = array();
 	$result_usergroups = $ugroupObject->viewMethod("Ugroup");
-	
+	$ugroup_names = array();
 	foreach($result_usergroups as  $row_ugroups){
 		$ugroups[] = $row_ugroups;
 		$ugroup_names[] = $row_ugroups['Ugroup_name'];
 	}
 
-	//Check for error from set_ugroup_del.php
-
-	//Set heading and variable according to selectio
-
-	//SAVE-Button
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -59,7 +53,7 @@ if (!isset($_SESSION['Username'])) {
 
                 
               <?PHP echo '<p class="heading">Edit User</p>'; ?>
-				<form action="includes/action.php" method="post">
+				<form action="includes/action.php" method="post" onsubmit="return validate()">
 					<table id="tb_set" style="margin:auto;">
 						<tr>
 							<td>Usergroup Name</td>
@@ -118,12 +112,13 @@ if (!isset($_SESSION['Username'])) {
                 <?php } 
                 else
                 {?>
-                    <form action="includes/action.php" method="post">
+                    <form action="includes/action.php" method="post" onsubmit="return validate()">
 					<table id="tb_set" style="margin:auto;">
+					<div class="my-div-error" id="errorUgroup"></div>
 						<tr>
 							<td>Usergroup Name</td>
 							<td>
-                            <input type="text" name="ugroup_name" placeholder="Usergroup Name" value=""/>
+                            <input type="text" name="ugroup_name" id="ugroupname" placeholder="Usergroup Name" value=""/>
                             </td>
 						</tr>
 						<tr>
@@ -149,31 +144,31 @@ if (!isset($_SESSION['Username'])) {
 							<td></td>
 							<td>
 								<input type="checkbox" name="ugroup_purchases" />
-								Purchase</td>
+								Purchase Action</td>
 						</tr>
                         <tr>
 							<td></td>
 							<td>
 								<input type="checkbox" name="ugroup_medicine" />
-								medicine</td>
+								medicine Action</td>
 						</tr>
                         <tr>
 							<td></td>
 							<td>
 								<input type="checkbox" name="ugroup_feeds" />
-								Feeds</td>
+								Feeds Action</td>
 						</tr>
                         <tr>
 							<td></td>
 							<td>
 								<input type="checkbox" name="ugroup_disease" />
-								Disease</td>
+								Disease Action</td>
 						</tr>
 						<tr>
 							<td></td>
 							<td>
 								<input type="checkbox" name="ugroup_eggs"/>
-								eggs</td>
+								eggs Action</td>
 						</tr>
 					</table>
 					<input type="submit" class="edit_btn" name="save_Ugroup" value="Save" />
@@ -252,5 +247,34 @@ if (!isset($_SESSION['Username'])) {
         </main>
         <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_side_bar.php"; ?>
     </div>
+	<script>
+    function validate(){
+                        var name = document.getElementById("ugroupname").value;
+						var errorUgroup = document.getElementById("errorUgroup");
+						var ugroup_names = <?php echo json_encode($ugroup_names); ?>;
+						var ugroup_name = name;
+                    
+                       
+                        
+                        var truth = true;
+                         if(ugroup_name == "")
+						 {
+							 errorUgroup.innerHTML = "Name cannot be empty";
+							 truth = false;
+						 }
+
+						 for(i=0; i < ugroup_names.length; i++)
+						 {
+							 if(ugroup_names[i] == ugroup_name)
+							 {
+								 errorUgroup.innerHTML = "Ugroup name already exist";
+								 truth = false;
+							 }
+						 }
+                    
+                        return truth;
+
+                    }
+                    </script>
 	</body>
 </html>

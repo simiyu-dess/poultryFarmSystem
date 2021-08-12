@@ -52,14 +52,9 @@ if (!isset($_SESSION['Username'])) {
 ?>
 <!DOCTYPE HTML>
 <html>
-	
-	
-	
-	<?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_head.php";?>
-	
-	
+<?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_head.php";?>
 
-	<body>
+<body>
 		<!-- MENU -->
 		
 	<div class="container">

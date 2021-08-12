@@ -381,6 +381,7 @@ session_start();
         $myArray = array(
             "Date" => sanitize($_POST["Date"]),
             "Quantity" => sanitize($_POST["Quantity"]),
+            "Feed_name" => sanitize($_POST['feedname']),
             "Price" => sanitize($_POST["Price"]),
             "User_ID" =>  $_SESSION['loguser']
         );
@@ -395,6 +396,7 @@ session_start();
         $where = array("FeedPurchase_ID" => $id);
         $myArray = array(
             "Date" => sanitize($_POST["Date"]),
+            "Feed_name" =>sanitize($_POST['feedname']),
             "Quantity" => sanitize($_POST["Quantity"]),
             "Price" => sanitize($_POST["Price"]),
             "User_ID" =>  $_SESSION['loguser']

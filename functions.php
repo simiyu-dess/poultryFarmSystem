@@ -6,7 +6,24 @@ function fingerprint(){
 		$fingerprint = md5('!@#$fjslkvmnfdkp&*()^%$#SDFGHJK*&^%$#@!7454454');
 		return $fingerprint;
 	}
+	function checkLogin() {
+		$fingerprint = fingerprint();
+		if(!session_id())
+	 {
+		session_start();
+		}
 
+		if (!isset($_SESSION['Username']) || $_SESSION['fingerprint'] != $fingerprint) logout();
+		session_regenerate_id();
+	}
+
+	function logout()
+	{
+		session_start();
+		session_destroy();
+	
+		header("location: index.php");
+	}
   
 
 function sanitize($var)
