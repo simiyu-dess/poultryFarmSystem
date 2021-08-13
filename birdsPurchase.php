@@ -1,10 +1,10 @@
 <?php
-session_start();
-if (!isset($_SESSION['Username'])) {
-    header("Location: index.php");
-    exit();
-}
-include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
+include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/includes/action.php";
+
+include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
+
+checkLogin();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -152,9 +152,18 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
                         }
                         if(number < 1)
                         {
-                            errornumber.innerHTML = "This field is required";
+                            errornumber.innerHTML = "Enter a positive integer";
                             truth = false;
                         }
+                        if(number > 1)
+                        {
+                        if(number % 1 != 0)
+                        {
+                            errornumber.innerHTML = "Enter a valid number";
+                            truth = false;
+                        }
+                        }
+
                         if(dates == "")
                         {
                             errordate.innerHTML = "This field is required";

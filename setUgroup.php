@@ -2,11 +2,11 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
-if (!isset($_SESSION['Username'])) {
-    header("Location: index.php");
-    exit();
-}
+include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/includes/action.php";
+
+include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
+
+checkLogin();
 
 
 	$ugroup_id = 0;

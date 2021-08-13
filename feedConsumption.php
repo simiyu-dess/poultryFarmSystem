@@ -1,10 +1,10 @@
 <?php
-session_start();
-if (!isset($_SESSION['Username'])) {
-    header("Location: index.php");
-    exit();
-}
-include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
+include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/includes/action.php";
+
+include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
+
+checkLogin();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -47,12 +47,12 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
                                 <td><?php echo $row['Price'];?></td>
                                 <td>
                                     <?php 
+                                        
                                         $employee = $row['Employee'];
-                                        $sql = "select FirstName, LastName from Employee, FeedConsumption where Employee.Employee_ID = $employee";
-                                        $query = new Database();
-                                        $result = $query->connect()->query($sql);
-                                        $result = mysqli_fetch_assoc($result);
-                                        // print_r($result);
+                                        $sql = "SELECT FirstName, LastName From Employee, FeedConsumption where Employee.Employee_ID = $employee";
+                                        $result = $databaseObject->connect()->query($sql);
+                                        $result = mysqli_fetch_array($result);
+                                
                                         echo $result['FirstName'].' '.$result['LastName'];
                                     ?>
                                 </td>      
@@ -85,6 +85,11 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
                                 <div class="my-div-error" id="errorDate"></div>
                                     <label for="">Date</label>
                                     <input type="date" name="ConsDate" id="date" value="<?php echo $row["ConsDate"]; ?>">
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorName"></div>
+                                    <label for="">Feed name</label>
+                                    <input type="text" step="any" id="feedname" name="feedname" value="<?php echo $row["Feed_name"]; ?>">
                                 </div>
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorQuantity"></div>
@@ -126,7 +131,7 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorName"></div>
                                     <label for="">Name</label>
-                                    <input type="text" name="Name" id="name" value="">
+                                    <input type="text" name="feedname" id="feedname" value="">
                                 </div>
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorQuantity"></div>
@@ -168,7 +173,7 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
     <script>
                     function validate(){
                         var dates = document.getElementById("date").value;
-                        var name = document.getElementById("name").value;
+                        var name = document.getElementById("feedname").value;
                         var quantity = document.getElementById("quantity").value;
                         var price = document.getElementById("price").value;
                        

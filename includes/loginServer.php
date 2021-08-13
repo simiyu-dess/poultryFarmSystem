@@ -1,6 +1,8 @@
 <?php
- include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
+session_start();
+ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/includes/database.php";
     class LoginServer extends Database{
+        
 
         public $error;
 
@@ -42,5 +44,6 @@
             }
         }
     }
+    $db = new Database();
 
 ?>

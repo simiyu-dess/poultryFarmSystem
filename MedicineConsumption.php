@@ -1,10 +1,10 @@
 <?php
-session_start();
-if (!isset($_SESSION['Username'])) {
-    header("Location: index.php");
-    exit();
-}
-include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
+include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/includes/action.php";
+
+include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
+
+checkLogin();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,10 +49,10 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
                                 <td>
                                     <?php 
                                         $employee = $row['Employee'];
-                                        $sql = "select FirstName, LastName from Employee, FeedConsumption where Employee.Employee_ID = $employee";
-                                        $query = new Database();
-                                        $result = $query->connect()->query($sql);
-                                        $result = mysqli_fetch_assoc($result);
+                                        $sql = "SELECT FirstName, LastName from Employee, FeedConsumption where Employee.Employee_ID = $employee";
+                                    
+                                        $result = $databaseObject->connect()->query($sql);
+                                        $result = mysqli_fetch_array($result);
                                      
                                         echo $result['FirstName'].' '.$result['LastName'];
                                     ?>
@@ -204,6 +204,6 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
 
                     }
                     </script>
-    <script src="script.js"></script>
+    
 </body>
 </html>

@@ -1,10 +1,7 @@
 <?php
-    session_start();
-    if (!isset($_SESSION['Username'])) {
-        header("Location: index.php");
-        exit();
-    }
-    include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
+include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/includes/action.php";
+include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
+checkLogin();
     $query = "SELECT * FROM `Employee`";
     $result_emp = $databaseObject->connect()->query($query);
 

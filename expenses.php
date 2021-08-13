@@ -1,9 +1,8 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/includes/action.php";
+
 include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
+
 checkLogin();
 
 ?>
@@ -30,25 +29,29 @@ checkLogin();
                 <table>
                     <thead>
                         <th>Date</th>
-                        <th>Number of Eggs</th>
+                        <th>Expense type:</th>
+                        <th>Amount</th>
                         <th colspan="2">Action</th>
+                        <th>Updated by:</th>
                     </thead>
                     <tbody>
                     <?php
                         // calling viewMethod() method
-                        $myrow = $productionObject->viewMethod("Production");
+                        $myrow = $productionObject->viewMethod("Expenses");
                         foreach($myrow as $row){
                             // breaking point
                             ?>
                             <tr>
-                                <td><?php echo $row['Date'];?></td>
-                                <td><?php echo $row['NumberOfEggs'];?></td>
+                                <td><?php echo $row['Expense_date'];?></td>
+                                <td><?php echo $row['Expense_type'];?></td>
+                                <td><?php echo $row['Expense_amount'];?></td>
                                 <td>
-                                    <a class="edit_btn" href="production.php?productionupdate=1&id=<?php echo $row["Production_ID"]; ?>">Edit</a>
+                                    <a class="edit_btn" href="expense.php?expenseupdate=1&id=<?php echo $row["Expense_ID"]; ?>">Edit</a>
                                 </td>
                                 <td>
-                                    <a class="del_btn" href="includes/action.php?productiondelete=1&id=<?php echo $row["Production_ID"]; ?>">Delete</a>
+                                    <a class="del_btn" href="includes/action.php?expensedelete=1&id=<?php echo $row["Expense_ID"]; ?>">Delete</a>
                                 </td>
+                                <td></td>
                             </tr>
                             <?php
                         }
@@ -57,12 +60,12 @@ checkLogin();
                 </table>
                 
                 <?php
-                    if(isset($_GET["productionupdate"])){
+                    if(isset($_GET["expenseupdate"])){
                         // Get the id of the record to be edited
                         $id = $_GET["id"] ?? null;
-                        $where = array("Production_ID" => $id);
+                        $where = array("Expense_ID" => $id);
                         // Call the select method that displays the record to be edited
-                        $row = $salesObject->selectMethod("Production", $where);
+                        $row = $salesObject->selectMethod("Expense", $where);
                         ?>
                             <form action="includes/action.php" method="post" onsubmit="return validate()">
                                 <div class="input-group">
@@ -71,15 +74,20 @@ checkLogin();
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorDate"></div>
                                     <label for="">Date</label>
-                                    <input type="date" name="Date" id="date" value="<?php echo $row["Date"]; ?>" required>
+                                    <input type="date" name="date" id="date" value="<?php echo $row["Expense_date"]; ?>">
                                 </div>
                                 <div class="input-group">
-                                <div class="my-div-error" id="errorNumber"></div>
-                                    <label for="">Number of Eggs</label>
-                                    <input type="number" id="number" step="any" name="NumberOfEggs" value="<?php echo $row["NumberOfEggs"]; ?>" required>
+                                <div class="my-div-error" id="errorType"></div>
+                                    <label for="">Expense type:</label>
+                                    <input type="type" id="expensetype" step="any" name="expensetype" value="<?php echo $row["Expense_type"]; ?>">
                                 </div>
                                 <div class="input-group">
-                                    <button type="submit" name="productionedit" class="btn" value="">Update</button>
+                                <div class="my-div-error" id="errorType"></div>
+                                    <label for="">Expense Amount:</label>
+                                    <input type="type" id="amount" step="any" name="amount" value="<?php echo $row["Amount"]; ?>">
+                                </div>
+                                <div class="input-group">
+                                    <button type="submit" name="expenseedit" class="btn" value="">Update</button>
                                 </div>
                             </form>
                         <?php
@@ -89,15 +97,20 @@ checkLogin();
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorDate"></div>
                                     <label for="">Date</label>
-                                    <input type="date" name="Date" id="date" value="">
+                                    <input type="date" name="date" id="date" value="">
                                 </div>
                                 <div class="input-group">
-                                <div class="my-div-error" id="errorNumber"></div>
-                                    <label for="">Number of Eggs</label>
-                                    <input type="number" step="any"id="number" name="NumberOfEggs" value="">
+                                <div class="my-div-error" id="errorType"></div>
+                                    <label for="">Expense Type:</label>
+                                    <input type="text" id="incometype" name="incometype" value="">
                                 </div>
                                 <div class="input-group">
-                                    <button type="submit" name="productionsave" class="btn">Save</button>
+                                <div class="my-div-error" id="errorAmount"></div>
+                                    <label for="">Expense Amount:</label>
+                                    <input type="text" id="amount" name="amount" value="">
+                                </div>
+                                <div class="input-group">
+                                    <button type="submit" name="expensesave" class="btn">Save</button>
                                 </div>
                             </form>
                         <?php

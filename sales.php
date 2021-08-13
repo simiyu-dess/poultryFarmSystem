@@ -1,13 +1,9 @@
 <?php
-session_start();
-if (!isset($_SESSION['Username'])) {
-    header("Location: index.php");
-    exit();
-}
-include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
+include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/includes/action.php";
 
-$eggsPrice = getEggPrice();
+include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
 
+checkLogin();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,13 +26,13 @@ $eggsPrice = getEggPrice();
                     </p>
                     </div>
                 <?php endif ?>
-                <table>
+                <table id="tb_table">
                     <thead>
                         <th>Date</th>
                         <th>Number of Eggs</th>
                         <th>Revenue</th>
                         <th colspan="2">Action</th>
-                        <th>User</th>
+                        <th>Updated by:</th>
                     </thead>
                     <tbody>
                     <?php
@@ -55,7 +51,14 @@ $eggsPrice = getEggPrice();
                                 <td>
                                     <a class="del_btn" href="includes/action.php?salesdelete=1&id=<?php echo $row["Sales_ID"]; ?>">Delete</a>
                                 </td>
-                                <td><?php echo $row['Revenue'];?></td>
+                                <td><?php 
+                                $user_id = $row['User_ID'];
+                                $sql = "SELECT Username FROM User WHERE User_ID = $user_id";
+                                $query = $databaseObject->connect()->query($sql);
+                                $username = mysqli_fetch_array($query);
+                                echo $username['Username'];
+                                
+                                ?></td>
                             </tr>
                             <?php
                         }
@@ -111,7 +114,7 @@ $eggsPrice = getEggPrice();
                                 </div>
                                 <div class="input-group">
                                     <label for="">Revenue</label>
-                                    <input type="number" disabled="disabled" name="Revenue" placeholder="<?php echo $eggsPrice;?> per egg (KSH)">
+                                    <input type="number" disabled="disabled" name="Revenue" placeholder="<?php echo $eggPrice;?> per egg (KSH)">
                                 </div>
                                 <div class="input-group">
                                     <button type="submit" name="salessave" class="btn">Save</button>
@@ -161,6 +164,14 @@ $eggsPrice = getEggPrice();
                         if(number == ""){
                             errornumber.innerHTML = "This field is required";
                             truth =  false;
+                        }
+                        if(number > 1)
+                        {
+                        if(number % 1 != 0)
+                        {
+                            errornumber.innerHTML = "Enter a valid Integer number";
+                            truth = false;
+                        }
                         }
                     
                         return truth;

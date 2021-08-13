@@ -1,8 +1,9 @@
 <?php
-session_start();
-include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
-    
-    
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/includes/loginServer.php";
+include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
     
     // instantiating LoginServer class to access its functions/methods
     $data = new LoginServer();
@@ -20,7 +21,9 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
             if($data->canLogin("User",$username,$password)){
                 $_SESSION["Username"] = $_POST["Username"];
                 $where = array("Ugroup_ID" => $_SESSION['ugroupid']);
-                $permisions_array = $ugroupObject->selectMethod("Ugroup", $where);
+                $sql = "SELECT * FROM Ugroup WHERE Ugroup_ID = $_SESSION[ugroupid]";
+                $query = $db->connect()->query($sql);
+                $permisions_array = mysqli_fetch_array($query);
                 $_SESSION['perm_admin'] = $permisions_array['Ugroup_admin'];
                 $_SESSION['perm_medicine'] = $permisions_array['Ugroup_medicine'];
                 $_SESSION['perm_feeds'] = $permisions_array['Ugroup_feeds'];

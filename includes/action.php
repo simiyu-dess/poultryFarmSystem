@@ -1,10 +1,11 @@
 <?php
-include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
-
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 session_start();
-    
-    
-   
+include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/includes/database.php";
+include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
+
     class CrudOperation extends Database{
         // Insertion method 
         public function insertionMethod($table, $fields){
@@ -337,13 +338,15 @@ session_start();
         $myArray = array(
             "ConsDate" => sanitize($_POST["ConsDate"]),
             "Quantity" => sanitize($_POST["Quantity"]),
+            "Feed_name" => sanitize($_POST["feedname"]),
             "Price" => sanitize($_POST["Price"]),
             "Employee" => $foreignID,
             "User_ID" =>  $_SESSION['loguser']
         );
         // Call the insertion method to add record to the database
         if($feedConsumptionObject->insertionMethod("FeedConsumption", $myArray)){
-            header("location: ../feedConsumption.php?msg=Insertion was successfull!");
+            $_SESSION['msg'] = "Feed insertion was successfull";
+            header("location: ../feedConsumption.php");
         };
     }
 
@@ -608,7 +611,7 @@ session_start();
 
     // Create object for egg sales
     $salesObject = new CrudOperation();
-    $eggPrice = getEggPrice();
+
     // Handle the save button for form submission
     if(isset($_POST["salessave"])){
         $numbeOfEggs = sanitize($_POST["NumberOfEggs"]);
@@ -714,6 +717,73 @@ session_start();
             header('Location: ../setFees.php');
         }
     }
+
+    $incomeObject = new CrudOperation();
+
+    if(isset($_POST['incomesave']))
+    {
+        $myArray = array(
+            "Incomes_date" => sanitize($_POST['date']),
+            "Incomes_type" => sanitize($_POST["incometype"]),
+            "Amount" => sanitize($_POST['amount'])
+        );
+        if($incomeObject->insertionMethod("Incomes", $myArray))
+        {
+            $_SESSION['msg'] = "Farm income inserted successfully!";
+            header('Location: ../incomes.php');
+        }
+        else
+        {
+            $_SESSION['msg'] = "Error, Failed to insert the income";
+            header('Location: ../incomes.php');
+        }
+    }
+
+    if(isset($_POST['incomeedit']))
+    {
+        $id = $_GET['id'] ?? null;
+        $where = array(
+            "Incomes_ID" => $id
+
+        );
+
+        $myArray = array( 
+            "Incomes_date" => sanitize($_POST['date']),
+            "Incomes_type" => sanitize($_POST['incometype']),
+            "Amount" => sanitize($_POST['amount'])
+        );
+        if($incomeObject->updateMethod("Incomes", $where, $myArray))
+        {
+            $_SESSION['msg'] = " Income record updated successfully";
+            header('Location: ../incomes.php');
+        }
+        else
+        {
+            $_SESSION['msg'] = "Error, Failed to update the income record";
+            header('Location: ../incomes.php');
+        }
+    }
+
+    if(isset($_GET['incomedelete']))
+    {
+        $id = $_GET['id'] ?? null;
+        $where = array("Incomes_ID" => $id);
+
+        if($incomeObject->deleteMethod("Incomes", $where))
+        {
+            $_SESSION['msg'] = "Income record deleted successfully";
+            header('Location: ../incomes.php');
+        }
+        else{
+            $_SESSION['msg'] = "Error, failed to delete the record";
+            header("Location: ../incomes.php");
+        }
+    }
+
+    $sql = "SELECT Fee_Amount FROM Fees WHERE Fee_ID > 0";
+	$query_sql = $databaseObject->connect()->query($sql);
+	$array_fee = mysqli_fetch_array($query_sql);
+	$eggPrice = $array_fee['Fee_Amount'];
 
     // INSIGHTS
 

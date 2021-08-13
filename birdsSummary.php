@@ -1,6 +1,9 @@
 <?php
-    session_start();
-    include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/classes.php";
+    include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/includes/action.php";
+
+    include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
+    
+    checkLogin();
 ?>
 <!DOCTYPE html>
 <html lang="en">
