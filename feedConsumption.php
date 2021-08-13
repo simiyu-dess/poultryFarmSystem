@@ -26,48 +26,7 @@ checkLogin();
                     </p>
                     </div>
                 <?php endif ?>
-                <table>
-                    <thead>
-                        <th>Consumed On</th>
-                        <th>Quantity Consumed</th>
-                        <th>Feed name</th>
-                        <th>Employee Responsible</th>
-                        <th colspan="2">Action</th>
-                    </thead>
-                    <tbody>
-                    <?php
-                        // calling viewMethod() method
-                        $myrow = $feedConsumptionObject->viewMethod("FeedConsumption");
-                        foreach($myrow as $row){
-                            // breaking point
-                            ?>
-                            <tr>
-                                <td><?php echo $row['ConsDate'];?></td>
-                                <td><?php echo $row['Quantity'];?></td>
-                                <td><?php echo $row['Price'];?></td>
-                                <td>
-                                    <?php 
-                                        
-                                        $employee = $row['Employee'];
-                                        $sql = "SELECT FirstName, LastName From Employee, FeedConsumption where Employee.Employee_ID = $employee";
-                                        $result = $databaseObject->connect()->query($sql);
-                                        $result = mysqli_fetch_array($result);
-                                
-                                        echo $result['FirstName'].' '.$result['LastName'];
-                                    ?>
-                                </td>      
-                                <td>
-                                    <a class="edit_btn" href="feedConsumption.php?feedconsupdate=1&id=<?php echo $row["FeedConsumption_ID"]; ?>">Edit</a>
-                                </td>
-                                <td>
-                                    <a class="del_btn" href="includes/action.php?feedconsdelete=1&id=<?php echo $row["FeedConsumption_ID"]; ?>">Delete</a>
-                                </td>
-                            </tr>
-                            <?php
-                        }
-                    ?>
-                    </tbody>
-                </table>
+                <h style="font-weight: bold; font-size:20px;">Feed Consumption</h>
                 
                 <?php
                     if(isset($_GET["feedconsupdate"])){
@@ -96,11 +55,7 @@ checkLogin();
                                     <label for="">Quantity</label>
                                     <input type="number" step="any" id="quantity" name="Quantity" value="<?php echo $row["Quantity"]; ?>">
                                 </div>
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorPrice"></div>
-                                    <label for="">Price</label>
-                                    <input type="number" step="any" id="price" name="Price" value="<?php echo $row["Price"]; ?>">
-                                </div>
+                                
                                 <div class="input-group">
                                     <label for="">Employee Assigned</label>
                                         <select name="Employee" id="">
@@ -138,11 +93,7 @@ checkLogin();
                                     <label for="">Quantity</label>
                                     <input type="number" step="any" name="Quantity" id="quantity" value="">
                                 </div>
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorPrice"></div>
-                                    <label for="">Price</label>
-                                    <input type="number" step="any" id="price" name="Price" value="">
-                                </div>
+                                
                                 <div class="input-group">
                                     <label for="">Employee Assigned</label>
                                     <select name="Employee" id="">
@@ -165,6 +116,58 @@ checkLogin();
                         <?php
                     }
                         ?>
+
+<table>
+                    <thead>
+                        <th>Consumed On</th>
+                        <th>Quantity</th>
+                        <th>Feed name</th>
+                        <th>Employee Incharge</th>
+                        <th>Updated by:</th>
+                        <th colspan="2">Action</th>
+                    </thead>
+                    <tbody>
+                    <?php
+                        // calling viewMethod() method
+                        $myrow = $feedConsumptionObject->viewMethod("FeedConsumption");
+                        foreach($myrow as $row){
+                            // breaking point
+                            ?>
+                            <tr>
+                                <td><?php echo $row['ConsDate'];?></td>
+                                <td><?php echo $row['Quantity'];?></td>
+                                <td><?php echo $row['Feed_name'];?></td>
+                                <td>
+                                    <?php 
+                                        
+                                        $employee = $row['Employee'];
+                                        $sql = "SELECT FirstName, LastName From Employee, FeedConsumption where Employee.Employee_ID = $employee";
+                                        $result = $databaseObject->connect()->query($sql);
+                                        $result = mysqli_fetch_array($result);
+                                
+                                        echo $result['FirstName'].' '.$result['LastName'];
+                                    ?>
+                                </td> 
+                                <td>
+                                <?php 
+
+                                $userid = $row['User_ID'];
+                                $user = getUserName($userid);
+                                echo $user;
+                                ?>
+                                </td> 
+                                <td>
+                                    <a class="edit_btn" href="feedConsumption.php?feedconsupdate=1&id=<?php echo $row["FeedConsumption_ID"]; ?>">Edit</a>
+                                </td>
+                                <td>
+                                    <a class="del_btn" href="includes/action.php?feedconsdelete=1&id=<?php echo $row["FeedConsumption_ID"]; ?>">Delete</a>
+                                </td>
+                            </tr>
+                            <?php
+                        }
+                    ?>
+                    </tbody>
+                </table>
             </div>
         </main>
         <!-- sidebar nav -->
@@ -175,51 +178,36 @@ checkLogin();
                         var dates = document.getElementById("date").value;
                         var name = document.getElementById("feedname").value;
                         var quantity = document.getElementById("quantity").value;
-                        var price = document.getElementById("price").value;
+                       
                        
                         
                         // Getting error divs ID
                         var errordate = document.getElementById('errorDate');
                         var errorname = document.getElementById("errorName");
                         var errorquantity = document.getElementById("errorQuantity");
-                        var errorprice = document.getElementById("errorPrice");
                         
                         
-                        // Defining REGEX
-                        var nameT = /[A-Za-z]/;
-                        var jobT = /^(?![\s.]+$)[a-zA-Z\s.]*$/;
-                        var quantityT = /^(\d+)(?:\.(\d{1,2}))?$/;
-                        var priceT = /^(\d+)(?:\.(\d{1,2}))?$/;
+                        
+                      
                         
                         var truth = true;
-                        if(!nameT.test(name)){
-                            errorname.innerHTML = "Please enter a valid feed name";
+                        if(name == ""){
+                            errorname.innerHTML = "The feedname cannot be empty";
                             truth = false;
                         }
-                        if(name == ""){
-                            errorname.innerHTML = "This field is required";
+                        if(quantity < 0){
+                            errorquantity.innerHTML = "PLeasea enter a valid quantity";
                             truth =  false;
                         }
-                        if(!quantityT.test(quantity)){
-                            errorquantity.innerHTML = "Please enter a valid quantity";
+                        if(quantity == "")){
+                            errorquantity.innerHTML = "Quantity cannot be empty";
                             truth = false;
                         }
                         if(quantity == ""){
                             errorquantity.innerHTML = "feed quantity is  field is required";
                             truth = false;
                         }
-                        if(!priceT.test(price))
-                        {
-                            errorprice.innerHTML = "Enter a valid price";
-                            truth = false;
-                        }
-                        if(price == ""){
-                            errorprice.innerHTML = "price field is required";
-                            truth = false;
-                        }
-
-                    
-
+                       
 
                         return truth;
 

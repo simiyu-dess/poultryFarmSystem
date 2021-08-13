@@ -104,6 +104,15 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         }
     }
     $databaseObject = new Database();
+    function getUserName($userid)
+    {
+        $db = new Database();
+        $sql = "SELECT Username FROM User WHERE User_ID = $userid";
+        $query = $db->connect()->query($sql);
+        $username = mysqli_fetch_array($query);
+        return $username['Username'];
+
+    }
     $adminObject = new CrudOperation();
     //handle the saving of the admin user
     if(isset($_POST["setup_admin"]))
@@ -339,7 +348,6 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
             "ConsDate" => sanitize($_POST["ConsDate"]),
             "Quantity" => sanitize($_POST["Quantity"]),
             "Feed_name" => sanitize($_POST["feedname"]),
-            "Price" => sanitize($_POST["Price"]),
             "Employee" => $foreignID,
             "User_ID" =>  $_SESSION['loguser']
         );
@@ -352,13 +360,14 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
 
     // Handle the edit button for record editing
     if(isset($_POST["feedconsedit"])){
+        $foreignID = $_POST["Employee"];
         $id = $_POST["id"];
         $where = array("FeedConsumption_ID" => $id);
         $myArray = array(
             "ConsDate" => sanitize($_POST["ConsDate"]),
             "Quantity" => sanitize($_POST["Quantity"]),
-            "Price" => sanitize($_POST["Price"]),
-            "Employee" => sanitize($_POST["Employee"]),
+            "Feed_name" => sanitize($_POST["feedname"]),
+            "Employee" => $foreignID,
             "User_ID" =>  $_SESSION['loguser']
         );
         if($feedConsumptionObject->updateMethod("FeedConsumption", $where, $myArray)){
@@ -426,9 +435,10 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
     // Handle the save button for form submission
     if(isset($_POST["birdspurchsave"])){
         $myArray = array(
-            "Date" => sanitize($_POST["Date"]),
-            "NumberOfBirds" => sanitize($_POST["NumberOfBirds"]),
-            "Price" => sanitize($_POST["Price"]),
+            "Date" => sanitize($_POST["date"]),
+            "Bird_type" => sanitize($_POST['typeofbirds']),
+            "NumberOfBirds" => sanitize($_POST["numberofbirds"]),
+            "Price" => sanitize($_POST["price"]),
             "User_ID" =>  $_SESSION['loguser']
         );
         // Call the insertion method to add record to the database
@@ -442,9 +452,10 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         $id = sanitize($_POST["id"]);
         $where = array("BirdsPurchase_ID" => $id);
         $myArray = array(
-            "Date" => sanitize($_POST["Date"]),
-            "NumberOfBirds" => sanitize($_POST["NumberOfBirds"]),
-            "Price" => sanitize($_POST["Price"]),
+            "Date" => sanitize($_POST["date"]),
+            "Bird_type" => sanitize($_POST['typeofbirds']),
+            "NumberOfBirds" => sanitize($_POST["numberofbirds"]),
+            "Price" => sanitize($_POST["price"]),
             "User_ID" =>  $_SESSION['loguser']
         );
         if($birdsPurchaseObject->updateMethod("BirdsPurchase", $where, $myArray)){
@@ -471,8 +482,9 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
     // Handle the save button for form submission
     if(isset($_POST["birdsmortsave"])){
         $myArray = array(
-            "Date" => sanitize($_POST["Date"]),
-            "Deaths" => sanitize($_POST["Deaths"]),
+            "Date" => sanitize($_POST["date"]),
+            "Bird_type" => sanitize($_POST['typeofbirds']),
+            "Deaths" => sanitize($_POST["number"]),
             "User_ID" =>  $_SESSION['loguser']
         );
         // Call the insertion method to add record to the database
@@ -486,8 +498,9 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         $id = sanitize($_POST["id"]);
         $where = array("BirdsMortality_ID" => $id);
         $myArray = array(
-            "Date" => sanitize($_POST["Date"]),
-            "Deaths" => sanitize($_POST["Deaths"]),
+            "Date" => sanitize($_POST["date"]),
+            "Bird_type" => sanitize($_POST['typeofbirds']),
+            "Deaths" => sanitize($_POST["number"]),
             "User_ID" => $_SESSION['loguser']
         );
         if($birdsMortalityObject->updateMethod("BirdsMortality", $where, $myArray)){
@@ -725,7 +738,8 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         $myArray = array(
             "Incomes_date" => sanitize($_POST['date']),
             "Incomes_type" => sanitize($_POST["incometype"]),
-            "Amount" => sanitize($_POST['amount'])
+            "Amount" => sanitize($_POST['amount']),
+            "User_ID" =>  $_SESSION['loguser']
         );
         if($incomeObject->insertionMethod("Incomes", $myArray))
         {
@@ -741,7 +755,7 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
 
     if(isset($_POST['incomeedit']))
     {
-        $id = $_GET['id'] ?? null;
+        $id = sanitize($_POST["id"]);
         $where = array(
             "Incomes_ID" => $id
 
@@ -750,7 +764,8 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         $myArray = array( 
             "Incomes_date" => sanitize($_POST['date']),
             "Incomes_type" => sanitize($_POST['incometype']),
-            "Amount" => sanitize($_POST['amount'])
+            "Amount" => sanitize($_POST['amount']),
+            "User_ID" =>  $_SESSION['loguser']
         );
         if($incomeObject->updateMethod("Incomes", $where, $myArray))
         {
@@ -778,6 +793,68 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
             $_SESSION['msg'] = "Error, failed to delete the record";
             header("Location: ../incomes.php");
         }
+    }
+
+    $expenseObject = new CrudOperation();
+    if(isset($_POST["expensesave"]))
+    {
+        $myArray = array(
+            "Expense_date" => sanitize($_POST['date']),
+            "Expense_type" => sanitize($_POST["expensetype"]),
+            "Amount" => sanitize($_POST["amount"]),
+            "User_ID" =>  $_SESSION['loguser']
+        );
+
+        if($expenseObject->insertionMethod("Expenses", $myArray))
+        {
+            $_SESSION['msg'] = "Expense record inserted successfully";
+            header('Location: ../expenses.php');
+        }
+        else
+        {
+            $_SESSION['msg'] = "Error, failed to insert the expense record";
+            header('Location; ../expenses.php');
+        }
+    }
+
+    if(isset($_POST["expenseedit"]))
+    {
+        $id = sanitize($_POST["id"]);
+        $where = array("Expense_ID" => $id);
+        $myArray = array(
+            "Expense_date" => sanitize($_POST['date']),
+            "Expense_type" => sanitize($_POST["expensetype"]),
+            "Amount" => sanitize($_POST['amount']),
+            "User_ID" =>  $_SESSION['loguser']
+        );
+
+        if($expenseObject->updateMethod("Expenses", $where, $myArray))
+        {
+            $_SESSION['msg'] = "Expense record updated successfully!";
+            header('Location: ../expenses.php');
+        }
+        else
+        {
+            $_SESSION['msg'] = "Error, failed to update the expense record";
+            header('Location: ../expenses.php');
+        }
+    }
+    if(isset($_GET['expensedelete']))
+    {
+        $id = $_GET['id'] ?? null;
+        $where = array("Expense_ID" => $id);
+
+        if($expenseObject->deleteMethod("Expenses", $where))
+        {
+            $_SESSION['msg'] = "Expense record deleted successfully";
+            header('Location: ../expenses.php');
+        }
+
+        else{
+            $_SESSION['msg'] = "Error, failed to delete the expense record";
+            header('Location: ../expenses.php');
+        }
+
     }
 
     $sql = "SELECT Fee_Amount FROM Fees WHERE Fee_ID > 0";
@@ -868,4 +945,6 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
     while($row = mysqli_fetch_assoc($result)){
         $totalNumberOfEmployees = $row['sum'];
     }
+    
+   
 ?>

@@ -13,7 +13,7 @@ checkLogin();
 <body id="body">
     <div class="container">
         <!-- top navbar -->
-        <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_top_navbar.php";?>
+        <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_top_navbar_accounting.php";?>
         <main>
             <div class="main__container">
             <?php if(isset($_SESSION['msg'])): ?>
@@ -31,8 +31,9 @@ checkLogin();
                         <th>Date</th>
                         <th>Expense type:</th>
                         <th>Amount</th>
-                        <th colspan="2">Action</th>
+                       
                         <th>Updated by:</th>
+                        <th colspan="2">" "Action</th>
                     </thead>
                     <tbody>
                     <?php
@@ -44,14 +45,25 @@ checkLogin();
                             <tr>
                                 <td><?php echo $row['Expense_date'];?></td>
                                 <td><?php echo $row['Expense_type'];?></td>
-                                <td><?php echo $row['Expense_amount'];?></td>
+                                <td><?php echo $row['Amount'];?></td>
                                 <td>
-                                    <a class="edit_btn" href="expense.php?expenseupdate=1&id=<?php echo $row["Expense_ID"]; ?>">Edit</a>
+                                <?php
+                                $user_id = $row['User_ID'];
+                                $sql = "SELECT Username FROM User WHERE User_ID = $user_id";
+                                $query = $databaseObject->connect()->query($sql);
+                                $username = mysqli_fetch_array($query);
+                                echo $username['Username'];
+
+                                ?>
                                 </td>
+                                <td>
+                                    <a class="edit_btn" href="expenses.php?expenseupdate=1&id=<?php echo $row["Expense_ID"]; ?>">Edit</a>
+                                </td>
+
                                 <td>
                                     <a class="del_btn" href="includes/action.php?expensedelete=1&id=<?php echo $row["Expense_ID"]; ?>">Delete</a>
                                 </td>
-                                <td></td>
+            
                             </tr>
                             <?php
                         }
@@ -65,7 +77,7 @@ checkLogin();
                         $id = $_GET["id"] ?? null;
                         $where = array("Expense_ID" => $id);
                         // Call the select method that displays the record to be edited
-                        $row = $salesObject->selectMethod("Expense", $where);
+                        $row = $expenseObject->selectMethod("Expenses", $where);
                         ?>
                             <form action="includes/action.php" method="post" onsubmit="return validate()">
                                 <div class="input-group">
@@ -79,12 +91,12 @@ checkLogin();
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorType"></div>
                                     <label for="">Expense type:</label>
-                                    <input type="type" id="expensetype" step="any" name="expensetype" value="<?php echo $row["Expense_type"]; ?>">
+                                    <input type="text" id="expensetype" step="any" name="expensetype" value="<?php echo $row["Expense_type"]; ?>">
                                 </div>
                                 <div class="input-group">
-                                <div class="my-div-error" id="errorType"></div>
+                                <div class="my-div-error" id="errorAmount"></div>
                                     <label for="">Expense Amount:</label>
-                                    <input type="type" id="amount" step="any" name="amount" value="<?php echo $row["Amount"]; ?>">
+                                    <input type="number" id="amount" step="any" name="amount" value="<?php echo $row["Amount"]; ?>">
                                 </div>
                                 <div class="input-group">
                                     <button type="submit" name="expenseedit" class="btn" value="">Update</button>
@@ -102,12 +114,12 @@ checkLogin();
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorType"></div>
                                     <label for="">Expense Type:</label>
-                                    <input type="text" id="incometype" name="incometype" value="">
+                                    <input type="text" id="expensetype" name="expensetype" value="">
                                 </div>
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorAmount"></div>
                                     <label for="">Expense Amount:</label>
-                                    <input type="text" id="amount" name="amount" value="">
+                                    <input type="number" id="amount" name="amount" value="">
                                 </div>
                                 <div class="input-group">
                                     <button type="submit" name="expensesave" class="btn">Save</button>
@@ -124,13 +136,15 @@ checkLogin();
     <script>
     function validate(){
                         var dates = document.getElementById("date").value;
-                        var number = document.getElementById("number").value;
+                        var type = document.getElementById("expensetype").value;
+                        var amount = document.getElementById("amount").value;
                        
                        
                         
                         // Getting error divs ID
                         var errordate = document.getElementById('errorDate');
-                        var errornumber = document.getElementById("errorNumber");
+                        var errorType = document.getElementById("errorType");
+                        var errorAmount = document.getElementById("errorAmount");
                        
                         
                         
@@ -143,27 +157,24 @@ checkLogin();
                             truth = false;
                         }
                        
-                        if(number < 1)
+                        if(type == "")
                         {
-                            errornumber.innerHTML = "The number must be a positive integer";
+                            errorType.innerHTML = "Expenser type cannot be null";
                             truth = false;
                         }
-                        if(number == ""){
-                            errornumber.innerHTML = "This field is required";
-                            truth =  false;
-                        }
-                        if(number > 1)
+                        if(amount < 1)
                         {
-                        if(number % 1 != 0)
-                        {
-                            errornumber.innerHTML = "Enter a valid Integer number";
+                            errorAmount.innerHTML = "Aount must be greater than zero";
                             truth = false;
                         }
+
+                        if(amount == "")
+                        {
+                            errorAmount.innerHTML = "Expense cannot be empty";
+                            truth = false;
                         }
                         
-
-                    
-
+                        
 
                         return truth;
 

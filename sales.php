@@ -30,9 +30,10 @@ checkLogin();
                     <thead>
                         <th>Date</th>
                         <th>Number of Eggs</th>
-                        <th>Revenue</th>
-                        <th colspan="2">Action</th>
+                        <th>Revenue(Ksh)</th>
                         <th>Updated by:</th>
+                        <th colspan="2">Action</th>
+                        
                     </thead>
                     <tbody>
                     <?php
@@ -46,19 +47,19 @@ checkLogin();
                                 <td><?php echo $row['NumberOfEggs'];?></td>
                                 <td><?php echo $row['Revenue'];?></td>
                                 <td>
+                                <?php 
+
+                                $userid = $row['User_ID'];
+                                $user = getUserName($userid);
+                                echo $user;
+                                ?>
+                                </td>
+                                <td>
                                     <a class="edit_btn" href="sales.php?salesupdate=1&id=<?php echo $row["Sales_ID"]; ?>">Edit</a>
                                 </td>
                                 <td>
                                     <a class="del_btn" href="includes/action.php?salesdelete=1&id=<?php echo $row["Sales_ID"]; ?>">Delete</a>
                                 </td>
-                                <td><?php 
-                                $user_id = $row['User_ID'];
-                                $sql = "SELECT Username FROM User WHERE User_ID = $user_id";
-                                $query = $databaseObject->connect()->query($sql);
-                                $username = mysqli_fetch_array($query);
-                                echo $username['Username'];
-                                
-                                ?></td>
                             </tr>
                             <?php
                         }

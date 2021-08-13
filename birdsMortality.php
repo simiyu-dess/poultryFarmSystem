@@ -27,10 +27,12 @@ checkLogin();
                     </p>
                     </div>
                 <?php endif ?>
+                <h style="font-weight: bold; font-size:20px">Birds Mortality</h>
                 <table>
                     <thead>
                         <th>Date</th>
                         <th>Number of Deaths</th>
+                        <th>Updated by:</th>
                         <th colspan="2">Action</th>
                     </thead>
                     <tbody>
@@ -44,6 +46,16 @@ checkLogin();
                             <tr>
                                 <td><?php echo $row['Date'];?></td>
                                 <td><?php echo $row['Deaths'];?></td>
+                                
+                                <td>
+                                <?php 
+
+                                $userid = $row['User_ID'];
+                                $user = getUserName($userid);
+                                echo $user;
+                                ?>
+                                </td>
+                                
                                 <td>
                             
                                     <a class="edit_btn" href="birdsMortality.php?birdsmortupdate=1&id=<?php echo $row["BirdsMortality_ID"]; ?>">Edit</a>
@@ -76,17 +88,17 @@ checkLogin();
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorDate"></div>
                                     <label for="">Date</label>
-                                    <input id="Date" type="date"  name="Date" value="<?php echo $row["Date"]; ?>">
+                                    <input id="Date" type="date"  name="date" value="<?php echo $row["Date"]; ?>">
                                 </div>
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorType"></div>
                                     <label for="">Birds Type</label>
-                                    <input type="number" id="typeOfBirds" step="any" name="Deaths" value="<?php echo $row["Deaths"]; ?>">
+                                    <input type="number" id="typeOfBirds" step="any" name="typeofbirds" value="<?php echo $row["Deaths"]; ?>">
                                 </div>
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorNumber"></div>
                                     <label for="">Number of Deaths</label>
-                                    <input  type="number" id="numberOfDeaths" step="any" name="Deaths" value="<?php echo $row["Deaths"]; ?>">
+                                    <input  type="number" id="numberOfDeaths" step="any" name="number" value="<?php echo $row["Deaths"]; ?>">
                                 </div>
                                 <div class="input-group">
                                     <button type="submit" name="birdsmortedit" class="btn" value="">Update</button>
@@ -100,17 +112,17 @@ checkLogin();
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorDate"></div>
                                     <label for="">Date</label>
-                                    <input id="Date" type="date" max="<?php echo date('Y-m-d');?>" name="Date" value="">
+                                    <input id="Date" type="date" max="<?php echo date('Y-m-d');?>" name="date" value="">
                                 </div>
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorType"></div>
                                     <label for="">Type of Birds</label>
-                                    <input  type="text" id="typeOfBirds" name="Deaths" value="">
+                                    <input  type="text" id="typeOfBirds" name="typeofbirds" value="">
                                 </div>
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorNumber"></div>
                                     <label for="">Number of Deaths</label>
-                                    <input  type="number" step="any" id="numberOfDeaths" name="Deaths" value="">
+                                    <input  type="number" step="any" id="numberOfDeaths" name="number" value="">
                                 </div>
                                 <div class="input-group">
                                     <button type="submit" name="birdsmortsave" class="btn">Save</button>

@@ -31,6 +31,7 @@ checkLogin();
                     <thead>
                         <th>Date</th>
                         <th>Number of Eggs</th>
+                        <th>Updated by:</th>
                         <th colspan="2">Action</th>
                     </thead>
                     <tbody>
@@ -43,6 +44,14 @@ checkLogin();
                             <tr>
                                 <td><?php echo $row['Date'];?></td>
                                 <td><?php echo $row['NumberOfEggs'];?></td>
+                                <td>
+                                <?php 
+
+                                $userid = $row['User_ID'];
+                                $user = getUserName($userid);
+                                echo $user;
+                                ?>
+                                </td>
                                 <td>
                                     <a class="edit_btn" href="production.php?productionupdate=1&id=<?php echo $row["Production_ID"]; ?>">Edit</a>
                                 </td>
