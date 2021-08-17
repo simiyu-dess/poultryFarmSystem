@@ -27,48 +27,8 @@ checkLogin();
                     </p>
                     </div>
                 <?php endif ?>
-                <table>
-                    <thead>
-                        <th>Medicine Name</th>
-                        <th>Consumed On</th>
-                        <th>Quantity</th>
-                        <th>Employee Responsible</th>
-                        <th colspan="2">Action</th>
-                    </thead>
-                    <tbody>
-                    <?php
-                        // calling viewMethod() method
-                        $myrow = $medicineObject->viewMethod("MedicineUsage");
-                        foreach($myrow as $row){
-                            // breaking point
-                            ?>
-                            <tr>
-                                <td><?php echo $row['MedicineName'];?></td>
-                                <td><?php echo $row['Quantity'];?></td>
-                                <td><?php echo $row['Date'];?></td>
-                                <td>
-                                    <?php 
-                                        $employee = $row['Employee'];
-                                        $sql = "SELECT FirstName, LastName from Employee, FeedConsumption where Employee.Employee_ID = $employee";
-                                    
-                                        $result = $databaseObject->connect()->query($sql);
-                                        $result = mysqli_fetch_array($result);
-                                     
-                                        echo $result['FirstName'].' '.$result['LastName'];
-                                    ?>
-                                </td>      
-                                <td>
-                                    <a class="edit_btn" href="MedicineConsumption.php?medusageUpdate=1&id=<?php echo $row["MedicineUsage_ID"]; ?>">Edit</a>
-                                </td>
-                                <td>
-                                    <a class="del_btn" href="includes/action.php?medusageDelete=1&id=<?php echo $row["MedicineUsage_ID"]; ?>">Delete</a>
-                                </td>
-                            </tr>
-                            <?php
-                        }
-                    ?>
-                    </tbody>
-                </table>
+            
+               
                 
                 <?php
                     if(isset($_GET["medusageUpdate"])){
@@ -78,6 +38,7 @@ checkLogin();
                         // Call the selectEmployee method that displays the record to be edited
                         $row = $medicineObject->selectMethod("MedicineUsage", $where);
                         ?>
+                         <h style="font-weight: bold; font-size:20px">Update Medicine Consumption Record</h>
                             <form action="includes/action.php" method="post" onsubmit="return validate()" >
                                 <div class="input-group">
                                     <input type="hidden" name="id" value="<?php echo $id; ?>">
@@ -118,6 +79,7 @@ checkLogin();
                         <?php
                     }else{
                         ?>
+                         <h style="font-weight: bold; font-size:20px">Insert Medicine Consumption Record</h>
                             <form action="includes/action.php" method="post" onsubmit="return validate()">
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorName"></div>
@@ -156,6 +118,57 @@ checkLogin();
                         <?php
                     }
                         ?>
+                         <table id="tb_table">
+                    <thead>
+                        <th>Date</th>
+                        <th>Medicine name</th>
+                        <th>Quantity(Litres)</th>
+                        <th>Employee Incharge</th>
+                        <th>Updated by:</th>
+                        <th colspan="2">Action</th>
+                    </thead>
+                    <tbody>
+                    <?php
+                        // calling viewMethod() method
+                        $myrow = $medicineObject->viewMethod("MedicineUsage");
+                        foreach($myrow as $row){
+                            // breaking point
+                            ?>
+                            <tr>
+                                <td><?php echo $row['Date'];?></td>
+                                <td><?php echo $row['MedicineName'];?></td>
+                                <td><?php echo $row['Quantity'];?></td>
+                                <td>
+                                    <?php 
+                                        $employee = $row['Employee'];
+                                        $sql = "SELECT FirstName, LastName from Employee, FeedConsumption where Employee.Employee_ID = $employee";
+                                    
+                                        $result = $databaseObject->connect()->query($sql);
+                                        $result = mysqli_fetch_array($result);
+                                     
+                                        echo $result['FirstName'].' '.$result['LastName'];
+                                    ?>
+                                </td>  
+                                <td>
+                                <?php 
+
+                                $userid = $row['User_ID'];
+                                $user = getUserName($userid);
+                                echo $user;
+                                ?>
+                                </td>
+                                <td>
+                                    <a class="edit_btn" href="MedicineConsumption.php?medusageUpdate=1&id=<?php echo $row["MedicineUsage_ID"]; ?>">Edit</a>
+                                </td>
+                                <td>
+                                    <a class="del_btn" href="includes/action.php?medusageDelete=1&id=<?php echo $row["MedicineUsage_ID"]; ?>">Delete</a>
+                                </td>
+                            </tr>
+                            <?php
+                        }
+                    ?>
+                    </tbody>
+                </table>
             </div>
         </main>
         <!-- sidebar nav -->

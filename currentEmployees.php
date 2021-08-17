@@ -42,10 +42,12 @@ checkLogin();
                         var salary = document.getElementById("Salary").value;
                         var location = document.getElementById("Location").value;
                         var startDate = document.getElementById('Date').value;
-                        var endDate = document.getElementById('endDate').value;
+                       // var endDate = document.getElementById('endDate').value;
+                        var number = document.getElementById('Number').value;
                        
                         
                         // Getting error divs ID
+                        var errorNumber = document.getElementById('errorNumber');
                         var errorFname = document.getElementById('errorFname');
                         var errorLname = document.getElementById('errorLname');
                         var errorPhone = document.getElementById('errorPhone');
@@ -64,6 +66,12 @@ checkLogin();
                         var salaryP = /^(\d+)(?:\.(\d{1,2}))?$/;
                         
                         var truth = true;
+
+                        if(number == "")
+                        {
+                            errorNumber = "PLease, employee number cannot be empty";
+                            truth = false;
+                        }
                         if(!fnameP.test(fname)){
                             errorFname.innerHTML = "Please enter a valid first name";
                             truth = false;
@@ -136,7 +144,11 @@ checkLogin();
                 <div class="input-group">
                                     <input type="hidden" name="id" value="<?php echo $id; ?>">
                                 </div>
-                                
+                                <div class="my-div-error" id="errorNumber"></div>
+                                <div class="input-group">
+                                    <label for="">Employee number</label>
+                                    <input type="text" id="number" name="EmployeeNumber" value="">
+                                </div>
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorFname"></div>
                                     <label for="">First Name</label>
@@ -197,9 +209,24 @@ checkLogin();
 
            <?php if (!isset($_GET['emplUdate']))
             {?>
-
+             <p class="heading">Search For Employee</p>
+             
+             <form method="POST" action="EmployeeSearch.php">
+             <div class="searchGroup">
+             <input type="text" name="searchFname" value="" placeholder="search by Firstname"/>
             
-                <table>
+             <input type="text" name="searchLname" value="" placeholder="search by Lastname"/>
+             
+             <input type="text" name="searchNumber" value="" placeholder="Search by Employeenumber"/>
+
+             <input class="btn" type="submit" name="searchEmployee" value="Search">
+             </div>
+             </form>
+             
+             
+             </table>
+            
+                <table id="tb_table">
                     <thead>
                         <th>Name:</th>
                         <th>Location</th>

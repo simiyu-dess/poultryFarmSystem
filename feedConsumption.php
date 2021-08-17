@@ -90,7 +90,7 @@ checkLogin();
                                 </div>
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorQuantity"></div>
-                                    <label for="">Quantity</label>
+                                    <label for="">Quantity(KGS)</label>
                                     <input type="number" step="any" name="Quantity" id="quantity" value="">
                                 </div>
                                 
@@ -120,7 +120,7 @@ checkLogin();
 <table>
                     <thead>
                         <th>Consumed On</th>
-                        <th>Quantity</th>
+                        <th>Quantity(KGS)</th>
                         <th>Feed name</th>
                         <th>Employee Incharge</th>
                         <th>Updated by:</th>
@@ -199,7 +199,7 @@ checkLogin();
                             errorquantity.innerHTML = "PLeasea enter a valid quantity";
                             truth =  false;
                         }
-                        if(quantity == "")){
+                        if(quantity == ""){
                             errorquantity.innerHTML = "Quantity cannot be empty";
                             truth = false;
                         }

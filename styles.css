@@ -593,6 +593,25 @@
     background-color:#f38630;
     color:#fff;
   }
+  .heading
+{
+  margin-left:auto;
+	margin-right:auto;
+	margin-bottom:1.5em;
+	text-align:center;
+	font-weight:bold;
+	font-size:1.5em;
+	color:#fa6900;	
+}
+.searchGroup
+{
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 3em;
+  
+  display: flex;
+  justify-content: space-between;
+}
   
   #tb_table th.title, #tb_table th.title a {
     font-size:15px;

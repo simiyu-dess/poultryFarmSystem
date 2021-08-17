@@ -27,50 +27,7 @@ checkLogin();
                     </p>
                     </div>
                 <?php endif ?>
-                <h style="font-weight: bold; font-size:20px">Birds Mortality</h>
-                <table>
-                    <thead>
-                        <th>Date</th>
-                        <th>Number of Deaths</th>
-                        <th>Updated by:</th>
-                        <th colspan="2">Action</th>
-                    </thead>
-                    <tbody>
-                    <?php
-                        // calling viewMethod() method
-                        $myrow = $birdsMortalityObject->viewMethod("BirdsMortality");
-                        $i = 0;
-                        foreach($myrow as $row){
-                            // breaking point
-                            ?>
-                            <tr>
-                                <td><?php echo $row['Date'];?></td>
-                                <td><?php echo $row['Deaths'];?></td>
-                                
-                                <td>
-                                <?php 
-
-                                $userid = $row['User_ID'];
-                                $user = getUserName($userid);
-                                echo $user;
-                                ?>
-                                </td>
-                                
-                                <td>
-                            
-                                    <a class="edit_btn" href="birdsMortality.php?birdsmortupdate=1&id=<?php echo $row["BirdsMortality_ID"]; ?>">Edit</a>
-                                    
-                                </td>
-                                <td>
-                                <a class="del_btn" href="includes/action.php?birdsmortdelete=1&id=<?php echo $row["BirdsMortality_ID"]; ?>">Delete</a>                    
-                                </td>
-                            </tr>
-                            <?php
-                            
-                        } 
-                    ?>
-                    </tbody>
-                </table>
+             
                 
                 <?php
                     if(isset($_GET["birdsmortupdate"])){
@@ -80,6 +37,7 @@ checkLogin();
                         // Call the select method that displays the record to be edited
                         $row = $birdsPurchaseObject->selectMethod("BirdsMortality", $where);
                         ?>
+                         <h style="font-weight: bold; font-size:20px"> Insert New Birds Mortality</h>
                             <div id="error" style="text-align: center; color:  #e65061;"></div>
                             <form id="form" action="includes/action.php" method="post" onsubmit="return validate()">
                                 <div class="input-group">
@@ -131,6 +89,50 @@ checkLogin();
                         <?php
                     }
                         ?>
+                          
+                <table id="tb_table">
+                    <thead>
+                        <th>Date</th>
+                        <th>Number of Deaths</th>
+                        <th>Updated by:</th>
+                        <th colspan="2">Action</th>
+                    </thead>
+                    <tbody>
+                    <?php
+                        // calling viewMethod() method
+                        $myrow = $birdsMortalityObject->viewMethod("BirdsMortality");
+                        $i = 0;
+                        foreach($myrow as $row){
+                            // breaking point
+                            ?>
+                            <tr>
+                                <td><?php echo $row['Date'];?></td>
+                                <td><?php echo $row['Deaths'];?></td>
+                                
+                                <td>
+                                <?php 
+
+                                $userid = $row['User_ID'];
+                                $user = getUserName($userid);
+                                echo $user;
+                                ?>
+                                </td>
+                                
+                                <td>
+                            
+                                    <a class="edit_btn" href="birdsMortality.php?birdsmortupdate=1&id=<?php echo $row["BirdsMortality_ID"]; ?>">Edit</a>
+                                    
+                                </td>
+                                <td>
+                                <a class="del_btn" href="includes/action.php?birdsmortdelete=1&id=<?php echo $row["BirdsMortality_ID"]; ?>">Delete</a>                    
+                                </td>
+                            </tr>
+                            <?php
+                            
+                        } 
+                    ?>
+                    </tbody>
+                </table>
             </div>
         </main>
         <!-- sidebar nav -->

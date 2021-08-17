@@ -28,7 +28,7 @@ checkLogin();
                 <?php endif ?>
                 <h style="font-weight: bold; font: size 20px;">Birds Purchase</h>
                 
-                <table>
+                <table id="tb_table">
                     <thead>
                         <th>Date</th>
                         <th>Type</th>

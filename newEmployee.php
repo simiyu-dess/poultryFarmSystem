@@ -27,7 +27,69 @@ checkLogin();
                     </p>
                     </div>
                 <?php endif ?>
-                <script>
+
+                   <form id="payrollForm" action="includes/action.php" method="post" onsubmit= "return validate()">
+                               
+                                <div class="my-div-error" id="errorNumber"></div>
+                                <div class="input-group">
+                                    <label for="">Employee number</label>
+                                    <input type="text" id="number" name="EmployeeNumber" value="">
+                                </div>
+                                <div class="my-div-error" id="errorFname"></div>
+                                <div class="input-group">
+                                    <label for="">First Name</label>
+                                    <input type="text" id="FirstName" name="FirstName" value="">
+                                </div>
+                                <div class="my-div-error" id="errorLname"></div>
+                                <div class="input-group">
+                                    <label for="">Last Name</label>
+                                    <input type="text" id="LastName" name="LastName" value="">
+                                </div>
+                                <div class="select-group">
+                                <label for="">Gender</label>
+                                <select name="Gender">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                                </select>
+                                </div>
+                                <div class="my-div-error" id="errorLocation"></div>
+                                <div class = "input-group">
+                                <label for="">Location</label>
+                                <input type="text" id="location" name="Location" value=""/>
+                                </div>
+                                <div class="my-div-error" id="errorPhone"></div>
+                                <div class="input-group">
+                                    <label for="">Phone</label>
+                                    <input type="phone"  id="Phone" name="Phone" value="">
+                                </div>
+                                <div class="my-div-error" id="errorJob"></div>
+                                <div class="input-group">
+                                    <label for="">Job</label>
+                                    <input type="text"  id="Job" name="Job" value="">
+                                </div>
+                                <div class="my-div-error" id="errorSalary"></div>
+                                <div class="input-group">
+                                    <label for="">Salary</label>
+                                    <input type="text" id="Salary" name="Salary" value="">
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorDate"></div>
+                                    <label for="">Start Date</label>
+                                    <input type="Date" id="Date" name="StartDate" max="<?php echo date('Y-m-d');?>" value="">
+                                </div>
+                               
+                                <div class="input-group">
+                                    <button type="submit" name="emplSave" class="btn" value=""> Save</button>
+                                </div>
+                            </form>
+            </div>
+        </main>
+        <!-- sidebar nav -->
+        <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_side_bar.php";?>
+    </div>
+   
+    <script>
                     function validate(){
                         var fname = document.getElementById("FirstName").value;
                         var lname = document.getElementById("LastName").value;
@@ -36,6 +98,7 @@ checkLogin();
                         var salary = document.getElementById("Salary").value;
                         var location = document.getElementById("location").value;
                         var startDate = document.getElementById('Date').value;
+                        var number = document.getElementById('number').value;
                        
                         
                         // Getting error divs ID
@@ -46,6 +109,7 @@ checkLogin();
                         var errorSalary = document.getElementById('errorSalary');
                         var errorDate = document.getElementById('errorDate');
                         var errorLocation = document.getElementById('errorLocation');
+                        var errorNumber = document.getElementById('errorNumber');
                         
                         
                         // Defining REGEX
@@ -56,6 +120,11 @@ checkLogin();
                         var salaryP = /^(\d+)(?:\.(\d{1,2}))?$/;
                         
                         var truth = true;
+                        if(number == "")
+                        {
+                            errorNumber.innerHTML = "PLease enter the employee number";
+                            truth = false;
+                        }
                         if(!fnameP.test(fname)){
                             errorFname.innerHTML = "Please enter a valid first name";
                             truth = false;
@@ -124,62 +193,6 @@ checkLogin();
 
                     }
                     </script>
-                   <form id="payrollForm" action="includes/action.php" method="post" onsubmit= "return validate()">
-                                <div class="my-div-error" id="errorFname"></div>
-                                <div class="input-group">
-                                    <label for="">First Name</label>
-                                    <input type="text" id="FirstName" name="FirstName" value="">
-                                </div>
-                                <div class="my-div-error" id="errorLname"></div>
-                                <div class="input-group">
-                                    <label for="">Last Name</label>
-                                    <input type="text" id="LastName" name="LastName" value="">
-                                </div>
-                                <div class="select-group">
-                                <label for="">Gender</label>
-                                <select name="Gender">
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="other">Other</option>
-                                </select>
-                                </div>
-                                <div class="my-div-error" id="errorLocation"></div>
-                                <div class = "input-group">
-                                <label for="">Location</label>
-                                <input type="text" id="location" name="Location" value=""/>
-                                </div>
-                                <div class="my-div-error" id="errorPhone"></div>
-                                <div class="input-group">
-                                    <label for="">Phone</label>
-                                    <input type="phone"  id="Phone" name="Phone" value="">
-                                </div>
-                                <div class="my-div-error" id="errorJob"></div>
-                                <div class="input-group">
-                                    <label for="">Job</label>
-                                    <input type="text"  id="Job" name="Job" value="">
-                                </div>
-                                <div class="my-div-error" id="errorSalary"></div>
-                                <div class="input-group">
-                                    <label for="">Salary</label>
-                                    <input type="text" id="Salary" name="Salary" value="">
-                                </div>
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorDate"></div>
-                                    <label for="">Start Date</label>
-                                    <input type="Date" id="Date" name="StartDate" max="<?php echo date('Y-m-d');?>" value="">
-                                </div>
-                               
-                                <div class="input-group">
-                                    <button type="submit" name="emplSave" class="btn" value=""> Save</button>
-                                </div>
-                            </form>
-            </div>
-        </main>
-        <!-- sidebar nav -->
-        <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_side_bar.php";?>
-    </div>
-   
-   
                     
 </body>
 </html>

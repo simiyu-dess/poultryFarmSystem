@@ -25,39 +25,8 @@ checkLogin();
                     </p>
                     </div>
                 <?php endif ?>
-                <th>Feed Purchases</th>
-                <table id ="tb_table">
-                    <thead>
-                        <th>Date</th>
-                        <th>Quantity(KGS)</th>
-                        <th>Amount Paid(KSHS)</th>
-                        <th colspan="2">Action</th>
-                        <th> User </th>
-                    </thead>
-                    <tbody>
-                    <?php
-                        // calling viewMethod() method
-                        $myrow = $feedConsumptionObject->viewMethod("FeedPurchase");
-                        foreach($myrow as $row){
-                            // breaking point
-                            ?>
-                            <tr>
-                                <td><?php echo $row['Date'];?></td>
-                                <td><?php echo $row['Quantity'];?></td>
-                                <td><?php echo $row['Price'];?></td>
-                                <td>
-                                    <a class="edit_btn" href="feedPurchase.php?feedpurchupdate=1&id=<?php echo $row["FeedPurchase_ID"]; ?>">Edit</a>
-                                </td>
-                                <td>
-                                    <a class="del_btn" href="includes/action.php?feedpurchdelete=1&id=<?php echo $row["FeedPurchase_ID"]; ?>">Delete</a>
-                                </td>
-                                <td></td>
-                            </tr>
-                            <?php
-                        }
-                    ?>
-                    </tbody>
-                </table>
+                <h style="font-weight: bold; font-size: 20px;">Feed Purchases</h>
+                
                 
                 <?php
                     if(isset($_GET["feedpurchupdate"])){
@@ -126,6 +95,48 @@ checkLogin();
                         <?php
                     }
                         ?>
+
+<table id ="tb_table">
+                    <thead>
+                        <th>Date</th>
+                        <th>Quantity(KGS)</th>
+                        <th>Amount Paid(KSHS)</th>
+                        <th>Updated by:</th>
+                        <th colspan="2">Action</th>
+                        
+                    </thead>
+                    <tbody>
+                    <?php
+                        // calling viewMethod() method
+                        $myrow = $feedConsumptionObject->viewMethod("FeedPurchase");
+                        foreach($myrow as $row){
+                            // breaking point
+                            ?>
+                            <tr>
+                                <td><?php echo $row['Date'];?></td>
+                                <td><?php echo $row['Quantity'];?></td>
+                                <td><?php echo $row['Price'];?></td>
+                                <td>
+                                <?php 
+
+                                $userid = $row['User_ID'];
+                                $user = getUserName($userid);
+                                echo $user;
+                                ?>
+                                </td>
+                                <td>
+                                    <a class="edit_btn" href="feedPurchase.php?feedpurchupdate=1&id=<?php echo $row["FeedPurchase_ID"]; ?>">Edit</a>
+                                </td>
+                                <td>
+                                    <a class="del_btn" href="includes/action.php?feedpurchdelete=1&id=<?php echo $row["FeedPurchase_ID"]; ?>">Delete</a>
+                                </td>
+                               
+                            </tr>
+                            <?php
+                        }
+                    ?>
+                    </tbody>
+                </table>
             </div>
         </main>
         <!-- sidebar nav -->

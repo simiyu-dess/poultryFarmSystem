@@ -289,6 +289,7 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
     // Handle the save button for form submission
     if(isset($_POST["emplSave"])){
         $myArray = array(
+            "Employee_no" => sanitize($_POST["EmployeeNumber"]),
             "FirstName" => sanitize($_POST["FirstName"]),
             "LastName" => sanitize($_POST["LastName"]),
             "Gender" => sanitize($_POST["Gender"]),
@@ -310,6 +311,7 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         $id = $_POST["id"];
         $where = array("Employee_ID" => $id);
         $myArray = array(
+            "Employee_no" => sanitize($_POST["EmployeeNumber"]),
             "FirstName" => sanitize($_POST["FirstName"]),
             "LastName" => sanitize($_POST["LastName"]),
             "Gender" => sanitize($_POST["Gender"]),
@@ -371,6 +373,7 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
             "User_ID" =>  $_SESSION['loguser']
         );
         if($feedConsumptionObject->updateMethod("FeedConsumption", $where, $myArray)){
+            $_SESSION['msg'] = "feed record inserted successfully";
             header("location: ../feedConsumption.php?msg=Updated Successfully!");
         }
     }
@@ -379,6 +382,7 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         $id = $_GET["id"] ?? null;
         $where = array("FeedConsumption_ID" => $id);
         if($feedConsumptionObject->deleteMethod("FeedConsumption", $where)){
+            $_SESSION['msg'] = "feed record deleted successfully";
             header("location: ../feedConsumption.php?msg=Record deleted successfully!");
         }
     }

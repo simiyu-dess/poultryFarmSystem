@@ -25,41 +25,8 @@ checkLogin();
                     </p>
                     </div>
                 <?php endif ?>
-                <table>
-                    <thead>
-                        <th>Date</th>
-                        <th>Name</th>
-                        <th>Quantity Purchased</th>
-                        <th>Amount Paid</th>
-                        <th colspan="2">Action</th>
-                    </thead>
-                    <tbody>
-                    <?php
-                        // calling viewMethod() method
-                        $myrow = $medicineObject->viewMethod("MedicinePurchase");
-                        foreach($myrow as $row){
-                            // breaking point
-                            ?>
-                            <tr>
-                                <td><?php echo $row['Date'];?></td>
-                                <td><?php echo $row['MedicineName'];?></td>
-                                <td><?php echo $row['Quantity'];?></td>
-                                <td><?php echo $row['Price'];?></td>
-                                <td>
-                                    <a class="edit_btn"
-                                     href="MedicinePurchase.php?medpurchUpdate=1&id=<?php echo $row["MedicinePurchase_ID"]; ?>">Edit</a>
-                                </td>
-                                <td>
-                                    <a class="del_btn" 
-                                    href="includes/action.php?medpurchDelete=1&id=<?php echo $row["MedicinePurchase_ID"]; ?>">Delete</a>
-                                </td>
-                            </tr>
-                            <?php
-                        }
-                    ?>
-                    </tbody>
-                </table>
                 
+               
                 <?php
                     if(isset($_GET["medpurchUpdate"])){
                         // Get the id of the record to be edited
@@ -68,6 +35,7 @@ checkLogin();
                         // Call the select method that displays the record to be edited
                         $row = $medicineObject->selectMethod("MedicinePurchase", $where);
                         ?>
+                        <h style="font-weight: bold; font-size:20px">Update Medicine Purchase Record</h>
                             <form action="includes/action.php" method="post" onsubmit="return validate()">
                                 <div class="input-group">
                                     <input type="hidden" name="id" value="<?php echo $id; ?>">
@@ -103,11 +71,12 @@ checkLogin();
                         <?php
                     }else{
                         ?>
+                        <h style="font-weight: bold; font-size:20px">Insert Medicine Purchase Record</h>
                             <form action="includes/action.php" method="post" onsubmit="return validate()">
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorDate"></div>
                                     <label for="">Date</label>
-                                    <input type="date" id="date" name="Date" value="" >
+                                    <input type="date" id="date" name="Date" max="<?php echo date('Y-m-d');?>" value="" >
                                 </div>
                                 <div class="input-group" >
                                 <div class="my-div-error" id="errorName"></div>
@@ -131,6 +100,52 @@ checkLogin();
                         <?php
                     }
                         ?>
+
+<table>
+                    <thead>
+                        <th>Date</th>
+                        <th>Medicine Name</th>
+                        <th>Quantity(KGS)</th>
+                        <th>Amount(KSHS)</th>
+                        <th>Updated by:</th>
+                        <th colspan="2">Action</th>
+                    </thead>
+                    <tbody>
+                    <?php
+                        // calling viewMethod() method
+                        $myrow = $medicineObject->viewMethod("MedicinePurchase");
+                        foreach($myrow as $row){
+                            // breaking point
+                            ?>
+                            <tr>
+                                <td><?php echo $row['Date'];?></td>
+                                <td><?php echo $row['MedicineName'];?></td>
+                                <td><?php echo $row['Quantity'];?></td>
+                                <td><?php echo $row['Price'];?></td>
+
+                                <td>
+                                <?php 
+
+                                $userid = $row['User_ID'];
+                                $user = getUserName($userid);
+                                echo $user;
+                                ?>
+                                </td>
+                                <td>
+                                    <a class="edit_btn"
+                                     href="MedicinePurchase.php?medpurchUpdate=1&id=<?php echo $row["MedicinePurchase_ID"]; ?>">Edit</a>
+                                </td>
+                                <td>
+                                    <a class="del_btn" 
+                                    href="includes/action.php?medpurchDelete=1&id=<?php echo $row["MedicinePurchase_ID"]; ?>">Delete</a>
+                                </td>
+                            </tr>
+                            <?php
+                        }
+                    ?>
+                    </tbody>
+                </table>
+                
             </div>
         </main>
         <!-- sidebar nav -->
