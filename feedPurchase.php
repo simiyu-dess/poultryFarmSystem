@@ -25,7 +25,16 @@ checkLogin();
                     </p>
                     </div>
                 <?php endif ?>
-                <h style="font-weight: bold; font-size: 20px;">Feed Purchases</h>
+                <?php if(isset($_SESSION['error_msg'])): ?>
+                    <div class="error_msg">
+                    <p>
+                        <?php 
+                            echo $_SESSION['error_msg'];
+                            unset($_SESSION['error_msg']);
+                        ?>
+                    </p>
+                    </div>
+                <?php endif ?>
                 
                 
                 <?php

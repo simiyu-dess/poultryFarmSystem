@@ -27,6 +27,16 @@ checkLogin();
                     </p>
                     </div>
                 <?php endif ?>
+                <?php if(isset($_SESSION['error_msg'])): ?>
+                    <div class="error_msg">
+                    <p>
+                        <?php 
+                            echo $_SESSION['error_msg'];
+                            unset($_SESSION['error_msg']);
+                        ?>
+                    </p>
+                    </div>
+                <?php endif ?>
 
                    <form id="payrollForm" action="includes/action.php" method="post" onsubmit= "return validate()">
                                

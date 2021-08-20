@@ -26,6 +26,16 @@ checkLogin();
                     </p>
                     </div>
                 <?php endif ?>
+                <?php if(isset($_SESSION['error_msg'])): ?>
+                    <div class="error_msg">
+                    <p>
+                        <?php 
+                            echo $_SESSION['error_msg'];
+                            unset($_SESSION['error_msg']);
+                        ?>
+                    </p>
+                    </div>
+                <?php endif ?>
                 <table id="tb_table">
                     <thead>
                         <th>Date</th>
