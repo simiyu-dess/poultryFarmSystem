@@ -560,6 +560,17 @@
     width: 50%;
     text-align: center;
   }
+  .error_msg
+  {
+    margin: 30px auto;
+    padding: 10px;
+    border-radius: 5px;
+    color: #f11b0c;
+    background: #dff0d8;
+    border: 1px solid #f11b0c;
+    width: 50%;
+    text-align: center;
+  }
 
 
   @media only screen and (max-width: 855px) {

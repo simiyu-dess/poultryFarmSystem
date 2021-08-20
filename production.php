@@ -27,7 +27,59 @@ checkLogin();
                     </p>
                     </div>
                 <?php endif ?>
-                <table>
+               
+                
+                <?php
+                    if(isset($_GET["productionupdate"])){
+                        // Get the id of the record to be edited
+                        $id = $_GET["id"] ?? null;
+                        $where = array("Production_ID" => $id);
+                        // Call the select method that displays the record to be edited
+                        $row = $salesObject->selectMethod("Production", $where);
+                        ?>
+                        <p class="heading">Edit Egg  Record Of Eggs Produced</p>
+                            <form action="includes/action.php" method="post" onsubmit="return validate()">
+                                <div class="input-group">
+                                    <input type="hidden" name="id" value="<?php echo $id; ?>">
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorDate"></div>
+                                    <label for="">Date</label>
+                                    <input type="date" name="Date" id="date" value="<?php echo $row["Date"]; ?>" required>
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorNumber"></div>
+                                    <label for="">Number of Eggs</label>
+                                    <input type="number" id="number" step="any" name="NumberOfEggs" value="<?php echo $row["NumberOfEggs"]; ?>" required>
+                                </div>
+                                <div class="input-group">
+                                    <button type="submit" name="productionedit" class="btn" value="">Update</button>
+                                </div>
+                            </form>
+                        <?php
+                    }else{
+                        ?>
+                        <p class="heading">Insert Record Of Eggs Produced</p>
+                            <form action="includes/action.php" method="post" onsubmit="return validate()">
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorDate"></div>
+                                    <label for="">Date</label>
+                                    <input type="date" name="Date" id="date" value="">
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorNumber"></div>
+                                    <label for="">Number of Eggs</label>
+                                    <input type="number" step="any"id="number" name="NumberOfEggs" value="">
+                                </div>
+                                <div class="input-group">
+                                    <button type="submit" name="productionsave" class="btn">Save</button>
+                                </div>
+                            </form>
+                        <?php
+                    }
+                        ?>
+
+<table id="tb_table">
                     <thead>
                         <th>Date</th>
                         <th>Number of Eggs</th>
@@ -64,54 +116,6 @@ checkLogin();
                     ?>
                     </tbody>
                 </table>
-                
-                <?php
-                    if(isset($_GET["productionupdate"])){
-                        // Get the id of the record to be edited
-                        $id = $_GET["id"] ?? null;
-                        $where = array("Production_ID" => $id);
-                        // Call the select method that displays the record to be edited
-                        $row = $salesObject->selectMethod("Production", $where);
-                        ?>
-                            <form action="includes/action.php" method="post" onsubmit="return validate()">
-                                <div class="input-group">
-                                    <input type="hidden" name="id" value="<?php echo $id; ?>">
-                                </div>
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorDate"></div>
-                                    <label for="">Date</label>
-                                    <input type="date" name="Date" id="date" value="<?php echo $row["Date"]; ?>" required>
-                                </div>
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorNumber"></div>
-                                    <label for="">Number of Eggs</label>
-                                    <input type="number" id="number" step="any" name="NumberOfEggs" value="<?php echo $row["NumberOfEggs"]; ?>" required>
-                                </div>
-                                <div class="input-group">
-                                    <button type="submit" name="productionedit" class="btn" value="">Update</button>
-                                </div>
-                            </form>
-                        <?php
-                    }else{
-                        ?>
-                            <form action="includes/action.php" method="post" onsubmit="return validate()">
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorDate"></div>
-                                    <label for="">Date</label>
-                                    <input type="date" name="Date" id="date" value="">
-                                </div>
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorNumber"></div>
-                                    <label for="">Number of Eggs</label>
-                                    <input type="number" step="any"id="number" name="NumberOfEggs" value="">
-                                </div>
-                                <div class="input-group">
-                                    <button type="submit" name="productionsave" class="btn">Save</button>
-                                </div>
-                            </form>
-                        <?php
-                    }
-                        ?>
             </div>
         </main>
         <!-- sidebar nav -->

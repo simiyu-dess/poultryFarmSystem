@@ -26,6 +26,16 @@ checkLogin();
                     </p>
                     </div>
                 <?php endif ?>
+                <?php if(isset($_SESSION['error_msg'])): ?>
+                    <div class="error_msg">
+                    <p>
+                        <?php 
+                            echo $_SESSION['error_msg'];
+                            unset($_SESSION['error_msg']);
+                        ?>
+                    </p>
+                    </div>
+                <?php endif ?>
                 <h style="font-weight: bold; font-size:20px;">Feed Consumption</h>
                 
                 <?php
@@ -36,6 +46,7 @@ checkLogin();
                         // Call the selectEmployee method that displays the record to be edited
                         $row = $feedConsumptionObject->selectMethod("FeedConsumption", $where);
                         ?>
+                        <p class="heading">Edit Feed Consumption Record</p>
                             <form action="includes/action.php" method="post" onsubmit=" return validate()">
                                 <div class="input-group">
                                     <input type="hidden" name="id" value="<?php echo $id; ?>">
@@ -43,7 +54,7 @@ checkLogin();
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorDate"></div>
                                     <label for="">Date</label>
-                                    <input type="date" name="ConsDate" id="date" value="<?php echo $row["ConsDate"]; ?>">
+                                    <input type="date" name="ConsDate" id="date"max="<?php echo date('Y-m-d'); ?>" value="<?php echo $row["ConsDate"]; ?>">
                                 </div>
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorName"></div>
@@ -77,6 +88,7 @@ checkLogin();
                         <?php
                     }else{
                         ?>
+                        <p class="heading">Insert Feed Consumption Record</p>
                             <form action="includes/action.php" method="post" onsubmit="return validate()">
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorDate"></div>
@@ -117,7 +129,7 @@ checkLogin();
                     }
                         ?>
 
-<table>
+<table id="tb_table">
                     <thead>
                         <th>Consumed On</th>
                         <th>Quantity(KGS)</th>

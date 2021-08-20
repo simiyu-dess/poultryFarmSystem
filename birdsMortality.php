@@ -27,7 +27,16 @@ checkLogin();
                     </p>
                     </div>
                 <?php endif ?>
-             
+                <?php if(isset($_SESSION['error_msg'])): ?>
+                    <div class="error_msg">
+                    <p>
+                        <?php 
+                            echo $_SESSION['error_msg'];
+                            unset($_SESSION['error_msg']);
+                        ?>
+                    </p>
+                    </div>
+                <?php endif ?>
                 
                 <?php
                     if(isset($_GET["birdsmortupdate"])){
@@ -143,6 +152,8 @@ checkLogin();
                         var dates = document.getElementById("Date").value;
                         var types = document.getElementById("typeOfBirds").value;
                         var number = document.getElementById("numberOfDeaths").value;
+                        var remainingBirds = <?php echo $remainingBirds ; ?>
+
                         
                        
                         
@@ -157,16 +168,14 @@ checkLogin();
                         
                        
                     
-                        if(number == " "){
-                            errornumber.innerHTML = " This  field is required";
-                            truth = false;
-                        }
-                        if(number < 1)
-                        {
-                            errornumber.innerHTML = "Number of deaths must be greater than zero";
-                            truth = false;
-                        }
+                       
+                        
 
+                       if(number > remainingBirds)
+                       {
+                           errornumber.innerHTML = "Total birds are less the number indicated";
+                           truth = false;
+                       }
                         if(number > 1)
                         {
                         if(number % 1 != 0)
@@ -174,6 +183,15 @@ checkLogin();
                             errornumber.innerHTML = "Enter a valid number";
                             truth = false;
                         }
+                        }
+                        if(number < 1)
+                        {
+                            errornumber.innerHTML = "Number of deaths must be greater than zero";
+                            truth = false;
+                        }
+                        if(number == " "){
+                            errornumber.innerHTML = " This  field is required";
+                            truth = false;
                         }
                         
                         if(dates == "")

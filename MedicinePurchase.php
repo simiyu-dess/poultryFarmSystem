@@ -35,7 +35,7 @@ checkLogin();
                         // Call the select method that displays the record to be edited
                         $row = $medicineObject->selectMethod("MedicinePurchase", $where);
                         ?>
-                        <h style="font-weight: bold; font-size:20px">Update Medicine Purchase Record</h>
+                        <p class="haeding">Insert A record of Medicine Used</p>
                             <form action="includes/action.php" method="post" onsubmit="return validate()">
                                 <div class="input-group">
                                     <input type="hidden" name="id" value="<?php echo $id; ?>">
@@ -71,7 +71,7 @@ checkLogin();
                         <?php
                     }else{
                         ?>
-                        <h style="font-weight: bold; font-size:20px">Insert Medicine Purchase Record</h>
+                       <p class="haeding">Insert A record of Medicine Purchased</p>
                             <form action="includes/action.php" method="post" onsubmit="return validate()">
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorDate"></div>
@@ -101,7 +101,7 @@ checkLogin();
                     }
                         ?>
 
-<table>
+<table id="tb_table">
                     <thead>
                         <th>Date</th>
                         <th>Medicine Name</th>

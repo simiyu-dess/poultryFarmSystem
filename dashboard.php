@@ -20,61 +20,7 @@ checkLogin();
                 <!-- dashboard title and greetings -->
                 <div class="main__title">
                 </div>
-                <!-- dashboard title ends here -->
-
-                <!-- Cards for displaying CRUD insights -->
-                <!--
-                <div class="main__cards">
-                    <div class="card">
-                        <div class="card_inner">
-                            <p class="text-primary-p">No. of Birds</p>
-                            <span class="font-bold text-title">578</span>
-                            <span class="font-bold text-title">
-                                <?php
-                                    echo $totalNumberOfBirds;
-                                ?>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card_inner">
-                            <p class="text-primary-p">Mortality Rate</p>
-                            <span class="font-bold text-title">578</span> 
-                            <span class="font-bold text-title">
-                                <?php
-                                    echo $mortalityRate . '%';
-                                ?>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card_inner">
-                            <p class="text-primary-p">No. of Eggs</p>
-                             <span class="font-bold text-title">578</span> 
-                            <span class="font-bold text-title">
-                                <?php
-                                    echo $totalNumberOfEggs;
-                                ?>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card_inner">
-                            <p class="text-primary-p">No. of Employees</p>
-                            <span class="font-bold text-title">578</span> 
-                            <span class="font-bold text-title">
-                                <?php
-                                    echo $totalNumberOfEmployees;
-                                ?>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                 End of cards -->
-                <!-- Start of charts-->
+              
                 <div class="main_card">
 
                     <div class="charts__right">

@@ -26,11 +26,82 @@ checkLogin();
                     </p>
                     </div>
                 <?php endif ?>
-                <table>
+                <?php if(isset($_SESSION['error_msg'])): ?>
+                    <div class="error_msg">
+                    <p>
+                        <?php 
+                            echo $_SESSION['error_msg'];
+                            unset($_SESSION['error_msg']);
+                        ?>
+                    </p>
+                    </div>
+                <?php endif ?>
+               
+                
+                <?php
+                    if(isset($_GET["expenseupdate"])){
+                        // Get the id of the record to be edited
+                        $id = $_GET["id"] ?? null;
+                        $where = array("Expense_ID" => $id);
+                        // Call the select method that displays the record to be edited
+                        $row = $expenseObject->selectMethod("Expenses", $where);
+                        ?>
+                        <p class="heading">Edit Expennse</p>
+                            <form action="includes/action.php" method="post" onsubmit="return validate()">
+                                <div class="input-group">
+                                    <input type="hidden" name="id" value="<?php echo $id; ?>">
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorDate"></div>
+                                    <label for="">Date</label>
+                                    <input type="date" name="date" id="date" max="<?php echo date('Y-m-d'); ?>" value="<?php echo $row["Expense_date"]; ?>">
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorType"></div>
+                                    <label for="">Expense type:</label>
+                                    <input type="text" id="expensetype" step="any" name="expensetype" value="<?php echo $row["Expense_type"]; ?>">
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorAmount"></div>
+                                    <label for="">Expense Amount:</label>
+                                    <input type="number" id="amount" step="any" name="amount" value="<?php echo $row["Amount"]; ?>">
+                                </div>
+                                <div class="input-group">
+                                    <button type="submit" name="expenseedit" class="btn" value="">Update</button>
+                                </div>
+                            </form>
+                        <?php
+                    }else{
+                        ?>
+                        <p class="heading">Add Expense</p>
+                            <form action="includes/action.php" method="post" onsubmit="return validate()">
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorDate"></div>
+                                    <label for="">Date</label>
+                                    <input type="date" name="date" id="date" max="<?php echo date('Y-m-d'); ?>" value="">
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorType"></div>
+                                    <label for="">Expense Type:</label>
+                                    <input type="text" id="expensetype" name="expensetype" value="">
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorAmount"></div>
+                                    <label for="">Expense Amount:</label>
+                                    <input type="number" id="amount" name="amount" value="">
+                                </div>
+                                <div class="input-group">
+                                    <button type="submit" name="expensesave" class="btn">Save</button>
+                                </div>
+                            </form>
+                        <?php
+                    }
+                        ?>
+                         <table id="tb_table">
                     <thead>
                         <th>Date</th>
                         <th>Expense type:</th>
-                        <th>Amount</th>
+                        <th>Amount(Ksh)</th>
                        
                         <th>Updated by:</th>
                         <th colspan="2">" "Action</th>
@@ -39,7 +110,9 @@ checkLogin();
                     <?php
                         // calling viewMethod() method
                         $myrow = $productionObject->viewMethod("Expenses");
+                        $total_expense = 0;
                         foreach($myrow as $row){
+                            $total_expense = $total_expense + $row['Amount'];
                             // breaking point
                             ?>
                             <tr>
@@ -64,70 +137,17 @@ checkLogin();
                                     <a class="del_btn" href="includes/action.php?expensedelete=1&id=<?php echo $row["Expense_ID"]; ?>">Delete</a>
                                 </td>
             
-                            </tr>
+                           
                             <?php
                         }
+                       
                     ?>
+                     </tr>
+                        <tr>
+                        <td colspan="6"> Total expense =<?php echo  " ".$total_expense."  Kenyan shillings"; ?></td>
+                        </tr>
                     </tbody>
                 </table>
-                
-                <?php
-                    if(isset($_GET["expenseupdate"])){
-                        // Get the id of the record to be edited
-                        $id = $_GET["id"] ?? null;
-                        $where = array("Expense_ID" => $id);
-                        // Call the select method that displays the record to be edited
-                        $row = $expenseObject->selectMethod("Expenses", $where);
-                        ?>
-                            <form action="includes/action.php" method="post" onsubmit="return validate()">
-                                <div class="input-group">
-                                    <input type="hidden" name="id" value="<?php echo $id; ?>">
-                                </div>
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorDate"></div>
-                                    <label for="">Date</label>
-                                    <input type="date" name="date" id="date" value="<?php echo $row["Expense_date"]; ?>">
-                                </div>
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorType"></div>
-                                    <label for="">Expense type:</label>
-                                    <input type="text" id="expensetype" step="any" name="expensetype" value="<?php echo $row["Expense_type"]; ?>">
-                                </div>
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorAmount"></div>
-                                    <label for="">Expense Amount:</label>
-                                    <input type="number" id="amount" step="any" name="amount" value="<?php echo $row["Amount"]; ?>">
-                                </div>
-                                <div class="input-group">
-                                    <button type="submit" name="expenseedit" class="btn" value="">Update</button>
-                                </div>
-                            </form>
-                        <?php
-                    }else{
-                        ?>
-                            <form action="includes/action.php" method="post" onsubmit="return validate()">
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorDate"></div>
-                                    <label for="">Date</label>
-                                    <input type="date" name="date" id="date" value="">
-                                </div>
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorType"></div>
-                                    <label for="">Expense Type:</label>
-                                    <input type="text" id="expensetype" name="expensetype" value="">
-                                </div>
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorAmount"></div>
-                                    <label for="">Expense Amount:</label>
-                                    <input type="number" id="amount" name="amount" value="">
-                                </div>
-                                <div class="input-group">
-                                    <button type="submit" name="expensesave" class="btn">Save</button>
-                                </div>
-                            </form>
-                        <?php
-                    }
-                        ?>
             </div>
         </main>
         <!-- sidebar nav -->

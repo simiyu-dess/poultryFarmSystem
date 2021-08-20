@@ -138,7 +138,8 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
             "Password" => password_hash(sanitize($_POST['password']), PASSWORD_DEFAULT),
             "Ugroup_ID" => sanitize($_POST['ugroup']),
             "Employee_ID" => sanitize($_POST['employee_id']),
-            "setupDate" => date('Y-m-d')
+            "setupDate" => date('Y-m-d'),
+            "Deactivate" => 0
 
         );
         if($userObject->insertionMethod("User", $myArray))
@@ -150,6 +151,8 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
 
     if(isset($_POST["edit_User"]))
     {
+        $deactivate_code = 0;
+        if(isset($_POST['deactivate'])) $deactivate_code = 1;
         $id = $_POST['user_id'];
         $where = array("User_ID" => $id);
         $myArray= array(
@@ -157,7 +160,8 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
             "Password" => password_hash(sanitize($_POST['password']), PASSWORD_DEFAULT),
             "Ugroup_ID" => sanitize($_POST['ugroup']),
             "Employee_ID" => sanitize($_POST['employee_id']),
-            "setupDate" => date('Y-m-d')
+            "setupDate" => date('Y-m-d'),
+            "Deactivate" => $deactivate_code
         );
 
         if($userObject->updateMethod("User",$where,$myArray))
@@ -175,6 +179,11 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         {
             $_SESSION['msg'] = "User record deleted succeessfully";
             header("location: ../setUser.php");
+        }
+        else
+        {
+            $_SESSION['error_msg'] = "Failed to delete the user record!";
+            header('Location:../setUser.php');
         }
     }
   
@@ -218,6 +227,11 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
             $_SESSION['msg'] = "Ugroup record inserted successfully";
             header('Location: ../setUgroup.php');
         }
+        else
+        {
+            $_SESSION['error_msg'] = "Failed to insert the ugroup record";
+            header('Location: ../setUgroup.php');
+        }
 
     }
     if(isset($_POST['edit_Ugroup'])){
@@ -258,6 +272,11 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         {
             $_SESSION['msg'] = "User record Edited successfully";
             header('Location: ../setUgroup.php');
+        }
+        else
+        {
+            $_SESSION['error_msg'] = "Failed to delete the User group record";
+            header('Location: ../setUgroup.php'); 
         }
 
     }
@@ -305,6 +324,11 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
             $_SESSION['msg'] = "employee added successfully!";
             header("location: ../newEmployee.php");
         }
+        else
+        {
+            $_SESSION['error_msg'] = "Failed to insert the employee record";
+            header('Location: ../newEmployee.php');
+        }
     }
     // Handle the edit button for record editing
     if(isset($_POST["emplEdit"])){
@@ -327,16 +351,33 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
             $_SESSION['msg'] = "Employee record edited successfully!";
             header("location: ../currentEmployees.php");
         }
+        else
+        {
+            $_SESSION['error_msg'] = "Failed to update the employee record";
+            header('Location: ../currentEmployees.php');
+        }
     }
 
     // Check if delete button was triggered
     if(isset($_GET["emplDelete"])){
         $id = $_GET["id"] ?? null;
+        $sqlFeeds = "SELECT * FROM FeedConsumption WHERE Employee = $id";
+        $queryFeeds = $databaseObject->connect()->query($sqlFeeds);
+
+        $sqlMedicine = "SELECT * FROM MedicineUsage WHERE Employee = $id";
+        $queryMedicine = $databaseObject->connect()->query($sqlMedicine);
+
+        if(mysqli_num_rows($queryFeeds) || mysqli_num_rows($queryMedicine))
+        {
+            $_SESSION['error_msg'] = "Failed to delete, Employee have active records!";
+            header('Location: ../currentEmployees.php');
+        }
         $where = array("Employee_ID" => $id);
         if($employeeObject->deleteMethod("Employee", $where)){
             $_SESSION['msg'] = "employee record deleted successfully!";
             header("location: ../currentEmployees.php");
         }
+        
     }
 
     // FEED CONSUMPTION
@@ -357,7 +398,12 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         if($feedConsumptionObject->insertionMethod("FeedConsumption", $myArray)){
             $_SESSION['msg'] = "Feed insertion was successfull";
             header("location: ../feedConsumption.php");
-        };
+        }
+        else
+        {
+            $_SESSION['error_msg'] = "Failed to insert the Feed consumption record";
+            header('Location: ../feedConsumption.php');
+        }
     }
 
     // Handle the edit button for record editing
@@ -376,6 +422,12 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
             $_SESSION['msg'] = "feed record inserted successfully";
             header("location: ../feedConsumption.php?msg=Updated Successfully!");
         }
+        else
+        
+        {
+            $_SESSION['error_msg'] = "Failed to update the feed consumption record";
+            header('Location: ../feedConsumption.php');
+        }
     }
     // Check if delete button was triggered
     if(isset($_GET["feedconsdelete"])){
@@ -383,7 +435,12 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         $where = array("FeedConsumption_ID" => $id);
         if($feedConsumptionObject->deleteMethod("FeedConsumption", $where)){
             $_SESSION['msg'] = "feed record deleted successfully";
-            header("location: ../feedConsumption.php?msg=Record deleted successfully!");
+            header("location: ../feedConsumption.php");
+        }
+        else
+        {
+            $_SESSION['error_msg'] = "Failed to delete the feed consumption record";
+            header('Location: ../feedConsumption.php');
         }
     }
 
@@ -403,8 +460,14 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         );
         // Call the insertion method to add record to the database
         if($feedPurchaseObject->insertionMethod("FeedPurchase", $myArray)){
+            $_SESSION['msg'] = "Insertion was successfull!";
             header("location: ../feedPurchase.php?msg=Insertion was successfull!");
-        };
+        }
+        else
+        {
+            $_SESSION['error_msg'] = "Failed to insert the feed purchase record";
+            header('Location: ../feeefPurchase.php');
+        }
     }
     // Handle the edit button for record editing
     if(isset($_POST["feedpurchedit"])){
@@ -418,7 +481,13 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
             "User_ID" =>  $_SESSION['loguser']
         );
         if($feedPurchaseObject->updateMethod("FeedPurchase", $where, $myArray)){
+            $_SESSION['msg'] = "Record updated successfully!";
             header("location: ../feedPurchase.php?msg=Updated Successfully!");
+        }
+        else
+        {
+            $_SESSION['error_msg'] = "Failed to update the record!";
+            header('Location: ../feedPurchase.php');
         }
     }
 
@@ -428,6 +497,11 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         $where = array("FeedPurchase_ID" => $id);
         if($feedPurchaseObject->deleteMethod("FeedPurchase", $where)){
             header("location: ../feedPurchase.php?msg=Record deleted successfully!");
+        }
+        else
+        {
+            $_SESSION['error_msg'] = "Failed to delete the feed record";
+            header('Location: ../feedPurchase.php');
         }
     }
 
@@ -449,7 +523,12 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         if($birdsPurchaseObject->insertionMethod("BirdsPurchase", $myArray)){
             $_SESSION['msg'] = "Birds record inserted successfully!";
             header("location: ../birdsPurchase.php");
-        };
+        }
+        else
+        {
+            $_SESSION['error_msg'] = "Failed to insert the bird record";
+            header('Location: ../birdsPurchase.php');
+        }
     }
     // Handle the edit button for record editing
     if(isset($_POST["birdspurchedit"])){
@@ -466,6 +545,11 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
             $_SESSION['msg'] = "Birds record updated successfully!";
             header("location: ../birdsPurchase.php");
         }
+        else
+        {
+            $_SESSION['error_msg'] = "Failed to edit the birds record";
+            header('Location: ../birdsPurchase.php');
+        }
     }
 
     // Check if delete button was triggered
@@ -475,6 +559,11 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         if($birdsPurchaseObject->deleteMethod("BirdsPurchase", $where)){
             $_SESSION['msg'] = "Bird record deleted successfully!";
             header("location: ../birdsPurchase.php");
+        }
+        else
+        {
+            $_SESSION['error_msg'] = "Failed to delete the bird record";
+            header('Location: ../birdsPurchase.php');
         }
     }
 
@@ -493,9 +582,14 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         );
         // Call the insertion method to add record to the database
         if($birdsMortalityObject->insertionMethod("BirdsMortality", $myArray)){
-            $_SESSION['msg'] = "Added new record!";
+            $_SESSION['msg'] = "Added new record Successfully!";
             header("location: ../birdsMortality.php");
-        };
+        }
+        else
+        {
+            $_SESSION['error_msg'] = "Failed to add new record";
+            header("Location: ../birdsMortality.php");
+        }
     }
     // Handle the edit button for record editing
     if(isset($_POST["birdsmortedit"])){
@@ -508,7 +602,13 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
             "User_ID" => $_SESSION['loguser']
         );
         if($birdsMortalityObject->updateMethod("BirdsMortality", $where, $myArray)){
-            header("location: ../birdsMortality.php?msg=Updated Successfully!");
+            $_SESSION['msg'] = "Record updated successfully!";
+            header("location: ../birdsMortality.php");
+        }
+        else
+        {
+            $_SESSION['error_msg'] = "Failed to update the record";
+            header('Location: ../birdsMortality.php');
         }
     }
 
@@ -517,7 +617,13 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         $id = $_GET["id"] ?? null;
         $where = array("BirdsMortality_ID" => $id);
         if($birdsPurchaseObject->deleteMethod("BirdsMortality", $where)){
-            header("location: ../birdsMortality.php?msg=Record deleted successfully!");
+            $_SESSION['msg'] = "Rcord deleted successfully!";
+            header("location: ../birdsMortality.php");
+        }
+        else
+        {
+            $_SESSION['error_msg'] = "Failed to delete the record";
+            header('Location: ../birdsMortality.php');
         }
     }
     //Create object for medicine purchase
@@ -538,6 +644,11 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         {
             $_SESSION['msg'] = "record inserted successfully!";
             header("location: ../MedicinePurchase.php");
+        }
+        else
+        {
+            $_SESSION['error_msg'] = "Failed to delete the Medicine Record!";
+            header('Location: ../MedicinePurchase.php');
         }
     }
  //handle the medicine edit
@@ -561,6 +672,11 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
              $_SESSION['msg'] = "medicine record updated successfully!";
              header("location: ../MedicinePurchase.php");
          }
+         else
+         {
+             $_SESSION['error_msg'] = "Failed to delete the record";
+             header('Location: ../MedicinePurchase.php');
+         }
      }
 
      //handle the medicine
@@ -572,6 +688,11 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
          {
              $_SESSION['msg'] = "medicine record deleted successfully!";
              header(("location: ../MedicinePurchase.php"));
+         }
+         else
+         {
+             $_SESSION['error_msg'] = "Failed to delete the record";
+             header('Location: ../medicinePurchase.php');
          }
      }
      //medicine Usage
@@ -590,6 +711,11 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
          {
              $_SESSION['msg'] = "record inserted successfully!";
              header("location: ../MedicineConsumption.php");
+         }
+         else
+         {
+             $_SESSION['error_msg'] = "Failed to insert the record";
+             header('Location: ../MedicineConsumption.php');
          }
      }
 
@@ -612,6 +738,11 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
              $_SESSION['msg'] = "record updated successfully";
              header("location: ../MedicineConsumption.php");
          }
+         else
+         {
+             $_SESSION['error_msg'] = "Failed to update the record";
+             header('Location: ../MedicineConsumption.php');
+         }
      }
 
      if(isset($_GET['medusageDelete']))
@@ -622,6 +753,11 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
          {
              $_SESSION['msg'] = "Record deleted successfully";
              header("location: ../MedicineConsumption.php");
+         }
+         else
+         {
+             $_SESSION['error_msg'] = "Failed to delete the record";
+             header('Location: ../MedicineConsumption.php');
          }
      }
     // EGG SALES
@@ -644,7 +780,12 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         if($salesObject->insertionMethod("Sales", $myArray)){
             $_SESSION['msg'] = "record inserted succesfully!";
             header("location: ../sales.php");
-        };
+        }
+        else
+        {
+            $_SESSION['error_msg'] = "Failed to insert the sales record!";
+            header('Location: ../sales.php');
+        }
     }
     // Handle the edit button for record editing
     if(isset($_POST["salesedit"])){
@@ -661,6 +802,11 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
             $_SESSION['msg'] = "Record updated successfully!";
             header("location: ../sales.php");
         }
+        else
+        {
+            $_SESSION['error_msg'] = "Failed to update the sales record!";
+            header('Location: ../sales.php');
+        }
     }
 
     // Check if delete button was triggered
@@ -670,6 +816,11 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         if($birdsPurchaseObject->deleteMethod("Sales", $where)){
             $_SESSION['msg'] = "record deleted successfully!";
             header("location: ../sales.php");
+        }
+        else
+        {
+            $_SESSION['error_msg'] = "Failed to delete the sales object";
+            header('Location: ../sales.php');
         }
     }
 

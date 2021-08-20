@@ -90,16 +90,16 @@ checkLogin();
 		
 			<td>Username</td>
 			<td><input type="text" name="username" 
-			placeholder="Username" id="username" value="<?php echo $existing_Users['Username'];?> " /></td>
+			placeholder="Username" id="username" style="height: 30px;" value="<?php echo $existing_Users['Username'];?> " /></td>
 		</tr>
 		<tr>
 		<div class="my-div-error" id="erroPassword"></div>
 			<td>Password</td>
-			<td><input type="password" id="password" name="password" placeholder="Password" /></td>
+			<td><input type="password" style="height: 30px;" id="password" name="password" placeholder="Password" /></td>
 		</tr>
 		<tr>
 			<td>Repeat Password</td>
-			<td><input type="password" id="conf_password" name="conf_Password" placeholder="Repeat Password" /></td>
+			<td><input type="password" style="height: 30px;" id="conf_password" name="conf_Password" placeholder="Repeat Password" /></td>
 		</tr>
 		<tr>
 			<td>Usergroup</td>
@@ -147,9 +147,17 @@ checkLogin();
 					
 				</select>
 			</td>
+			
+		</tr>
+		<tr>
+		<td>Deactivate</td>
+			<td>
+			<input type="checkbox" name="deactivate" style="width: 50px; height: 50px;"
+			<?php if ($existing_Users['Deactivate'] ==1) echo 'checked="checked" ';?> />
+			</td>
 		</tr>
 	</table>
-	<input type="submit" name="edit_User" class="edit_btn" value="Update" />
+	<input type="submit" name="edit_User" class="btn" value="Update" />
 	<input type="hidden" name="user_id" value="<?PHP echo $_GET['update_User']; ?>" />
 </form>
 <?php } 
@@ -210,7 +218,7 @@ checkLogin();
 							</td>
 						</tr>
 					</table>
-					<input type="submit" class="edit_btn" name="save_User" value="Save" />
+					<input type="submit" class="btn" name="save_User" value="Save" />
 				</form>
 				<?php } ?>
 			

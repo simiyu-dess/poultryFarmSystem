@@ -34,14 +34,23 @@ session_start();
             $sql = "SELECT * FROM " .$table. " WHERE  Username = '$username'";
             $query = $this->connect()->query($sql);
             $array = mysqli_fetch_array($query);
-            if(password_verify($password, $array['Password']))
+            if($array['Deactivate'] == 1)
+            {
+                $this->error = "<p> Account is deactivated </p>";
+            }
+           else
+          {
+           if(password_verify($password, $array['Password']))
             {
                 $_SESSION['ugroupid'] = $array['Ugroup_ID'];
                 $_SESSION['loguser'] = $array['User_ID'];
                 return true;
-            }else{
-                $this->error = "<p>Wrong Data</p>";
+               
             }
+            else{
+               $this->error = "<p> Wrong data </p>";
+            }
+        }
         }
     }
     $db = new Database();

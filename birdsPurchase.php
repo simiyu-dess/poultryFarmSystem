@@ -26,14 +26,94 @@ checkLogin();
                     </p>
                     </div>
                 <?php endif ?>
-                <h style="font-weight: bold; font: size 20px;">Birds Purchase</h>
+                <?php if(isset($_SESSION['error_msg'])): ?>
+                    <div class="error_msg">
+                    <p>
+                        <?php 
+                            echo $_SESSION['error_msg'];
+                            unset($_SESSION['error_msg']);
+                        ?>
+                    </p>
+                    </div>
+                <?php endif ?>
+               
+               
                 
+                <?php
+                    if(isset($_GET["birdspurchupdate"])){
+                        // Get the id of the record to be edited
+                        $id = $_GET["id"] ?? null;
+                        $where = array("BirdsPurchase_ID" => $id);
+                        // Call the select method that displays the record to be edited
+                        $row = $birdsPurchaseObject->selectMethod("BirdsPurchase", $where);
+                        ?>
+                         <h style="font-weight: bold; font: size 20px;"> Edit Birds Purchase</h>
+                            <form action="includes/action.php" method="post" onsubmit="return validate()">
+                                <div class="input-group">
+                                    <input type="hidden" name="id" value="<?php echo $id; ?>">
+                                </div>
+                                <div class="my-div-error" id="errorDate"></div>
+                                <div class="input-group">
+                                    <label for="">Date</label>
+                                    <input type="date" id="date" name="date" max="<?php echo date('Y-m-d');?>" value="<?php echo $row["Date"]; ?>">
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorType"></div>
+                                    <label for="">Birds Type</label>
+                                    <input type="text" step="any" id="typeOfBirds" name="typeofbirds" value="<?php echo $row["Bird_type"]; ?>">
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorNumber"></div>
+                                    <label for="">Number of Birds</label>
+                                    <input type="number" step="any" id="numberOfBirds" name="numberofbirds" value="<?php echo $row["NumberOfBirds"]; ?>">
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorPrice"></div>
+                                    <label for="">Price(Ksh)</label>
+                                    <input type="number" step="any" id="price" name="price" value="<?php echo $row["Price"]; ?>">
+                                </div>
+                                <div class="input-group">
+                                    <button type="submit" name="birdspurchedit" class="btn" value="">Update</button>
+                                </div>
+                            </form>
+                        <?php
+                    }else{
+                        ?>  
+                            <form action="includes/action.php" method="post" onsubmit="return validate()">
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorDate"></div>
+                                    <label for="">Date</label>
+                                    <input type="date" id="date" max="<?php echo date('Y-m-d');?>" name="date" value="">
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorType"></div>
+                                    <label for="">Birds Type</label>
+                                    <input type="text"  name="typeofbirds" id="typeOfBirds" value="">
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorNumber"></div>
+                                    <label for="">Number of Birds</label>
+                                    <input type="number" id ="numberOfBirds" step="any" name="numberofbirds" value="">
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorPrice"></div>
+                                    <label for="">Price(Ksh)</label>
+                                    <input type="number" id="price" step="any" name="price" value="" >
+                                </div>
+                                <div class="input-group">
+                                    <button type="submit" name="birdspurchsave" class="btn">Save</button>
+                                </div>
+                            </form>
+                        <?php
+                    }
+                        ?>
+                         
                 <table id="tb_table">
                     <thead>
                         <th>Date</th>
                         <th>Type</th>
                         <th>Number</th>
-                        <th>Price</th>
+                        <th>Price(Ksh)</th>
                         <th>Updated by:</th>
                         <th colspan="2">Action</th>
                     </thead>
@@ -69,74 +149,6 @@ checkLogin();
                     ?>
                     </tbody>
                 </table>
-                
-                <?php
-                    if(isset($_GET["birdspurchupdate"])){
-                        // Get the id of the record to be edited
-                        $id = $_GET["id"] ?? null;
-                        $where = array("BirdsPurchase_ID" => $id);
-                        // Call the select method that displays the record to be edited
-                        $row = $birdsPurchaseObject->selectMethod("BirdsPurchase", $where);
-                        ?>
-                            <form action="includes/action.php" method="post" onsubmit="return validate()">
-                                <div class="input-group">
-                                    <input type="hidden" name="id" value="<?php echo $id; ?>">
-                                </div>
-                                <div class="my-div-error" id="errorDate"></div>
-                                <div class="input-group">
-                                    <label for="">Date</label>
-                                    <input type="date" id="date" name="date" max="<?php echo date('Y-m-d');?>" value="<?php echo $row["Date"]; ?>">
-                                </div>
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorType"></div>
-                                    <label for="">Birds Type</label>
-                                    <input type="text" step="any" id="typeOfBirds" name="typeofbirds" value="<?php echo $row["Bird_type"]; ?>">
-                                </div>
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorNumber"></div>
-                                    <label for="">Number of Birds</label>
-                                    <input type="number" step="any" id="numberOfBirds" name="numberofbirds" value="<?php echo $row["NumberOfBirds"]; ?>">
-                                </div>
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorPrice"></div>
-                                    <label for="">Price</label>
-                                    <input type="number" step="any" id="price" name="price" value="<?php echo $row["Price"]; ?>">
-                                </div>
-                                <div class="input-group">
-                                    <button type="submit" name="birdspurchedit" class="btn" value="">Update</button>
-                                </div>
-                            </form>
-                        <?php
-                    }else{
-                        ?>  
-                            <form action="includes/action.php" method="post" onsubmit="return validate()">
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorDate"></div>
-                                    <label for="">Date</label>
-                                    <input type="date" id="date" max="<?php echo date('Y-m-d');?>" name="date" value="">
-                                </div>
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorType"></div>
-                                    <label for="">Birds Type</label>
-                                    <input type="text"  name="typeofbirds" id="typeOfBirds" value="">
-                                </div>
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorNumber"></div>
-                                    <label for="">Number of Birds</label>
-                                    <input type="number" id ="numberOfBirds" step="any" name="numberofbirds" value="">
-                                </div>
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorPrice"></div>
-                                    <label for="">Price</label>
-                                    <input type="number" id="price" step="any" name="price" value="" >
-                                </div>
-                                <div class="input-group">
-                                    <button type="submit" name="birdspurchsave" class="btn">Save</button>
-                                </div>
-                            </form>
-                        <?php
-                    }
-                        ?>
             </div>
         </main>
         <!-- sidebar nav -->
