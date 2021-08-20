@@ -341,7 +341,7 @@
   /*  SIDEBAR STARTS HERE  */
   
   #sidebar {
-    background: #3a3e41;
+    background: #0a3f49;
     grid-area: sidebar;
     overflow-y: auto;
     padding: 20px;
@@ -586,7 +586,7 @@
     }
   }
   #tb_table {
-    width:99%;
+    width:90%;
     margin:auto;
     margin-bottom:3em;
   }
@@ -604,6 +604,48 @@
     background-color:#f38630;
     color:#fff;
   }
+  
+  #tb_table th.title, #tb_table th.title a {
+    font-size:15px;
+    font-weight:bold;
+    line-height:30px;
+    background-color:#2e2e2e; 
+    color:#fff;
+  }
+  
+  #tb_table tr:nth-child(even) td {
+    background-color:#fff;
+  }
+  #tb_table  tr.balance td {
+    background-color:#a7dbd8;
+    font-weight:bold;
+  }
+  
+  /* TABLE FOR INPUT FIELDS */
+  #tb_fields{
+    width:95%;
+    margin:auto;
+    margin-bottom:1em;
+    border-collapse:separate;
+    border-spacing: 1em 1.25em;
+  }
+  #tb_fields td, #tb_fields th {
+    text-align:left;
+  }
+  #tb_fields td.center {
+    text-align:center;
+    padding-top:3%;
+  }
+  
+  /* TABLE FOR SETTINGS */
+  #tb_set{
+    width:90%;
+    border-collapse:separate;
+    border-spacing: 2em .75em;
+    color:#2e2e2e;
+    /* background:#a7dbd8; */
+  }
+  
   .heading
 {
   margin-left:auto;
@@ -612,7 +654,7 @@
 	text-align:center;
 	font-weight:bold;
 	font-size:1.5em;
-	color:#fa6900;	
+	color:#0a3f49;	
 }
 .searchGroup
 {

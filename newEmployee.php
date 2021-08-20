@@ -37,6 +37,7 @@ checkLogin();
                     </p>
                     </div>
                 <?php endif ?>
+                <p class="heading">Add New Employee</p>
 
                    <form id="payrollForm" action="includes/action.php" method="post" onsubmit= "return validate()">
                                

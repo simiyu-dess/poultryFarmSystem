@@ -47,7 +47,7 @@ checkLogin();
                         // Call the select method that displays the record to be edited
                         $row = $birdsPurchaseObject->selectMethod("BirdsPurchase", $where);
                         ?>
-                         <h style="font-weight: bold; font: size 20px;"> Edit Birds Purchase</h>
+                         <p class="heading"> Edit A Record Of Birds Purchased</p>
                             <form action="includes/action.php" method="post" onsubmit="return validate()">
                                 <div class="input-group">
                                     <input type="hidden" name="id" value="<?php echo $id; ?>">
@@ -79,6 +79,7 @@ checkLogin();
                         <?php
                     }else{
                         ?>  
+                        <p class="heading">Add Record Of Birds Purchased</p>
                             <form action="includes/action.php" method="post" onsubmit="return validate()">
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorDate"></div>

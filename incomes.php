@@ -36,48 +36,7 @@ checkLogin();
                     </p>
                     </div>
                 <?php endif ?>
-                <table>
-                    <thead>
-                        <th>Date</th>
-                        <th>Income Type</th>
-                        <th>Amount</th>
-                        <th>Update by:</th>
-                        <th colspan="2">Action</th>
-                        
-                    </thead>
-                    <tbody>
-                    <?php
-                        // calling viewMethod() method
-                        $myrow = $productionObject->viewMethod("Incomes");
-                        foreach($myrow as $row){
-                            // breaking point
-                            ?>
-                            <tr>
-                                <td><?php echo $row['Incomes_date'];?></td>
-                                <td><?php echo $row['Incomes_type'];?></td>
-                                <td><?php echo $row['Amount'];?></td>
-                                <td>
-                                <?php
-                                $user_id = $row['User_ID'];
-                                $sql = "SELECT Username FROM User WHERE User_ID = $user_id";
-                                $query = $databaseObject->connect()->query($sql);
-                                $username = mysqli_fetch_array($query);
-
-                                echo $username['Username'];?>
-                                </td>
-                                <td>
-                                    <a class="edit_btn" href="incomes.php?incomeupdate=1&id=<?php echo $row["Incomes_ID"]; ?>">Edit</a>
-                                </td>
-                                <td>
-                                    <a class="del_btn" href="includes/action.php?incomedelete=1&id=<?php echo $row["Incomes_ID"]; ?>">Delete</a>
-                                </td>
-                                
-                            </tr>
-                            <?php
-                        }
-                    ?>
-                    </tbody>
-                </table>
+               
                 
                 <?php
                     if(isset($_GET["incomeupdate"])){
@@ -135,7 +94,51 @@ checkLogin();
                         <?php
                     }
                         ?>
+
+
             </div>
+            <table id="tb_table">
+                    <thead>
+                        <th>Date</th>
+                        <th>Income Type</th>
+                        <th>Amount</th>
+                        <th>Update by:</th>
+                        <th colspan="2">Action</th>
+                        
+                    </thead>
+                    <tbody>
+                    <?php
+                        // calling viewMethod() method
+                        $myrow = $productionObject->viewMethod("Incomes");
+                        foreach($myrow as $row){
+                            // breaking point
+                            ?>
+                            <tr>
+                                <td><?php echo $row['Incomes_date'];?></td>
+                                <td><?php echo $row['Incomes_type'];?></td>
+                                <td><?php echo $row['Amount'];?></td>
+                                <td>
+                                <?php
+                                $user_id = $row['User_ID'];
+                                $sql = "SELECT Username FROM User WHERE User_ID = $user_id";
+                                $query = $databaseObject->connect()->query($sql);
+                                $username = mysqli_fetch_array($query);
+
+                                echo $username['Username'];?>
+                                </td>
+                                <td>
+                                    <a class="edit_btn" href="incomes.php?incomeupdate=1&id=<?php echo $row["Incomes_ID"]; ?>">Edit</a>
+                                </td>
+                                <td>
+                                    <a class="del_btn" href="includes/action.php?incomedelete=1&id=<?php echo $row["Incomes_ID"]; ?>">Delete</a>
+                                </td>
+                                
+                            </tr>
+                            <?php
+                        }
+                    ?>
+                    </tbody>
+                </table>
         </main>
         <!-- sidebar nav -->
         <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_side_bar.php";?>

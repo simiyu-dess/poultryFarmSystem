@@ -47,7 +47,7 @@ checkLogin();
                         // Call the select method that displays the record to be edited
                         $row = $salesObject->selectMethod("Production", $where);
                         ?>
-                        <p class="heading">Edit Egg  Record Of Eggs Produced</p>
+                        <p class="heading">Edit Egg Production Record</p>
                             <form action="includes/action.php" method="post" onsubmit="return validate()">
                                 <div class="input-group">
                                     <input type="hidden" name="id" value="<?php echo $id; ?>">

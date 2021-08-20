@@ -43,7 +43,134 @@ checkLogin();
                $where = array("Employee_ID" => $id);
                $row = $employeeObject->selectMethod("Employee",$where);
                 ?>
-                <script>
+               <p class="heading">Edit Employee Record</p>
+                <form action="includes/action.php" method="POST" onsubmit="return validate()">
+                <div class="input-group">
+                                    <input type="hidden" name="id" value="<?php echo $id; ?>">
+                                </div>
+                                <div class="my-div-error" id="errorNumber"></div>
+                                <div class="input-group">
+                                    <label for="">Employee number</label>
+                                    <input type="text" id="number" name="EmployeeNumber" value="">
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorFname"></div>
+                                    <label for="">First Name</label>
+                                    <input type="text" name="FirstName" id ="Fname" value="<?php echo $row["FirstName"]; ?>" required>
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorLname"></div>
+                                    <label for="">Last Name</label>
+                                    <input type="text" name="LastName" id="Lname" value="<?php echo $row["LastName"]; ?>" required>
+                                </div>
+                                <div class="select-group">
+                                <label for="">Gender</label>
+                                <select name="Gender">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                                </select>
+                                </div>
+                                <div class="my-div-error" id="location"></div>
+                                <div class = "input-group">
+                                <label for="">Location</label>
+                                <input type="text" id="Location" name="Location" 
+                                value="<?php echo $row['Location']?>"/>
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorPhone"></div>
+                                    <label for="">Phone</label>
+                                    <input type="text" id = "Phone" name="Phone" value="<?php echo $row["Phone"]; ?>" required>
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorPhone"></div>
+                                    <label for="">Job</label>
+                                    <input type="text" name="Job" id="Job" value="<?php echo $row["Job"]; ?>" required>
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorSalary"></div>
+                                    <label for="">Salary</label>
+                                    <input type="number" name="Salary" id = "Salary" value="<?php echo $row["Salary"]; ?>" required>
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorDate"></div>
+                                    <label for="">Start Date</label>
+                                    <input type="Date" id="Date" name="StartDate" max="<?php echo date('Y-m-d');?>"
+                                    value="<?php echo $row['startDate'] ?>">
+                                </div>
+                                <div class="input-group">
+                                <div class="my-div-error" id="errorEndDate"></div>
+                                    <label for="">End Date</label>
+                                    <input type="Date" id="endDate" name="EndDate" max="<?php echo date('Y-m-d');?>"
+                                    value="<?php echo $row['endDate'] ?>">
+                                </div>
+                                <div class="input-group">
+                                    <button type="submit" name="emplEdit" class="btn">Update</button>
+                                </div>
+                </form>
+            
+             <?php }
+
+            else
+            {?>
+             <p class="heading">Search For Employee</p>
+             
+             <form method="POST" action="EmployeeSearch.php">
+             <div class="searchGroup">
+             <input type="text" name="searchFname" value="" placeholder="search by Firstname"/>
+            
+             <input type="text" name="searchLname" value="" placeholder="search by Lastname"/>
+             
+             <input type="text" name="searchNumber" value="" placeholder="Search by Employeenumber"/>
+
+             <input class="btn" type="submit" name="searchEmployee" value="Search">
+             </div>
+             </form>
+             
+             
+             </table>
+            
+                <table id="tb_table">
+                    <thead>
+                        <th>Name:</th>
+                        <th>Location</th>
+                        <th>Gender</th>
+                        <th>Salary</th>
+                        <th>Start Date</th>
+                        <th colspan="2">Action</th>
+                    </thead>
+                    <tbody>
+                    <?php
+                        // calling viewMethod() method
+                        $myrow = $employeeObject->viewMethod("Employee");
+                        foreach($myrow as $row){
+                            // breaking point
+                            ?>
+                            <tr>
+                                <td><?php echo $row['FirstName'].' '.$row['LastName'];?></td>
+                                <td><?php echo $row['Location'];?></td>
+                                <td><?php echo $row['Gender'];?></td>
+                                <td><?php echo $row['Salary'];?></td>
+                                <td><?php echo $row['startDate'];?></td>      
+                                <td>
+                                    <a class="edit_btn" href="currentEmployees.php?emplUpdate=1&id=<?php echo $row["Employee_ID"]; ?>">Edit</a>
+                                </td>
+                                <td>
+                                    <a class="del_btn" href="includes/action.php?emplDelete=1&id=<?php echo $row["Employee_ID"]; ?>">Delete</a>
+                                </td>
+                            </tr>
+                            <?php
+                        }
+                    ?>
+                    </tbody>
+                </table>
+                <?php }?>
+            </div>
+        </main>
+        <!-- sidebar nav -->
+        <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_side_bar.php";?>
+    </div>
+    <script>
                     function validate(){
                         var fname = document.getElementById("Fname").value;
                         var lname = document.getElementById("Lname").value;
@@ -135,7 +262,7 @@ checkLogin();
                             errorDate.innerHTML = "Date field is required";
                             truth = false;  
                         }
-                        var today = new Date().getTime(),
+                        var today = new Date().getTime();
                        idate = startDate.split("/");
 
                        idate = new Date(idate[2], idate[1] - 1, idate[0]).getTime();
@@ -150,132 +277,6 @@ checkLogin();
 
                     }
                     </script>
-                <form action="includes/action.php" method="POST" onsubmit="return validate()">
-                <div class="input-group">
-                                    <input type="hidden" name="id" value="<?php echo $id; ?>">
-                                </div>
-                                <div class="my-div-error" id="errorNumber"></div>
-                                <div class="input-group">
-                                    <label for="">Employee number</label>
-                                    <input type="text" id="number" name="EmployeeNumber" value="">
-                                </div>
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorFname"></div>
-                                    <label for="">First Name</label>
-                                    <input type="text" name="FirstName" id ="Fname" value="<?php echo $row["FirstName"]; ?>" required>
-                                </div>
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorLname"></div>
-                                    <label for="">Last Name</label>
-                                    <input type="text" name="LastName" id="Lname" value="<?php echo $row["LastName"]; ?>" required>
-                                </div>
-                                <div class="select-group">
-                                <label for="">Gender</label>
-                                <select name="Gender">
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="other">Other</option>
-                                </select>
-                                </div>
-                                <div class="my-div-error" id="location"></div>
-                                <div class = "input-group">
-                                <label for="">Location</label>
-                                <input type="text" id="Location" name="Location" 
-                                value="<?php echo $row['Location']?>"/>
-                                </div>
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorPhone"></div>
-                                    <label for="">Phone</label>
-                                    <input type="text" id = "Phone" name="Phone" value="<?php echo $row["Phone"]; ?>" required>
-                                </div>
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorPhone"></div>
-                                    <label for="">Job</label>
-                                    <input type="text" name="Job" id="Job" value="<?php echo $row["Job"]; ?>" required>
-                                </div>
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorSalary"></div>
-                                    <label for="">Salary</label>
-                                    <input type="number" name="Salary" id = "Salary" value="<?php echo $row["Salary"]; ?>" required>
-                                </div>
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorDate"></div>
-                                    <label for="">Start Date</label>
-                                    <input type="Date" id="Date" name="StartDate" max="<?php echo date('Y-m-d');?>"
-                                    value="<?php echo $row['startDate'] ?>">
-                                </div>
-                                <div class="input-group">
-                                <div class="my-div-error" id="errorEndDate"></div>
-                                    <label for="">End Date</label>
-                                    <input type="Date" id="endDate" name="EndDate" max="<?php echo date('Y-m-d');?>"
-                                    value="<?php echo $row['endDate'] ?>">
-                                </div>
-                                <div class="input-group">
-                                    <button type="submit" name="emplEdit" class="btn">Update</button>
-                                </div>
-                </form>
-            
-             <?php }?>
-
-           <?php if (!isset($_GET['emplUdate']))
-            {?>
-             <p class="heading">Search For Employee</p>
-             
-             <form method="POST" action="EmployeeSearch.php">
-             <div class="searchGroup">
-             <input type="text" name="searchFname" value="" placeholder="search by Firstname"/>
-            
-             <input type="text" name="searchLname" value="" placeholder="search by Lastname"/>
-             
-             <input type="text" name="searchNumber" value="" placeholder="Search by Employeenumber"/>
-
-             <input class="btn" type="submit" name="searchEmployee" value="Search">
-             </div>
-             </form>
-             
-             
-             </table>
-            
-                <table id="tb_table">
-                    <thead>
-                        <th>Name:</th>
-                        <th>Location</th>
-                        <th>Gender</th>
-                        <th>Salary</th>
-                        <th>Start Date</th>
-                        <th colspan="2">Action</th>
-                    </thead>
-                    <tbody>
-                    <?php
-                        // calling viewMethod() method
-                        $myrow = $employeeObject->viewMethod("Employee");
-                        foreach($myrow as $row){
-                            // breaking point
-                            ?>
-                            <tr>
-                                <td><?php echo $row['FirstName'].' '.$row['LastName'];?></td>
-                                <td><?php echo $row['Location'];?></td>
-                                <td><?php echo $row['Gender'];?></td>
-                                <td><?php echo $row['Salary'];?></td>
-                                <td><?php echo $row['startDate'];?></td>      
-                                <td>
-                                    <a class="edit_btn" href="currentEmployees.php?emplUpdate=1&id=<?php echo $row["Employee_ID"]; ?>">Edit</a>
-                                </td>
-                                <td>
-                                    <a class="del_btn" href="includes/action.php?emplDelete=1&id=<?php echo $row["Employee_ID"]; ?>">Delete</a>
-                                </td>
-                            </tr>
-                            <?php
-                        }
-                    ?>
-                    </tbody>
-                </table>
-                <?php }?>
-            </div>
-        </main>
-        <!-- sidebar nav -->
-        <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_side_bar.php";?>
-    </div>
     <script src="script.js"></script>
 </body>
 </html>

@@ -288,7 +288,7 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
 
         if(mysqli_num_rows($query))
         {
-            $_SESSION['msg'] = "Failed to delete, Have active account!";
+            $_SESSION['error_msg'] = "Failed to delete, Have active account!";
             header('Location: ../setUgroup.php');
         }
         else
@@ -840,7 +840,12 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         if($productionObject->insertionMethod("Production", $myArray)){
             $_SESSION['msg'] = "Egg insertion was successfull!";
             header("location: ../production.php");
-        };
+        }
+        else
+        {
+            $_SESSION['error_msg'] = "Failed to insert production record!";
+            header('Location: ../production.php');
+        }
     }
     // Handle the edit button for record editing
     if(isset($_POST["productionedit"])){
@@ -855,6 +860,11 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
             $_SESSION['msg'] = "Updated Successfully";
             header("location: ../production.php");
         }
+        else
+        {
+            $_SESSION['error_msg'] = "Failed to edit production record!";
+            header('Location: ../production.php');
+        }
     }
 
     // Check if delete button was triggered
@@ -864,6 +874,11 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         if($productionObject->deleteMethod("Production", $where)){
             $_SESSION['msg'] = "Record was deleted successfully!";
             header("location: ../production.php");
+        }
+        else
+        {
+            $_SESSION['error_msg'] = "Failed to delete the production record!";
+            header('Location: ../production.php');
         }
     }
     $feeObject = new CrudOperation();
@@ -881,7 +896,7 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         }
         else
         {
-            $_SESSION['error'] = "record insertion failed";
+            $_SESSION['error_msg'] = "record insertion failed";
             header('Location: ../setFees.php');
         }
     }
@@ -903,7 +918,7 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         }
         else
         {
-            $_SESSION['msg'] = "Error, Failed to insert the income";
+            $_SESSION['error_msg'] = "Error, Failed to insert the income";
             header('Location: ../incomes.php');
         }
     }
@@ -929,7 +944,7 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         }
         else
         {
-            $_SESSION['msg'] = "Error, Failed to update the income record";
+            $_SESSION['error_msg'] = "Error, Failed to update the income record";
             header('Location: ../incomes.php');
         }
     }
@@ -945,7 +960,7 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
             header('Location: ../incomes.php');
         }
         else{
-            $_SESSION['msg'] = "Error, failed to delete the record";
+            $_SESSION['error_msg'] = "Error, failed to delete the record";
             header("Location: ../incomes.php");
         }
     }
@@ -967,7 +982,7 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         }
         else
         {
-            $_SESSION['msg'] = "Error, failed to insert the expense record";
+            $_SESSION['error_msg'] = "Error, failed to insert the expense record";
             header('Location; ../expenses.php');
         }
     }
@@ -990,7 +1005,7 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         }
         else
         {
-            $_SESSION['msg'] = "Error, failed to update the expense record";
+            $_SESSION['error_msg'] = "Error, failed to update the expense record";
             header('Location: ../expenses.php');
         }
     }
@@ -1006,7 +1021,7 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         }
 
         else{
-            $_SESSION['msg'] = "Error, failed to delete the expense record";
+            $_SESSION['error_msg'] = "Error, failed to delete the expense record";
             header('Location: ../expenses.php');
         }
 

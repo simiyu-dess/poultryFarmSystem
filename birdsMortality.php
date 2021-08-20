@@ -46,7 +46,7 @@ checkLogin();
                         // Call the select method that displays the record to be edited
                         $row = $birdsPurchaseObject->selectMethod("BirdsMortality", $where);
                         ?>
-                         <h style="font-weight: bold; font-size:20px"> Insert New Birds Mortality</h>
+                         <p class="heading">Edit Birds Mortality Record</p>
                             <div id="error" style="text-align: center; color:  #e65061;"></div>
                             <form id="form" action="includes/action.php" method="post" onsubmit="return validate()">
                                 <div class="input-group">
@@ -74,6 +74,7 @@ checkLogin();
                         <?php
                     }else{
                         ?>
+                        <p class="heading">Add Birds Mortality Record</p>
                             <div id="error" style="text-align: center; color:  #e65061;"></div>
                             <form id="form" action="includes/action.php" method="post" onsubmit="return validate()">
                                 <div class="input-group">
