@@ -51,7 +51,7 @@ checkLogin();
                                 <div class="my-div-error" id="errorNumber"></div>
                                 <div class="input-group">
                                     <label for="">Employee number</label>
-                                    <input type="text" id="number" name="EmployeeNumber" value="">
+                                    <input type="text" id="number" name="EmployeeNumber" value="<?php echo $row['Employee_no'] ?>">
                                 </div>
                                 <div class="input-group">
                                 <div class="my-div-error" id="errorFname"></div>
@@ -127,11 +127,13 @@ checkLogin();
              </div>
              </form>
              
+             <p class="heading">Current Employees</p>
              
              </table>
             
                 <table id="tb_table">
                     <thead>
+                        <th>Employee Number</th>
                         <th>Name:</th>
                         <th>Location</th>
                         <th>Gender</th>
@@ -147,6 +149,7 @@ checkLogin();
                             // breaking point
                             ?>
                             <tr>
+                                <td><?php echo $row['Employee_no']; ?></td>
                                 <td><?php echo $row['FirstName'].' '.$row['LastName'];?></td>
                                 <td><?php echo $row['Location'];?></td>
                                 <td><?php echo $row['Gender'];?></td>

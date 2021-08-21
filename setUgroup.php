@@ -62,13 +62,13 @@ checkLogin();
                 ?>
 
                 
-              <?PHP echo '<p class="heading">Edit User</p>'; ?>
+              <p class="heading">Edit User Group</p>
 				<form action="includes/action.php" method="post" onsubmit="return validate()">
 					<table id="tb_set" style="margin:auto;">
 						<tr>
 							<td>Usergroup Name</td>
 							<td>
-                            <input type="text" name="ugroup_name" placeholder="Usergroup Name" value="<?PHP echo $row_groups['Ugroup_name']  ?>"/>
+                            <input style="height: 30px;" type="text" name="ugroup_name" placeholder="Usergroup Name" value="<?PHP echo $row_groups['Ugroup_name']  ?>"/>
                             </td>
 						</tr>
 						<tr>
@@ -122,13 +122,14 @@ checkLogin();
                 <?php } 
                 else
                 {?>
+				<p class="heading">Create User Group</p>
                     <form action="includes/action.php" method="post" onsubmit="return validate()">
 					<table id="tb_set" style="margin:auto;">
 					<div class="my-div-error" id="errorUgroup"></div>
 						<tr>
 							<td>Usergroup Name</td>
 							<td>
-                            <input type="text" name="ugroup_name" id="ugroupname" placeholder="Usergroup Name" value=""/>
+                            <input style="height: 30px;" type="text" name="ugroup_name" id="ugroupname" placeholder="Usergroup Name" value=""/>
                             </td>
 						</tr>
 						<tr>

@@ -16,7 +16,7 @@ checkLogin();
 <?php include "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/partials/_top_navbar_settings.php"; ?>
 <main>
 <div class="main__container">
-<h1>Set Price For Eggs </h1>
+<p class="heading"> Retailing Price Per Egg</p>
 <?php if(isset($_SESSION['error_msg'])): ?>
                     <div class="error_msg">
                     <p>
@@ -29,8 +29,10 @@ checkLogin();
                 <?php endif ?>
 <form method="POST" action="includes/action.php">
 <label for="">Price per egg</label>
-<input type="number" placeholder="<?php echo $eggPrice;?>" name="eggprice"/>
-<button name="saveFee" value="Save">Save</button>
+<input style="height: 50px; Width: 200px; font-size: 30px; font-weight:bold;" type="number" placeholder="<?php echo $eggPrice;?>" name="eggprice"/>
+<br>
+<br>
+<button class = "btn" name="saveFee" value="Save">Save</button>
 </form>
 </div>
 </main>

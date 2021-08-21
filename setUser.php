@@ -13,7 +13,7 @@ checkLogin();
 	//Select all users from USER
 	$users = array();
 	$user_names = array();
-	$sql_users = "SELECT User.User_ID, User.Username, User.setupDate, Ugroup.Ugroup_ID,
+	$sql_users = "SELECT User.User_ID, User.Username, User.setupDate, User.Deactivate, Ugroup.Ugroup_ID,
 	               Ugroup.Ugroup_Name, Employee.Employee_ID, Employee.FirstName, Employee.LastName 
 	               FROM User LEFT JOIN Ugroup ON Ugroup.Ugroup_ID = User.Ugroup_ID
 				   LEFT JOIN Employee ON User.Employee_ID = Employee.Employee_ID
@@ -235,17 +235,17 @@ checkLogin();
 		
 
 		
-			<form method="post">
 				<table id="tb_table">
 				
 					<tr>
-						<th class="title" colspan="6">Existing Users</th>
+						<th class="title" colspan="7">Existing Users</th>
 					</tr>
 					<tr>
 						<th>User Name</th>
 						<th>User Group</th>
 						<th>Employee</th>
 						<th>Changed</th>
+						<th>Active</th>
 						<th colspan="2">Action</th>
 					</tr>
 					<?PHP
@@ -255,6 +255,13 @@ checkLogin();
 										<td><?php echo $row_user['Ugroup_Name']?></td>
 										<td><?php echo $row_user['FirstName'].' '.$row_user['LastName']?></td>
 										<td><?php echo $row_user['setupDate']?></td>
+										<td>
+										<?php if ($row_user['Deactivate'] == 1) echo "No";
+										else echo "Yes";
+										?>
+
+										
+										</td>
 										<td>
 											
 											<a href="setUser.php?update_User=<?php echo $row_user['User_ID'] ?>">
@@ -271,7 +278,7 @@ checkLogin();
 					<?php }
 					?>
 				</table>
-			</form>
+			
 			
 		
 		</main>

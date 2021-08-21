@@ -307,6 +307,7 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
     $employeeObject = new CrudOperation();
     // Handle the save button for form submission
     if(isset($_POST["emplSave"])){
+        
         $myArray = array(
             "Employee_no" => sanitize($_POST["EmployeeNumber"]),
             "FirstName" => sanitize($_POST["FirstName"]),
@@ -333,7 +334,11 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
     // Handle the edit button for record editing
     if(isset($_POST["emplEdit"])){
         $id = $_POST["id"];
+        
         $where = array("Employee_ID" => $id);
+        
+        if($_POST['EndDate'] != "")
+        {
         $myArray = array(
             "Employee_no" => sanitize($_POST["EmployeeNumber"]),
             "FirstName" => sanitize($_POST["FirstName"]),
@@ -347,6 +352,25 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
             "endDate" => sanitize($_POST["EndDate"]),
             "User_ID" =>  sanitize($_SESSION['loguser'])
         );
+    }
+    else
+    {
+        
+        $myArray = array(
+            "Employee_no" => sanitize($_POST["EmployeeNumber"]),
+            "FirstName" => sanitize($_POST["FirstName"]),
+            "LastName" => sanitize($_POST["LastName"]),
+            "Gender" => sanitize($_POST["Gender"]),
+            "Location"=> sanitize($_POST["Location"]),
+            "Phone" => sanitize($_POST["Phone"]),
+            "Job" => sanitize($_POST["Job"]),
+            "Salary" => sanitize($_POST["Salary"]),
+            "startDate" => sanitize($_POST["StartDate"]),
+            "User_ID" =>  sanitize($_SESSION['loguser'])
+        );
+
+    }
+    
         if($employeeObject->updateMethod("Employee", $where, $myArray)){
             $_SESSION['msg'] = "Employee record edited successfully!";
             header("location: ../currentEmployees.php");
