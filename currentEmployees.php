@@ -139,7 +139,9 @@ checkLogin();
                         <th>Gender</th>
                         <th>Salary</th>
                         <th>Start Date</th>
+                        <?php if($_SESSION['perm_admin'] == 1 || $_SESSION['perm_action'] == 1):?>
                         <th colspan="2">Action</th>
+                        <?php endif ?>
                     </thead>
                     <tbody>
                     <?php
@@ -154,13 +156,15 @@ checkLogin();
                                 <td><?php echo $row['Location'];?></td>
                                 <td><?php echo $row['Gender'];?></td>
                                 <td><?php echo $row['Salary'];?></td>
-                                <td><?php echo $row['startDate'];?></td>      
+                                <td><?php echo $row['startDate'];?></td>  
+                                <?php if($_SESSION['perm_admin'] == 1 || $_SESSION['perm_action'] == 1):?>    
                                 <td>
                                     <a class="edit_btn" href="currentEmployees.php?emplUpdate=1&id=<?php echo $row["Employee_ID"]; ?>">Edit</a>
                                 </td>
                                 <td>
                                     <a class="del_btn" href="includes/action.php?emplDelete=1&id=<?php echo $row["Employee_ID"]; ?>">Delete</a>
                                 </td>
+                                <?php endif ?>
                             </tr>
                             <?php
                         }

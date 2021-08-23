@@ -116,7 +116,9 @@ checkLogin();
                         <th>Number</th>
                         <th>Price(Ksh)</th>
                         <th>Updated by:</th>
+                        <?php if($_SESSION['perm_admin'] == 1 || $_SESSION['perm_action'] == 1):?>
                         <th colspan="2">Action</th>
+                        <?php endif ?>
                     </thead>
                     <tbody>
                     <?php
@@ -138,12 +140,14 @@ checkLogin();
                                 echo $user;
                                 ?>
                                 </td>
+                                <?php if($_SESSION['perm_admin'] == 1 || $_SESSION['perm_action'] == 1):?>
                                 <td>
                                     <a class="edit_btn" href="birdsPurchase.php?birdspurchupdate=1&id=<?php echo $row["BirdsPurchase_ID"]; ?>">Edit</a>
                                 </td>
                                 <td>
                                     <a class="del_btn" href="includes/action.php?birdspurchdelete=1&id=<?php echo $row["BirdsPurchase_ID"]; ?>">Delete</a>
                                 </td>
+                                <?php endif ?>
                             </tr>
                             <?php
                         }

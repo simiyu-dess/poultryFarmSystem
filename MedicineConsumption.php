@@ -135,7 +135,9 @@ checkLogin();
                         <th>Quantity(Litres)</th>
                         <th>Employee Incharge</th>
                         <th>Updated by:</th>
+                        <?php if($_SESSION['perm_admin'] == 1 || $_SESSION['perm_action'] == 1):?>
                         <th colspan="2">Action</th>
+                        <?php endif ?>
                     </thead>
                     <tbody>
                     <?php
@@ -167,12 +169,14 @@ checkLogin();
                                 echo $user;
                                 ?>
                                 </td>
+                                <?php if($_SESSION['perm_admin'] == 1 || $_SESSION['perm_action'] == 1):?>
                                 <td>
                                     <a class="edit_btn" href="MedicineConsumption.php?medusageUpdate=1&id=<?php echo $row["MedicineUsage_ID"]; ?>">Edit</a>
                                 </td>
                                 <td>
                                     <a class="del_btn" href="includes/action.php?medusageDelete=1&id=<?php echo $row["MedicineUsage_ID"]; ?>">Delete</a>
                                 </td>
+                                <?php endif ?>
                             </tr>
                             <?php
                         }

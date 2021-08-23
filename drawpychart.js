@@ -49,6 +49,7 @@ function drawPieChart( data, colors, title,width,height){
         context.rect( x+radius+20, 25* i, 15, 15); 
         context.fill(); 
         context.fillStyle = "#2e4a66"; 
+        context.font = "15px Arial";
         context.fillText( data[ i ][ 0 ] + " (" + data[ i ][ 1 ] + ")", x+radius+45, 25 * i + 15 ); 
     }  
   

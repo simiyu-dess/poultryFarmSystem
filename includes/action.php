@@ -199,6 +199,7 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         $ugroup_purchases = 0;
         $ugroup_eggs = 0;
         $ugroup_birds = 0;
+        $ugroup_action = 0;
 		$ugroup_id = $_POST['ugroup_id'];
 		$ugroup_name = $_POST['ugroup_name'];
 		if(isset($_POST['ugroup_admin'])) $ugroup_admin = '1';
@@ -209,6 +210,7 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         if(isset ($_POST['ugroup_sales'])) $ugroup_sales = '1';
         if(isset ($_POST['ugroup_birds'])) $ugroup_birds = '1';
         if(isset ($_POST['ugroup_eggs'])) $ugroup_eggs = '1';
+        if(isset($_POST['ugroup_edit&delete'])) $ugroup_action = '1';
 		$date = date('Y-m-d');
 
         $myArray = array(
@@ -219,7 +221,8 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
             "Ugroup_purchase" => $ugroup_purchases,
             "Ugroup_eggs" => $ugroup_eggs,
             "Ugroup_medicine" => $ugroup_medicine,
-            "Ugroup_feeds" => $ugroup_feeds
+            "Ugroup_feeds" => $ugroup_feeds,
+            "Ugroup_action" => $ugroup_action
             
         );
         if($ugroupObject->insertionMethod("Ugroup", $myArray))
@@ -244,6 +247,7 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         $ugroup_purchases = 0;
         $ugroup_birds = 0;
         $ugroup_eggs= 0;
+        $ugroup_action = 0;
 		$ugroup_id = $_POST['ugroup_id'];
 		$ugroup_name = $_POST['ugroup_name'];
 		if(isset ($_POST['ugroup_admin'])) $ugroup_admin = '1';
@@ -254,6 +258,7 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
         if(isset ($_POST['ugroup_sales'])) $ugroup_sales = '1';
         if(isset ($_POST['ugroup_birds'])) $ugroup_birds = '1';
         if(isset ($_POST['ugroup_eggs'])) $ugroup_eggs = '1';
+        if(isset($_POST['ugroup_edit&delete'])) $ugroup_action = '1';
 		$date = date('Y-m-d');
 
         $where = array("Ugroup_ID" => $ugroup_id);
@@ -265,7 +270,9 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
             "Ugroup_sales" => $ugroup_sales,
             "Ugroup_purchase" => $ugroup_purchases,
             "Ugroup_medicine" => $ugroup_medicine,
-            "Ugroup_eggs" => $ugroup_eggs
+            "Ugroup_eggs" => $ugroup_eggs,
+            "Ugroup_feeds" => $ugroup_feeds,
+            "Ugroup_action" => $ugroup_action
             
         );
         if($ugroupObject->updateMethod("Ugroup", $where, $myArray))
@@ -1092,18 +1099,72 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
     $remainingBirds = $totalNumberOfBirds - $totalDeaths;
     
     // Returning the total number of wages
-    $query = "SELECT SUM(Salary) AS sum FROM `Employee`";
+    $totalWages = 0;
+    $query = "SELECT SUM(Salary) AS sum FROM `Employee` WHERE endDate IS Null ";
     $result = $databaseObject->connect()->query($query);
     while($row = mysqli_fetch_assoc($result)){
         $totalWages = $row['sum'];
     }
+    $sixtydays = 61 * 24 * 3600;
+    $lastsixtydays = strtotime(date('Y-m-d')) - $sixtydays;
+
+    //returning total expense
+    $expense = 0;
+    $query = "SELECT SUM(Amount) AS sum FROM Expenses WHERE UNIX_TIMESTAMP(Expense_date) > $lastsixtydays";
+    $result = $databaseObject->connect()->query($query);
+    while($row = mysqli_fetch_assoc($result))
+    {
+        $expense = $row['sum'];
+    }
+
+    //returning expense from purchasing birds in last sixty days
+    $birdsExpense = 0;
+    $query = "SELECT SUM(Price) AS sum FROM BirdsPurchase WHERE UNIX_TIMESTAMP(Date) > $lastsixtydays";
+    $result = $databaseObject->connect()->query($query);
+    while($row = mysqli_fetch_assoc($result))
+    {
+      $birdsExpense = $row['sum'];
+    }
+
+    //returning the expense from feed purchase
+    $feedExpense = 0;
+    $query = "SELECT SUM(Price) AS sum FROM FeedPurchase WHERE UNIX_TIMESTAMP(Date) > $lastsixtydays";
+    $result = $databaseObject->connect()->query($query);
+    while($row = mysqli_fetch_assoc($result))
+    {
+        $feedExpense = $row['sum'];
+    }
+
+    //returning the total expense from medicine purchase
+    $medicineExpense = 0;
+    $query = "SELECT SUM(Price) AS sum FROM MedicinePurchase WHERE UNIX_TIMESTAMP(Date) > $lastsixtydays";
+    $result = $databaseObject->connect()->query($query);
+    while($row = mysqli_fetch_assoc($result))
+    {
+        $medicineExpense = $row['sum'];
+    }
+
+    //Total expensse
+    $totalExpense = $expense + $birdsExpense + $feedExpense + $medicineExpense + $totalWages;
 
     // Returning total revenue
+    $sales = 0;
     $query = "SELECT SUM(Revenue) AS sum FROM `Sales` WHERE UNIX_TIMESTAMP(Sales_Date) > $timestamp";
     $result = $databaseObject->connect()->query($query);
     while($row = mysqli_fetch_assoc($result)){
-        $sales = $row['sum'];
+        $sales += $row['sum'];
     }
+    //Returning the other additional incomes
+    $incomes = 0;
+    $sql = "SELECT SUM(Amount) AS sum FROM Incomes WHERE UNIX_TIMESTAMP(Incomes_date) > $timestamp";
+    $result = $databaseObject->connect()->query($sql);
+    while($row = mysqli_fetch_assoc($result))
+    {
+        $incomes = $row['sum'];
+    }
+
+    $totalRevenue = $sales + $incomes;
+
 
     // Returning remaining feed in the stock
     $query = "SELECT SUM(Quantity) AS sum FROM `FeedPurchase`";
@@ -1134,7 +1195,7 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
     $remainingEggs = $totalEggsProduced - $totalEggsSold;
 
     // Getting the total number of employees working in the farm
-    $query = "SELECT COUNT(*) AS sum FROM `Employee`";
+    $query = "SELECT COUNT(*) AS sum FROM `Employee` WHERE endDate IS Null";
     $result = $databaseObject->connect()->query($query);
     while($row = mysqli_fetch_assoc($result)){
         $totalNumberOfEmployees = $row['sum'];

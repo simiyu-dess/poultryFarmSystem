@@ -103,7 +103,9 @@ checkLogin();
                         <th>Income Type</th>
                         <th>Amount</th>
                         <th>Update by:</th>
+                        <?php if($_SESSION['perm_admin'] == 1 || $_SESSION['perm_action'] == 1):?>
                         <th colspan="2">Action</th>
+                        <?php endif ?>
                         
                     </thead>
                     <tbody>
@@ -126,12 +128,14 @@ checkLogin();
 
                                 echo $username['Username'];?>
                                 </td>
+                                <?php if($_SESSION['perm_admin'] == 1 || $_SESSION['perm_action'] == 1):?>
                                 <td>
                                     <a class="edit_btn" href="incomes.php?incomeupdate=1&id=<?php echo $row["Incomes_ID"]; ?>">Edit</a>
                                 </td>
                                 <td>
                                     <a class="del_btn" href="includes/action.php?incomedelete=1&id=<?php echo $row["Incomes_ID"]; ?>">Delete</a>
                                 </td>
+                                <?php endif ?>
                                 
                             </tr>
                             <?php

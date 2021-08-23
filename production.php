@@ -94,7 +94,9 @@ checkLogin();
                         <th>Date</th>
                         <th>Number of Eggs</th>
                         <th>Updated by:</th>
+                        <?php if($_SESSION['perm_admin'] == 1 || $_SESSION['perm_action'] == 1):?>
                         <th colspan="2">Action</th>
+                        <?php endif ?>
                     </thead>
                     <tbody>
                     <?php
@@ -114,12 +116,14 @@ checkLogin();
                                 echo $user;
                                 ?>
                                 </td>
+                                <?php if($_SESSION['perm_admin'] == 1 || $_SESSION['perm_action'] == 1):?>
                                 <td>
                                     <a class="edit_btn" href="production.php?productionupdate=1&id=<?php echo $row["Production_ID"]; ?>">Edit</a>
                                 </td>
                                 <td>
                                     <a class="del_btn" href="includes/action.php?productiondelete=1&id=<?php echo $row["Production_ID"]; ?>">Delete</a>
                                 </td>
+                                <?php endif ?>
                             </tr>
                             <?php
                         }

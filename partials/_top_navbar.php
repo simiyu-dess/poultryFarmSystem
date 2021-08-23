@@ -6,6 +6,8 @@
           <a href="eggsSummary.php">Eggs</a>
           <a href="birdsSummary.php">Birds</a>
           <a href="feedSummary.php">Feed</a>
+          <a href="transactionSummary.php">Transaction</a>
+          <a href="expenseSummary.php">Expense Summary</a>
           <a href="incomes.php">Accounting</a>
          
         </div>

@@ -31,6 +31,7 @@ include_once "{$_SERVER['DOCUMENT_ROOT']}/poultryFarm/functions.php";
                 $_SESSION['perm_sales'] = $permisions_array['Ugroup_sales'];
                 $_SESSION['perm_birds'] = $permisions_array['Ugroup_birds'];
                 $_SESSION['perm_eggs'] = $permisions_array['Ugroup_eggs'];
+                $_SESSION['perm_action'] = $permisions_array['Ugroup_action'];
                 $_SESSION['fingerprint'] = fingerprint();
                 header("location: dashboard.php");
             }else{

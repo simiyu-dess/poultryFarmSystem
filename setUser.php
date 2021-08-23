@@ -343,7 +343,7 @@ checkLogin();
 							}
 							for(i = 0; i < usernames.length; i++)
 						{
-							if(usernames[i] == username)
+							if(usernames[i] == name)
 							{
 								errorusername.innerHTML = "User name already exists";
 								truth = false;

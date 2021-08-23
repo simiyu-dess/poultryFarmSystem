@@ -76,6 +76,10 @@ checkLogin();
 							<td>
 								<input type="checkbox" name="ugroup_admin" <?PHP if($row_groups['Ugroup_admin'] == 1) echo 'checked="checked" '; ?> />
 								Admin</td>
+
+								<td><input type="checkbox" name="ugroup_edit&delete"
+								<?php if($row_groups['Ugroup_Edit&Delete'] == 1) echo 'checked = "checked"'; ?> />
+								Edit And Delete Action</td>
 						</tr>
 						<tr>
 							<td>
@@ -83,6 +87,7 @@ checkLogin();
 							<td>
 								<input type="checkbox" name="ugroup_birds" <?PHP if($row_groups['Ugroup_birds'] == 1) echo 'checked="checked" '; ?> />
 								Birds</td>
+
 						</tr>
 						<tr>
 							<td>
@@ -116,7 +121,7 @@ checkLogin();
 								eggs</td>
 						</tr>
 					</table>
-					<input type="submit"  class = "edit_btn" name="edit_Ugroup" value="Update" />
+					<input type="submit"  class = "btn" name="edit_Ugroup" value="Update" />
 					<input type="hidden" name="ugroup_id" value="<?PHP echo $_GET['update_Ugroup'];?>" />
 				</form>
                 <?php } 
@@ -137,6 +142,9 @@ checkLogin();
 							<td>
 								<input type="checkbox" name="ugroup_admin" />
 								Administrator</td>
+
+								<td><input type="checkbox" name="ugroup_edit&delete" />
+								Edit And Delete Action</td>
 						</tr>
 						<tr>
 							<td>
@@ -144,6 +152,9 @@ checkLogin();
 							<td>
 								<input type="checkbox" name="ugroup_birds" />
 								Birds</td>
+
+								<td><input type="checkbox" name="ugroup_edit" />
+								Editing Action</td>
 						</tr>
 						<tr>
 							<td></td>
@@ -182,7 +193,7 @@ checkLogin();
 								eggs Action</td>
 						</tr>
 					</table>
-					<input type="submit" class="edit_btn" name="save_Ugroup" value="Save" />
+					<input type="submit" class="btn" name="save_Ugroup" value="Save" />
 				</form>
                <?php  }
                 ?>
@@ -199,6 +210,7 @@ checkLogin();
 				<tr>
 					<th rowspan="2">User Group Name</th>
 					<th colspan="6">Permissions</th>
+					
 					<th colspan="2" rowspan="2">Action</th>
 					
 				</tr>
